@@ -622,3 +622,5 @@ Client 49	 Size of data: 946	 Labels:  [0 1 2 3 4 5 6 7 8 9]
 [2026-07-07 13:32:03] === Retrain baseline (algorithm=fedavg) ===
 [Retrain:fedavg] Epoch=0, avg_r_acc=0.3791, avg_f_acc=0.0660
 [2026-07-07 13:34:44] [Retrain:fedavg] Epoch=0, avg_r_acc=0.3791, avg_f_acc=0.0660
+[Retrain:fedavg] Epoch=1, avg_r_acc=0.4611, avg_f_acc=0.0378
+[2026-07-07 13:37:54] [Retrain:fedavg] Epoch=1, avg_r_acc=0.4611, avg_f_acc=0.0378
