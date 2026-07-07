@@ -1,0 +1,36 @@
+# Phase 2 (FUSED unlearning) config — REAL REPO MECHANISM (LoRA), not the
+# earlier sparse-mask/CLI design. See run_fu_lora.py's module docstring for
+# exactly which files this was verified against.
+#
+# This file is kept for reference/documentation only — run_fu_lora.py takes
+# all of these as --flags directly (see the 3 SLURM scripts), so editing
+# this YAML has NO EFFECT unless you also update run_fu_lora.py to read it.
+# It exists so the actual hyperparameters used are recorded in configs/
+# alongside the (now-superseded) fu_fused_client.yaml, for comparison.
+
+source_run: fl_fedavg_oral_321935
+
+# --- Real repo mechanism, hardcoded, not configurable here on purpose ---
+# (see src/models/resnet_lora.py — verified against Model_base.py::Lora)
+#   adapter: LoRA, r=16, lora_alpha=32, lora_dropout=0.1, bias=none
+#   target_modules: [layer4.0.conv2, layer4.1.conv1, layer4.1.conv2, fc]
+#   optimizer: SGD(momentum=0.9, weight_decay=5e-4)
+#   no Critical-Layer-Identification step (target_modules is a literal list
+#   in the source, not computed)
+
+# --- Requested hyperparameters ---
+global_epoch: 50      # federated rounds for forget_client_train (and relearn probe)
+local_epoch: 3         # local SGD epochs per client per round
+batch_size: 16         # per-client batch size
+
+# --- Repo-verified, NOT this pipeline's general default (0.001) ---
+learning_rate: 0.005   # matches utils.py::model_init's lr for cifar10/cifar100 (resnet18-family)
+
+# --- Forgetting scope: one hospital per run (set per-job, see 05/06/07_fu_*.sh) ---
+unlearning_scope: client
+# forget_client: set via --forget_client on the command line, one of:
+#   Spain_Dataset | Canada_Dataset | India_Dataset
+
+# --- Optional extras (off/on matching real repo defaults) ---
+run_relearn_probe: true     # real repo's args.relearn default is True
+run_retrain_baseline: false # set true if you also want the full-retrain baseline per hospital

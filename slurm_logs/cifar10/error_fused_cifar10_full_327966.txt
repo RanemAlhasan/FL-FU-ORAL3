@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/export/home/ralhasan/fl-fu-oral3/scripts/run_fused_cifar10.py", line 249, in <module>
+    main()
+  File "/export/home/ralhasan/fl-fu-oral3/scripts/run_fused_cifar10.py", line 244, in main
+    logger.close()
+  File "/export/home/ralhasan/fl-fu-oral3/src/utils/logger.py", line 63, in close
+    def info(self, msg: str) -> None:
+  File "/export/home/ralhasan/fl-fu-oral3/src/utils/logger.py", line 57, in flush
+    
+FileNotFoundError: [Errno 2] No such file or directory: 'logs/fused_cifar10_full_327966/metrics.json'

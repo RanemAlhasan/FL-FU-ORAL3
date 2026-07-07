@@ -1,0 +1,246 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fused_cifar10_full_327966
+SLURM job ID: 340220
+Tue Jul  7 10:11:20 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.07             Driver Version: 570.133.07     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-PCIE-16GB           Off |   00000000:3B:00.0 Off |                    0 |
+| N/A   27C    P0             25W /  250W |       0MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+=== FUSED-CLI CIFAR-10, algorithm=fedavg ===
+[2026-07-07 10:11:41] === Run started: fused_cli_fedavg_cifar10_340220 ===
+[2026-07-07 10:11:41] Run hyperparameters:
+  dataset_root: /export/home/ralhasan/fl-fu-oral3/dataset/cifar10
+  num_classes: 10
+  num_clients: 50
+  alpha: 1.0
+  proxy_frac: 0.2
+  pretrained: True
+  local_batch_size: 128
+  test_batch_size: 64
+  learning_rate: 0.005
+  global_epochs: 100
+  local_epochs: 5
+  fused_iterations: 100
+  relearn_rounds: 100
+  forget_paradigm: client
+  forget_client_idx: [0]
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  run_mia: True
+  n_shadow: 5
+  mia_attack_epochs: 50
+  device: cuda
+  seed: 50
+  num_workers: 2
+  logs_root: logs/cifar10_cli
+  checkpoints_root: checkpoints/cifar10_cli
+  outputs_root: outputs/cifar10_cli
+  algorithm: fedavg
+  fedprox_mu: 0.01
+  fedmoon_mu: 1.0
+  fedmoon_temperature: 0.5
+  num_unlearning_layers: 4
+  adapter_sparsity: 0.05
+  source_run: fused_cifar10_full_327966
+  method: FUSED-CLI (Algorithm 1, real paper method)
+[2026-07-07 10:11:41] Rebuilding CIFAR-10 federated data (seed=50, matches source run's partition).
+Pooled dataset: 60000 samples (train + test), partitioning across 50 clients via Dirichlet(alpha=1.0)...
+Client 0	 Size of data: 1264	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 178), (1, 59), (2, 277), (3, 15), (4, 71), (5, 176), (6, 128), (7, 69), (8, 103), (9, 188)]
+--------------------------------------------------
+Client 1	 Size of data: 1300	 Labels:  [0 1 2 3 4 5]
+		 Samples of labels:  [(0, 18), (1, 717), (2, 17), (3, 184), (4, 45), (5, 319)]
+--------------------------------------------------
+Client 2	 Size of data: 1253	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 302), (1, 83), (2, 95), (3, 39), (4, 16), (5, 57), (6, 289), (7, 285), (8, 87)]
+--------------------------------------------------
+Client 3	 Size of data: 1329	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 36), (1, 194), (2, 36), (3, 115), (4, 3), (5, 253), (6, 177), (7, 251), (8, 94), (9, 170)]
+--------------------------------------------------
+Client 4	 Size of data: 1566	 Labels:  [0 1 2 3 4]
+		 Samples of labels:  [(0, 104), (1, 38), (2, 156), (3, 156), (4, 1112)]
+--------------------------------------------------
+Client 5	 Size of data: 1895	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 14), (1, 48), (2, 237), (3, 5), (4, 196), (5, 200), (6, 148), (7, 8), (8, 60), (9, 979)]
+--------------------------------------------------
+Client 6	 Size of data: 1239	 Labels:  [0 1 2 3 4 5 6 7]
+		 Samples of labels:  [(0, 54), (1, 58), (2, 77), (3, 259), (4, 35), (5, 9), (6, 603), (7, 144)]
+--------------------------------------------------
+Client 7	 Size of data: 1223	 Labels:  [0 1 2 3 4 5 6]
+		 Samples of labels:  [(0, 250), (1, 142), (2, 46), (3, 30), (4, 22), (5, 341), (6, 392)]
+--------------------------------------------------
+Client 8	 Size of data: 940	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 1), (1, 71), (2, 43), (3, 238), (4, 13), (5, 178), (6, 29), (7, 8), (8, 350), (9, 9)]
+--------------------------------------------------
+Client 9	 Size of data: 1422	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 68), (1, 69), (2, 71), (3, 387), (4, 88), (5, 78), (6, 322), (7, 5), (8, 334)]
+--------------------------------------------------
+Client 10	 Size of data: 1436	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 56), (1, 49), (2, 90), (3, 151), (4, 215), (5, 5), (6, 110), (7, 136), (8, 21), (9, 603)]
+--------------------------------------------------
+Client 11	 Size of data: 1294	 Labels:  [0 1 2 3 4 5]
+		 Samples of labels:  [(0, 107), (1, 220), (2, 298), (3, 389), (4, 75), (5, 205)]
+--------------------------------------------------
+Client 12	 Size of data: 1020	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 153), (1, 89), (2, 247), (3, 52), (4, 145), (5, 82), (6, 197), (7, 25), (8, 19), (9, 11)]
+--------------------------------------------------
+Client 13	 Size of data: 1954	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 6), (1, 41), (2, 80), (3, 26), (4, 431), (5, 37), (6, 81), (7, 472), (8, 780)]
+--------------------------------------------------
+Client 14	 Size of data: 1147	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 211), (1, 56), (2, 53), (3, 122), (4, 12), (5, 184), (6, 229), (7, 45), (8, 112), (9, 123)]
+--------------------------------------------------
+Client 15	 Size of data: 1394	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 45), (1, 32), (2, 21), (3, 330), (4, 244), (5, 170), (6, 38), (7, 279), (8, 235)]
+--------------------------------------------------
+Client 16	 Size of data: 1287	 Labels:  [0 1 2 3 4]
+		 Samples of labels:  [(0, 329), (1, 35), (2, 673), (3, 124), (4, 126)]
+--------------------------------------------------
+Client 17	 Size of data: 1040	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 283), (1, 29), (2, 42), (3, 3), (4, 15), (5, 132), (6, 44), (7, 182), (8, 228), (9, 82)]
+--------------------------------------------------
+Client 18	 Size of data: 1204	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 134), (1, 13), (2, 92), (3, 21), (4, 132), (5, 56), (6, 292), (7, 433), (8, 31)]
+--------------------------------------------------
+Client 19	 Size of data: 1245	 Labels:  [0 1 2 3 4]
+		 Samples of labels:  [(0, 696), (1, 222), (2, 60), (3, 105), (4, 162)]
+--------------------------------------------------
+Client 20	 Size of data: 529	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 48), (1, 75), (2, 3), (3, 48), (4, 36), (5, 129), (6, 9), (7, 20), (8, 64), (9, 97)]
+--------------------------------------------------
+Client 21	 Size of data: 1159	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 28), (1, 96), (2, 189), (3, 117), (4, 10), (5, 244), (6, 25), (7, 25), (8, 83), (9, 342)]
+--------------------------------------------------
+Client 22	 Size of data: 1284	 Labels:  [0 1 2 3]
+		 Samples of labels:  [(0, 294), (1, 81), (2, 284), (3, 625)]
+--------------------------------------------------
+Client 23	 Size of data: 959	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 57), (1, 105), (2, 19), (3, 18), (4, 64), (5, 200), (6, 252), (7, 214), (8, 18), (9, 12)]
+--------------------------------------------------
+Client 24	 Size of data: 887	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 71), (1, 80), (2, 104), (3, 54), (4, 49), (5, 126), (6, 84), (7, 51), (8, 142), (9, 126)]
+--------------------------------------------------
+Client 25	 Size of data: 863	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 8), (1, 19), (2, 199), (3, 124), (4, 89), (5, 123), (6, 29), (7, 30), (8, 1), (9, 241)]
+--------------------------------------------------
+Client 26	 Size of data: 1140	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 223), (1, 253), (2, 92), (3, 54), (4, 4), (5, 14), (6, 140), (7, 320), (8, 32), (9, 8)]
+--------------------------------------------------
+Client 27	 Size of data: 1312	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 15), (1, 229), (2, 4), (3, 40), (4, 135), (5, 78), (6, 442), (7, 172), (8, 197)]
+--------------------------------------------------
+Client 28	 Size of data: 1051	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 62), (1, 37), (2, 25), (3, 280), (4, 55), (5, 176), (6, 106), (7, 97), (8, 132), (9, 81)]
+--------------------------------------------------
+Client 29	 Size of data: 1551	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 198), (1, 67), (2, 141), (3, 9), (4, 90), (5, 87), (6, 63), (7, 236), (8, 5), (9, 655)]
+--------------------------------------------------
+Client 30	 Size of data: 965	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 4), (1, 142), (2, 71), (3, 117), (4, 246), (5, 162), (6, 49), (7, 61), (8, 101), (9, 12)]
+--------------------------------------------------
+Client 31	 Size of data: 1295	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 8), (1, 62), (2, 133), (3, 159), (4, 273), (5, 28), (6, 240), (7, 81), (8, 135), (9, 176)]
+--------------------------------------------------
+Client 32	 Size of data: 1203	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 13), (1, 151), (2, 147), (3, 58), (4, 309), (5, 119), (6, 141), (7, 193), (8, 72)]
+--------------------------------------------------
+Client 33	 Size of data: 989	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 351), (1, 37), (2, 119), (3, 23), (4, 183), (5, 186), (6, 34), (7, 4), (8, 26), (9, 26)]
+--------------------------------------------------
+Client 34	 Size of data: 1537	 Labels:  [0 1 2 3 4 5 6 7]
+		 Samples of labels:  [(0, 125), (1, 155), (2, 129), (3, 10), (4, 427), (5, 8), (6, 16), (7, 667)]
+--------------------------------------------------
+Client 35	 Size of data: 1160	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 54), (1, 124), (2, 205), (3, 31), (4, 191), (5, 87), (6, 137), (7, 179), (8, 68), (9, 84)]
+--------------------------------------------------
+Client 36	 Size of data: 1218	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 29), (1, 188), (2, 75), (3, 251), (4, 81), (5, 9), (6, 1), (7, 16), (8, 475), (9, 93)]
+--------------------------------------------------
+Client 37	 Size of data: 1664	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 249), (1, 58), (2, 25), (3, 130), (4, 59), (5, 101), (6, 191), (7, 129), (8, 231), (9, 491)]
+--------------------------------------------------
+Client 38	 Size of data: 1414	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 83), (1, 89), (2, 86), (3, 398), (4, 22), (5, 2), (6, 71), (7, 177), (8, 68), (9, 418)]
+--------------------------------------------------
+Client 39	 Size of data: 498	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 87), (1, 10), (2, 119), (3, 6), (4, 34), (5, 10), (6, 7), (7, 40), (8, 130), (9, 55)]
+--------------------------------------------------
+Client 40	 Size of data: 1455	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 56), (1, 470), (2, 44), (3, 61), (4, 8), (5, 11), (6, 127), (7, 11), (8, 190), (9, 477)]
+--------------------------------------------------
+Client 41	 Size of data: 1233	 Labels:  [0 1 2 3 4 5 6 7 8]
+		 Samples of labels:  [(0, 443), (1, 9), (2, 139), (3, 284), (4, 14), (5, 140), (6, 111), (7, 56), (8, 37)]
+--------------------------------------------------
+Client 42	 Size of data: 1328	 Labels:  [0 1 2 4 5 6 7 8]
+		 Samples of labels:  [(0, 147), (1, 326), (2, 149), (4, 10), (5, 71), (6, 197), (7, 56), (8, 372)]
+--------------------------------------------------
+Client 43	 Size of data: 680	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 79), (1, 16), (2, 217), (3, 33), (4, 72), (5, 128), (6, 32), (7, 65), (8, 19), (9, 19)]
+--------------------------------------------------
+Client 44	 Size of data: 1190	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 46), (1, 236), (2, 87), (3, 87), (4, 87), (5, 237), (6, 50), (7, 152), (8, 51), (9, 157)]
+--------------------------------------------------
+Client 45	 Size of data: 793	 Labels:  [1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(1, 63), (2, 121), (3, 2), (4, 46), (5, 132), (6, 11), (7, 99), (8, 265), (9, 54)]
+--------------------------------------------------
+Client 46	 Size of data: 1277	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 44), (1, 104), (2, 95), (3, 12), (4, 97), (5, 204), (6, 123), (7, 336), (8, 175), (9, 87)]
+--------------------------------------------------
+Client 47	 Size of data: 725	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 26), (1, 104), (2, 167), (3, 14), (4, 22), (5, 69), (6, 38), (7, 89), (8, 144), (9, 52)]
+--------------------------------------------------
+Client 48	 Size of data: 1243	 Labels:  [0 1 2 3 4 5 6 7]
+		 Samples of labels:  [(0, 68), (1, 230), (2, 36), (3, 98), (4, 116), (5, 500), (6, 139), (7, 56)]
+--------------------------------------------------
+Client 49	 Size of data: 946	 Labels:  [0 1 2 3 4 5 6 7 8 9]
+		 Samples of labels:  [(0, 39), (1, 119), (2, 65), (3, 106), (4, 13), (5, 137), (6, 56), (7, 26), (8, 313), (9, 72)]
+--------------------------------------------------
+[2026-07-07 10:12:09] Applying Byzantine label-shift attack to forget_client_idx=[0]...
+[2026-07-07 10:12:12] Loaded Phase-A checkpoint (read-only) from checkpoints/cifar10/fused_cifar10_full_327966/phase_a_model.pt
+[2026-07-07 10:12:12] === FUSED-CLI unlearning (algorithm=fedavg) ===
+[2026-07-07 10:12:12] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 10:12:41] Selected 4 critical layers: ['layer4.0.conv1.weight', 'layer3.1.conv1.weight', 'layer3.0.conv2.weight', 'layer3.1.conv2.weight']
+[FUSED-CLI:fedavg] Round=0, avg_r_acc=0.8323, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:14:34] [FUSED-CLI:fedavg] Round=0, avg_r_acc=0.8323, avg_f_acc=0.5084, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=1, avg_r_acc=0.8322, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:16:30] [FUSED-CLI:fedavg] Round=1, avg_r_acc=0.8322, avg_f_acc=0.5084, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=2, avg_r_acc=0.8338, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:18:27] [FUSED-CLI:fedavg] Round=2, avg_r_acc=0.8338, avg_f_acc=0.5084, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=3, avg_r_acc=0.8345, avg_f_acc=0.5061, adapter_density=147437/2949120
+[2026-07-07 10:20:25] [FUSED-CLI:fedavg] Round=3, avg_r_acc=0.8345, avg_f_acc=0.5061, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=4, avg_r_acc=0.8341, avg_f_acc=0.5061, adapter_density=147437/2949120
+[2026-07-07 10:22:23] [FUSED-CLI:fedavg] Round=4, avg_r_acc=0.8341, avg_f_acc=0.5061, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=5, avg_r_acc=0.8334, avg_f_acc=0.5076, adapter_density=147437/2949120
+[2026-07-07 10:24:23] [FUSED-CLI:fedavg] Round=5, avg_r_acc=0.8334, avg_f_acc=0.5076, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=6, avg_r_acc=0.8317, avg_f_acc=0.5035, adapter_density=147437/2949120
+[2026-07-07 10:26:22] [FUSED-CLI:fedavg] Round=6, avg_r_acc=0.8317, avg_f_acc=0.5035, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=7, avg_r_acc=0.8316, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:28:21] [FUSED-CLI:fedavg] Round=7, avg_r_acc=0.8316, avg_f_acc=0.4952, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=8, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:30:19] [FUSED-CLI:fedavg] Round=8, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=9, avg_r_acc=0.8321, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:32:18] [FUSED-CLI:fedavg] Round=9, avg_r_acc=0.8321, avg_f_acc=0.4952, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=10, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:34:18] [FUSED-CLI:fedavg] Round=10, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=11, avg_r_acc=0.8322, avg_f_acc=0.4846, adapter_density=147437/2949120
+[2026-07-07 10:36:17] [FUSED-CLI:fedavg] Round=11, avg_r_acc=0.8322, avg_f_acc=0.4846, adapter_density=147437/2949120
+[FUSED-CLI:fedavg] Round=12, avg_r_acc=0.8320, avg_f_acc=0.4744, adapter_density=147437/2949120
+[2026-07-07 10:38:15] [FUSED-CLI:fedavg] Round=12, avg_r_acc=0.8320, avg_f_acc=0.4744, adapter_density=147437/2949120

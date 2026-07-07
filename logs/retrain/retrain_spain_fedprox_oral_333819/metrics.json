@@ -1,0 +1,2150 @@
+{
+  "run_id": "retrain_spain_fedprox_oral_333819",
+  "scalars": {
+    "fl/train_loss/client_India_Dataset": [
+      {
+        "step": 1,
+        "value": 1.7136267088353634
+      },
+      {
+        "step": 2,
+        "value": 1.3274437158058088
+      },
+      {
+        "step": 3,
+        "value": 1.0240139688054721
+      },
+      {
+        "step": 4,
+        "value": 0.8957576459894577
+      },
+      {
+        "step": 5,
+        "value": 0.7973561882972717
+      },
+      {
+        "step": 6,
+        "value": 0.8226966677854458
+      },
+      {
+        "step": 7,
+        "value": 0.8330683195963502
+      },
+      {
+        "step": 8,
+        "value": 0.6724289987857143
+      },
+      {
+        "step": 9,
+        "value": 0.6937293134008845
+      },
+      {
+        "step": 10,
+        "value": 0.6966179721057415
+      },
+      {
+        "step": 11,
+        "value": 0.6756562118728956
+      },
+      {
+        "step": 12,
+        "value": 0.7015147730708122
+      },
+      {
+        "step": 13,
+        "value": 0.6800730569909016
+      },
+      {
+        "step": 14,
+        "value": 0.6252481816336513
+      },
+      {
+        "step": 15,
+        "value": 0.6262143856535355
+      },
+      {
+        "step": 16,
+        "value": 0.6041412247965733
+      },
+      {
+        "step": 17,
+        "value": 0.6132577552149693
+      },
+      {
+        "step": 18,
+        "value": 0.5949663696810603
+      },
+      {
+        "step": 19,
+        "value": 0.6216961909085512
+      },
+      {
+        "step": 20,
+        "value": 0.5528914996733268
+      },
+      {
+        "step": 21,
+        "value": 0.6185889504849911
+      },
+      {
+        "step": 22,
+        "value": 0.4853471939762433
+      },
+      {
+        "step": 23,
+        "value": 0.48772539213920635
+      },
+      {
+        "step": 24,
+        "value": 0.48546148277819157
+      },
+      {
+        "step": 25,
+        "value": 0.5235815346240997
+      },
+      {
+        "step": 26,
+        "value": 0.46792236086912453
+      },
+      {
+        "step": 27,
+        "value": 0.5091695676868161
+      },
+      {
+        "step": 28,
+        "value": 0.4761301400139928
+      },
+      {
+        "step": 29,
+        "value": 0.5053271809592843
+      },
+      {
+        "step": 30,
+        "value": 0.5675807196336488
+      },
+      {
+        "step": 31,
+        "value": 0.4571803367386262
+      },
+      {
+        "step": 32,
+        "value": 0.46079309936612844
+      },
+      {
+        "step": 33,
+        "value": 0.4923749603331089
+      },
+      {
+        "step": 34,
+        "value": 0.43731682607904077
+      },
+      {
+        "step": 35,
+        "value": 0.3794488247173528
+      },
+      {
+        "step": 36,
+        "value": 0.4484919801664849
+      },
+      {
+        "step": 37,
+        "value": 0.4097615594509989
+      },
+      {
+        "step": 38,
+        "value": 0.41047093473995727
+      },
+      {
+        "step": 39,
+        "value": 0.3995364972700675
+      },
+      {
+        "step": 40,
+        "value": 0.36895175169532496
+      },
+      {
+        "step": 41,
+        "value": 0.3631603855950137
+      },
+      {
+        "step": 42,
+        "value": 0.4576169193411867
+      },
+      {
+        "step": 43,
+        "value": 0.4476734607014805
+      },
+      {
+        "step": 44,
+        "value": 0.3383475989879419
+      },
+      {
+        "step": 45,
+        "value": 0.33548072384049493
+      },
+      {
+        "step": 46,
+        "value": 0.4053613218323638
+      },
+      {
+        "step": 47,
+        "value": 0.37194182351231575
+      },
+      {
+        "step": 48,
+        "value": 0.4008073890581727
+      },
+      {
+        "step": 49,
+        "value": 0.409033583321919
+      },
+      {
+        "step": 50,
+        "value": 0.39150296279694885
+      }
+    ],
+    "fl/comp_time_sec/client_India_Dataset": [
+      {
+        "step": 1,
+        "value": 37.38083267211914
+      },
+      {
+        "step": 2,
+        "value": 41.34478521347046
+      },
+      {
+        "step": 3,
+        "value": 39.726412534713745
+      },
+      {
+        "step": 4,
+        "value": 39.37411856651306
+      },
+      {
+        "step": 5,
+        "value": 37.079933643341064
+      },
+      {
+        "step": 6,
+        "value": 36.175543785095215
+      },
+      {
+        "step": 7,
+        "value": 38.013128995895386
+      },
+      {
+        "step": 8,
+        "value": 39.443819522857666
+      },
+      {
+        "step": 9,
+        "value": 38.70746159553528
+      },
+      {
+        "step": 10,
+        "value": 39.19254016876221
+      },
+      {
+        "step": 11,
+        "value": 38.613401889801025
+      },
+      {
+        "step": 12,
+        "value": 38.71463131904602
+      },
+      {
+        "step": 13,
+        "value": 39.320026874542236
+      },
+      {
+        "step": 14,
+        "value": 38.16011929512024
+      },
+      {
+        "step": 15,
+        "value": 39.270068407058716
+      },
+      {
+        "step": 16,
+        "value": 38.075101137161255
+      },
+      {
+        "step": 17,
+        "value": 39.58512496948242
+      },
+      {
+        "step": 18,
+        "value": 39.64507699012756
+      },
+      {
+        "step": 19,
+        "value": 40.66075086593628
+      },
+      {
+        "step": 20,
+        "value": 38.92623829841614
+      },
+      {
+        "step": 21,
+        "value": 38.125144243240356
+      },
+      {
+        "step": 22,
+        "value": 35.639947175979614
+      },
+      {
+        "step": 23,
+        "value": 40.167845010757446
+      },
+      {
+        "step": 24,
+        "value": 40.465683937072754
+      },
+      {
+        "step": 25,
+        "value": 44.000887632369995
+      },
+      {
+        "step": 26,
+        "value": 37.622917890548706
+      },
+      {
+        "step": 27,
+        "value": 40.077754735946655
+      },
+      {
+        "step": 28,
+        "value": 39.08277130126953
+      },
+      {
+        "step": 29,
+        "value": 40.309361696243286
+      },
+      {
+        "step": 30,
+        "value": 42.128920793533325
+      },
+      {
+        "step": 31,
+        "value": 37.164334297180176
+      },
+      {
+        "step": 32,
+        "value": 40.328614234924316
+      },
+      {
+        "step": 33,
+        "value": 36.96340990066528
+      },
+      {
+        "step": 34,
+        "value": 38.384013652801514
+      },
+      {
+        "step": 35,
+        "value": 38.19979763031006
+      },
+      {
+        "step": 36,
+        "value": 37.46662354469299
+      },
+      {
+        "step": 37,
+        "value": 38.216185331344604
+      },
+      {
+        "step": 38,
+        "value": 35.65140509605408
+      },
+      {
+        "step": 39,
+        "value": 39.78607153892517
+      },
+      {
+        "step": 40,
+        "value": 39.52528619766235
+      },
+      {
+        "step": 41,
+        "value": 39.562803983688354
+      },
+      {
+        "step": 42,
+        "value": 38.40722966194153
+      },
+      {
+        "step": 43,
+        "value": 39.7283194065094
+      },
+      {
+        "step": 44,
+        "value": 37.35475301742554
+      },
+      {
+        "step": 45,
+        "value": 39.25783395767212
+      },
+      {
+        "step": 46,
+        "value": 37.03890371322632
+      },
+      {
+        "step": 47,
+        "value": 39.31302189826965
+      },
+      {
+        "step": 48,
+        "value": 38.57490420341492
+      },
+      {
+        "step": 49,
+        "value": 40.613293170928955
+      },
+      {
+        "step": 50,
+        "value": 41.00878596305847
+      }
+    ],
+    "fl/train_loss/client_Canada_Dataset": [
+      {
+        "step": 1,
+        "value": 1.6848055689466037
+      },
+      {
+        "step": 2,
+        "value": 1.3173018324529469
+      },
+      {
+        "step": 3,
+        "value": 1.1090305557528746
+      },
+      {
+        "step": 4,
+        "value": 0.9074356698681235
+      },
+      {
+        "step": 5,
+        "value": 0.8547581754456061
+      },
+      {
+        "step": 6,
+        "value": 0.7187915556253353
+      },
+      {
+        "step": 7,
+        "value": 0.6819474716884805
+      },
+      {
+        "step": 8,
+        "value": 0.6249241649525837
+      },
+      {
+        "step": 9,
+        "value": 0.5674927581861181
+      },
+      {
+        "step": 10,
+        "value": 0.6464409618412407
+      },
+      {
+        "step": 11,
+        "value": 0.5425313670417252
+      },
+      {
+        "step": 12,
+        "value": 0.5002575367206894
+      },
+      {
+        "step": 13,
+        "value": 0.4666888495503313
+      },
+      {
+        "step": 14,
+        "value": 0.44147172714900046
+      },
+      {
+        "step": 15,
+        "value": 0.4906798368410289
+      },
+      {
+        "step": 16,
+        "value": 0.4217774239293387
+      },
+      {
+        "step": 17,
+        "value": 0.49034585194921415
+      },
+      {
+        "step": 18,
+        "value": 0.42923885184825433
+      },
+      {
+        "step": 19,
+        "value": 0.42193104192903896
+      },
+      {
+        "step": 20,
+        "value": 0.4226600413714026
+      },
+      {
+        "step": 21,
+        "value": 0.4168665616721831
+      },
+      {
+        "step": 22,
+        "value": 0.5058137864887136
+      },
+      {
+        "step": 23,
+        "value": 0.4687919770533213
+      },
+      {
+        "step": 24,
+        "value": 0.3396700186757401
+      },
+      {
+        "step": 25,
+        "value": 0.4606886922433056
+      },
+      {
+        "step": 26,
+        "value": 0.35096141043899753
+      },
+      {
+        "step": 27,
+        "value": 0.4582368753319998
+      },
+      {
+        "step": 28,
+        "value": 0.3830135332776119
+      },
+      {
+        "step": 29,
+        "value": 0.31773892571263523
+      },
+      {
+        "step": 30,
+        "value": 0.40511516141660003
+      },
+      {
+        "step": 31,
+        "value": 0.4629345481739075
+      },
+      {
+        "step": 32,
+        "value": 0.34605767811621424
+      },
+      {
+        "step": 33,
+        "value": 0.36873807013637616
+      },
+      {
+        "step": 34,
+        "value": 0.4131316855929575
+      },
+      {
+        "step": 35,
+        "value": 0.3535936804289378
+      },
+      {
+        "step": 36,
+        "value": 0.3013498231265272
+      },
+      {
+        "step": 37,
+        "value": 0.28126245825084284
+      },
+      {
+        "step": 38,
+        "value": 0.3154827605640594
+      },
+      {
+        "step": 39,
+        "value": 0.2820758468118831
+      },
+      {
+        "step": 40,
+        "value": 0.2589862098782489
+      },
+      {
+        "step": 41,
+        "value": 0.34515235375712433
+      },
+      {
+        "step": 42,
+        "value": 0.42479410347405183
+      },
+      {
+        "step": 43,
+        "value": 0.3379240781950394
+      },
+      {
+        "step": 44,
+        "value": 0.3738221395610075
+      },
+      {
+        "step": 45,
+        "value": 0.32453739514361923
+      },
+      {
+        "step": 46,
+        "value": 0.225056426268083
+      },
+      {
+        "step": 47,
+        "value": 0.3418112440836468
+      },
+      {
+        "step": 48,
+        "value": 0.21493377664968866
+      },
+      {
+        "step": 49,
+        "value": 0.23956221496600819
+      },
+      {
+        "step": 50,
+        "value": 0.46365905221036263
+      }
+    ],
+    "fl/comp_time_sec/client_Canada_Dataset": [
+      {
+        "step": 1,
+        "value": 49.93744158744812
+      },
+      {
+        "step": 2,
+        "value": 47.931740522384644
+      },
+      {
+        "step": 3,
+        "value": 49.70466208457947
+      },
+      {
+        "step": 4,
+        "value": 47.93382930755615
+      },
+      {
+        "step": 5,
+        "value": 49.534918546676636
+      },
+      {
+        "step": 6,
+        "value": 48.180750608444214
+      },
+      {
+        "step": 7,
+        "value": 48.38762283325195
+      },
+      {
+        "step": 8,
+        "value": 48.74347186088562
+      },
+      {
+        "step": 9,
+        "value": 48.03290104866028
+      },
+      {
+        "step": 10,
+        "value": 49.14203763008118
+      },
+      {
+        "step": 11,
+        "value": 48.152064085006714
+      },
+      {
+        "step": 12,
+        "value": 48.502524852752686
+      },
+      {
+        "step": 13,
+        "value": 47.62159991264343
+      },
+      {
+        "step": 14,
+        "value": 49.274564027786255
+      },
+      {
+        "step": 15,
+        "value": 48.46165990829468
+      },
+      {
+        "step": 16,
+        "value": 50.12434363365173
+      },
+      {
+        "step": 17,
+        "value": 48.59962224960327
+      },
+      {
+        "step": 18,
+        "value": 48.20766496658325
+      },
+      {
+        "step": 19,
+        "value": 48.89428353309631
+      },
+      {
+        "step": 20,
+        "value": 48.56394147872925
+      },
+      {
+        "step": 21,
+        "value": 48.88202905654907
+      },
+      {
+        "step": 22,
+        "value": 48.433440923690796
+      },
+      {
+        "step": 23,
+        "value": 48.30319333076477
+      },
+      {
+        "step": 24,
+        "value": 47.953863859176636
+      },
+      {
+        "step": 25,
+        "value": 50.16987061500549
+      },
+      {
+        "step": 26,
+        "value": 48.13364768028259
+      },
+      {
+        "step": 27,
+        "value": 50.57940125465393
+      },
+      {
+        "step": 28,
+        "value": 48.59614038467407
+      },
+      {
+        "step": 29,
+        "value": 48.09971332550049
+      },
+      {
+        "step": 30,
+        "value": 49.13474154472351
+      },
+      {
+        "step": 31,
+        "value": 48.45887875556946
+      },
+      {
+        "step": 32,
+        "value": 48.68596029281616
+      },
+      {
+        "step": 33,
+        "value": 47.67014288902283
+      },
+      {
+        "step": 34,
+        "value": 48.386486768722534
+      },
+      {
+        "step": 35,
+        "value": 47.532559394836426
+      },
+      {
+        "step": 36,
+        "value": 49.32765769958496
+      },
+      {
+        "step": 37,
+        "value": 48.25724506378174
+      },
+      {
+        "step": 38,
+        "value": 48.18675088882446
+      },
+      {
+        "step": 39,
+        "value": 47.40056562423706
+      },
+      {
+        "step": 40,
+        "value": 47.759745836257935
+      },
+      {
+        "step": 41,
+        "value": 47.936344623565674
+      },
+      {
+        "step": 42,
+        "value": 47.71628022193909
+      },
+      {
+        "step": 43,
+        "value": 47.85663318634033
+      },
+      {
+        "step": 44,
+        "value": 47.946346282958984
+      },
+      {
+        "step": 45,
+        "value": 49.280128955841064
+      },
+      {
+        "step": 46,
+        "value": 48.1994423866272
+      },
+      {
+        "step": 47,
+        "value": 48.834688663482666
+      },
+      {
+        "step": 48,
+        "value": 48.13470935821533
+      },
+      {
+        "step": 49,
+        "value": 48.006380796432495
+      },
+      {
+        "step": 50,
+        "value": 48.574575662612915
+      }
+    ],
+    "fl/comm_cost_bytes/round": [
+      {
+        "step": 1,
+        "value": 89501528.0
+      },
+      {
+        "step": 2,
+        "value": 89501528.0
+      },
+      {
+        "step": 3,
+        "value": 89501528.0
+      },
+      {
+        "step": 4,
+        "value": 89501528.0
+      },
+      {
+        "step": 5,
+        "value": 89501528.0
+      },
+      {
+        "step": 6,
+        "value": 89501528.0
+      },
+      {
+        "step": 7,
+        "value": 89501528.0
+      },
+      {
+        "step": 8,
+        "value": 89501528.0
+      },
+      {
+        "step": 9,
+        "value": 89501528.0
+      },
+      {
+        "step": 10,
+        "value": 89501528.0
+      },
+      {
+        "step": 11,
+        "value": 89501528.0
+      },
+      {
+        "step": 12,
+        "value": 89501528.0
+      },
+      {
+        "step": 13,
+        "value": 89501528.0
+      },
+      {
+        "step": 14,
+        "value": 89501528.0
+      },
+      {
+        "step": 15,
+        "value": 89501528.0
+      },
+      {
+        "step": 16,
+        "value": 89501528.0
+      },
+      {
+        "step": 17,
+        "value": 89501528.0
+      },
+      {
+        "step": 18,
+        "value": 89501528.0
+      },
+      {
+        "step": 19,
+        "value": 89501528.0
+      },
+      {
+        "step": 20,
+        "value": 89501528.0
+      },
+      {
+        "step": 21,
+        "value": 89501528.0
+      },
+      {
+        "step": 22,
+        "value": 89501528.0
+      },
+      {
+        "step": 23,
+        "value": 89501528.0
+      },
+      {
+        "step": 24,
+        "value": 89501528.0
+      },
+      {
+        "step": 25,
+        "value": 89501528.0
+      },
+      {
+        "step": 26,
+        "value": 89501528.0
+      },
+      {
+        "step": 27,
+        "value": 89501528.0
+      },
+      {
+        "step": 28,
+        "value": 89501528.0
+      },
+      {
+        "step": 29,
+        "value": 89501528.0
+      },
+      {
+        "step": 30,
+        "value": 89501528.0
+      },
+      {
+        "step": 31,
+        "value": 89501528.0
+      },
+      {
+        "step": 32,
+        "value": 89501528.0
+      },
+      {
+        "step": 33,
+        "value": 89501528.0
+      },
+      {
+        "step": 34,
+        "value": 89501528.0
+      },
+      {
+        "step": 35,
+        "value": 89501528.0
+      },
+      {
+        "step": 36,
+        "value": 89501528.0
+      },
+      {
+        "step": 37,
+        "value": 89501528.0
+      },
+      {
+        "step": 38,
+        "value": 89501528.0
+      },
+      {
+        "step": 39,
+        "value": 89501528.0
+      },
+      {
+        "step": 40,
+        "value": 89501528.0
+      },
+      {
+        "step": 41,
+        "value": 89501528.0
+      },
+      {
+        "step": 42,
+        "value": 89501528.0
+      },
+      {
+        "step": 43,
+        "value": 89501528.0
+      },
+      {
+        "step": 44,
+        "value": 89501528.0
+      },
+      {
+        "step": 45,
+        "value": 89501528.0
+      },
+      {
+        "step": 46,
+        "value": 89501528.0
+      },
+      {
+        "step": 47,
+        "value": 89501528.0
+      },
+      {
+        "step": 48,
+        "value": 89501528.0
+      },
+      {
+        "step": 49,
+        "value": 89501528.0
+      },
+      {
+        "step": 50,
+        "value": 89501528.0
+      }
+    ],
+    "fl/comp_time_sec/round": [
+      {
+        "step": 1,
+        "value": 87.31827425956726
+      },
+      {
+        "step": 2,
+        "value": 89.2765257358551
+      },
+      {
+        "step": 3,
+        "value": 89.43107461929321
+      },
+      {
+        "step": 4,
+        "value": 87.30794787406921
+      },
+      {
+        "step": 5,
+        "value": 86.6148521900177
+      },
+      {
+        "step": 6,
+        "value": 84.35629439353943
+      },
+      {
+        "step": 7,
+        "value": 86.40075182914734
+      },
+      {
+        "step": 8,
+        "value": 88.18729138374329
+      },
+      {
+        "step": 9,
+        "value": 86.74036264419556
+      },
+      {
+        "step": 10,
+        "value": 88.33457779884338
+      },
+      {
+        "step": 11,
+        "value": 86.76546597480774
+      },
+      {
+        "step": 12,
+        "value": 87.2171561717987
+      },
+      {
+        "step": 13,
+        "value": 86.94162678718567
+      },
+      {
+        "step": 14,
+        "value": 87.4346833229065
+      },
+      {
+        "step": 15,
+        "value": 87.7317283153534
+      },
+      {
+        "step": 16,
+        "value": 88.19944477081299
+      },
+      {
+        "step": 17,
+        "value": 88.1847472190857
+      },
+      {
+        "step": 18,
+        "value": 87.85274195671082
+      },
+      {
+        "step": 19,
+        "value": 89.55503439903259
+      },
+      {
+        "step": 20,
+        "value": 87.49017977714539
+      },
+      {
+        "step": 21,
+        "value": 87.00717329978943
+      },
+      {
+        "step": 22,
+        "value": 84.07338809967041
+      },
+      {
+        "step": 23,
+        "value": 88.47103834152222
+      },
+      {
+        "step": 24,
+        "value": 88.41954779624939
+      },
+      {
+        "step": 25,
+        "value": 94.17075824737549
+      },
+      {
+        "step": 26,
+        "value": 85.7565655708313
+      },
+      {
+        "step": 27,
+        "value": 90.65715599060059
+      },
+      {
+        "step": 28,
+        "value": 87.6789116859436
+      },
+      {
+        "step": 29,
+        "value": 88.40907502174377
+      },
+      {
+        "step": 30,
+        "value": 91.26366233825684
+      },
+      {
+        "step": 31,
+        "value": 85.62321305274963
+      },
+      {
+        "step": 32,
+        "value": 89.01457452774048
+      },
+      {
+        "step": 33,
+        "value": 84.63355278968811
+      },
+      {
+        "step": 34,
+        "value": 86.77050042152405
+      },
+      {
+        "step": 35,
+        "value": 85.73235702514648
+      },
+      {
+        "step": 36,
+        "value": 86.79428124427795
+      },
+      {
+        "step": 37,
+        "value": 86.47343039512634
+      },
+      {
+        "step": 38,
+        "value": 83.83815598487854
+      },
+      {
+        "step": 39,
+        "value": 87.18663716316223
+      },
+      {
+        "step": 40,
+        "value": 87.28503203392029
+      },
+      {
+        "step": 41,
+        "value": 87.49914860725403
+      },
+      {
+        "step": 42,
+        "value": 86.12350988388062
+      },
+      {
+        "step": 43,
+        "value": 87.58495259284973
+      },
+      {
+        "step": 44,
+        "value": 85.30109930038452
+      },
+      {
+        "step": 45,
+        "value": 88.53796291351318
+      },
+      {
+        "step": 46,
+        "value": 85.23834609985352
+      },
+      {
+        "step": 47,
+        "value": 88.14771056175232
+      },
+      {
+        "step": 48,
+        "value": 86.70961356163025
+      },
+      {
+        "step": 49,
+        "value": 88.61967396736145
+      },
+      {
+        "step": 50,
+        "value": 89.58336162567139
+      }
+    ],
+    "eval/per_hospital/India_Dataset/acc": [
+      {
+        "step": 1,
+        "value": 0.1590909090909091
+      },
+      {
+        "step": 2,
+        "value": 0.5227272727272727
+      },
+      {
+        "step": 3,
+        "value": 0.5
+      },
+      {
+        "step": 4,
+        "value": 0.45454545454545453
+      },
+      {
+        "step": 5,
+        "value": 0.4166666666666667
+      },
+      {
+        "step": 6,
+        "value": 0.3787878787878788
+      },
+      {
+        "step": 7,
+        "value": 0.26515151515151514
+      },
+      {
+        "step": 8,
+        "value": 0.26515151515151514
+      },
+      {
+        "step": 9,
+        "value": 0.6287878787878788
+      },
+      {
+        "step": 10,
+        "value": 0.5227272727272727
+      },
+      {
+        "step": 11,
+        "value": 0.4621212121212121
+      },
+      {
+        "step": 12,
+        "value": 0.5606060606060606
+      },
+      {
+        "step": 13,
+        "value": 0.44696969696969696
+      },
+      {
+        "step": 14,
+        "value": 0.3939393939393939
+      },
+      {
+        "step": 15,
+        "value": 0.5075757575757576
+      },
+      {
+        "step": 16,
+        "value": 0.38636363636363635
+      },
+      {
+        "step": 17,
+        "value": 0.4696969696969697
+      },
+      {
+        "step": 18,
+        "value": 0.3712121212121212
+      },
+      {
+        "step": 19,
+        "value": 0.44696969696969696
+      },
+      {
+        "step": 20,
+        "value": 0.4166666666666667
+      },
+      {
+        "step": 21,
+        "value": 0.3939393939393939
+      },
+      {
+        "step": 22,
+        "value": 0.45454545454545453
+      },
+      {
+        "step": 23,
+        "value": 0.5378787878787878
+      },
+      {
+        "step": 24,
+        "value": 0.4166666666666667
+      },
+      {
+        "step": 25,
+        "value": 0.4393939393939394
+      },
+      {
+        "step": 26,
+        "value": 0.5681818181818182
+      },
+      {
+        "step": 27,
+        "value": 0.42424242424242425
+      },
+      {
+        "step": 28,
+        "value": 0.3787878787878788
+      },
+      {
+        "step": 29,
+        "value": 0.5075757575757576
+      },
+      {
+        "step": 30,
+        "value": 0.48484848484848486
+      },
+      {
+        "step": 31,
+        "value": 0.49242424242424243
+      },
+      {
+        "step": 32,
+        "value": 0.3560606060606061
+      },
+      {
+        "step": 33,
+        "value": 0.29545454545454547
+      },
+      {
+        "step": 34,
+        "value": 0.3560606060606061
+      },
+      {
+        "step": 35,
+        "value": 0.3409090909090909
+      },
+      {
+        "step": 36,
+        "value": 0.4393939393939394
+      },
+      {
+        "step": 37,
+        "value": 0.4166666666666667
+      },
+      {
+        "step": 38,
+        "value": 0.45454545454545453
+      },
+      {
+        "step": 39,
+        "value": 0.3409090909090909
+      },
+      {
+        "step": 40,
+        "value": 0.3560606060606061
+      },
+      {
+        "step": 41,
+        "value": 0.4166666666666667
+      },
+      {
+        "step": 42,
+        "value": 0.4772727272727273
+      },
+      {
+        "step": 43,
+        "value": 0.4696969696969697
+      },
+      {
+        "step": 44,
+        "value": 0.553030303030303
+      },
+      {
+        "step": 45,
+        "value": 0.4393939393939394
+      },
+      {
+        "step": 46,
+        "value": 0.3409090909090909
+      },
+      {
+        "step": 47,
+        "value": 0.42424242424242425
+      },
+      {
+        "step": 48,
+        "value": 0.5151515151515151
+      },
+      {
+        "step": 49,
+        "value": 0.44696969696969696
+      },
+      {
+        "step": 50,
+        "value": 0.4696969696969697
+      },
+      {
+        "step": 50,
+        "value": 0.4696969696969697
+      }
+    ],
+    "eval/per_hospital/Canada_Dataset/acc": [
+      {
+        "step": 1,
+        "value": 0.7794486215538847
+      },
+      {
+        "step": 2,
+        "value": 0.7293233082706767
+      },
+      {
+        "step": 3,
+        "value": 0.6917293233082706
+      },
+      {
+        "step": 4,
+        "value": 0.5839598997493735
+      },
+      {
+        "step": 5,
+        "value": 0.8220551378446115
+      },
+      {
+        "step": 6,
+        "value": 0.8546365914786967
+      },
+      {
+        "step": 7,
+        "value": 0.8521303258145363
+      },
+      {
+        "step": 8,
+        "value": 0.8095238095238095
+      },
+      {
+        "step": 9,
+        "value": 0.6441102756892231
+      },
+      {
+        "step": 10,
+        "value": 0.7142857142857143
+      },
+      {
+        "step": 11,
+        "value": 0.7493734335839599
+      },
+      {
+        "step": 12,
+        "value": 0.731829573934837
+      },
+      {
+        "step": 13,
+        "value": 0.7994987468671679
+      },
+      {
+        "step": 14,
+        "value": 0.7769423558897243
+      },
+      {
+        "step": 15,
+        "value": 0.7017543859649122
+      },
+      {
+        "step": 16,
+        "value": 0.8421052631578947
+      },
+      {
+        "step": 17,
+        "value": 0.8521303258145363
+      },
+      {
+        "step": 18,
+        "value": 0.87468671679198
+      },
+      {
+        "step": 19,
+        "value": 0.8070175438596491
+      },
+      {
+        "step": 20,
+        "value": 0.8771929824561403
+      },
+      {
+        "step": 21,
+        "value": 0.87468671679198
+      },
+      {
+        "step": 22,
+        "value": 0.8596491228070176
+      },
+      {
+        "step": 23,
+        "value": 0.7869674185463659
+      },
+      {
+        "step": 24,
+        "value": 0.8446115288220551
+      },
+      {
+        "step": 25,
+        "value": 0.8771929824561403
+      },
+      {
+        "step": 26,
+        "value": 0.7418546365914787
+      },
+      {
+        "step": 27,
+        "value": 0.8295739348370927
+      },
+      {
+        "step": 28,
+        "value": 0.8721804511278195
+      },
+      {
+        "step": 29,
+        "value": 0.8170426065162907
+      },
+      {
+        "step": 30,
+        "value": 0.7819548872180451
+      },
+      {
+        "step": 31,
+        "value": 0.8370927318295739
+      },
+      {
+        "step": 32,
+        "value": 0.8195488721804511
+      },
+      {
+        "step": 33,
+        "value": 0.8897243107769424
+      },
+      {
+        "step": 34,
+        "value": 0.8796992481203008
+      },
+      {
+        "step": 35,
+        "value": 0.8771929824561403
+      },
+      {
+        "step": 36,
+        "value": 0.8320802005012531
+      },
+      {
+        "step": 37,
+        "value": 0.8897243107769424
+      },
+      {
+        "step": 38,
+        "value": 0.8546365914786967
+      },
+      {
+        "step": 39,
+        "value": 0.899749373433584
+      },
+      {
+        "step": 40,
+        "value": 0.8847117794486216
+      },
+      {
+        "step": 41,
+        "value": 0.8671679197994987
+      },
+      {
+        "step": 42,
+        "value": 0.8696741854636592
+      },
+      {
+        "step": 43,
+        "value": 0.8696741854636592
+      },
+      {
+        "step": 44,
+        "value": 0.8546365914786967
+      },
+      {
+        "step": 45,
+        "value": 0.8596491228070176
+      },
+      {
+        "step": 46,
+        "value": 0.8796992481203008
+      },
+      {
+        "step": 47,
+        "value": 0.8872180451127819
+      },
+      {
+        "step": 48,
+        "value": 0.8796992481203008
+      },
+      {
+        "step": 49,
+        "value": 0.8922305764411027
+      },
+      {
+        "step": 50,
+        "value": 0.8696741854636592
+      },
+      {
+        "step": 50,
+        "value": 0.8696741854636592
+      }
+    ],
+    "eval/overall/acc": [
+      {
+        "step": 50,
+        "value": 0.7472527472527473
+      }
+    ],
+    "eval/overall/loss": [
+      {
+        "step": 50,
+        "value": 0.8902234584794876
+      }
+    ],
+    "eval/per_hospital/Spain_Dataset/acc": [
+      {
+        "step": 50,
+        "value": 0.6320754716981132
+      }
+    ],
+    "eval/per_hospital/Spain_Dataset/loss": [
+      {
+        "step": 50,
+        "value": 1.3322699662151225
+      }
+    ],
+    "eval/per_hospital/Canada_Dataset/loss": [
+      {
+        "step": 50,
+        "value": 0.4014538136992756
+      }
+    ],
+    "eval/per_hospital/India_Dataset/loss": [
+      {
+        "step": 50,
+        "value": 2.012664148313783
+      }
+    ],
+    "eval/per_class/Benign/acc": [
+      {
+        "step": 50,
+        "value": 0.8764367816091954
+      }
+    ],
+    "eval/per_class/Benign/precision": [
+      {
+        "step": 50,
+        "value": 0.7587064676616916
+      }
+    ],
+    "eval/per_class/Benign/recall": [
+      {
+        "step": 50,
+        "value": 0.8764367816091954
+      }
+    ],
+    "eval/per_class/Benign/f1": [
+      {
+        "step": 50,
+        "value": 0.8133333333333334
+      }
+    ],
+    "eval/per_class/Potentially_Malignant/acc": [
+      {
+        "step": 50,
+        "value": 0.5721649484536082
+      }
+    ],
+    "eval/per_class/Potentially_Malignant/precision": [
+      {
+        "step": 50,
+        "value": 0.7161290322580646
+      }
+    ],
+    "eval/per_class/Potentially_Malignant/recall": [
+      {
+        "step": 50,
+        "value": 0.5721649484536082
+      }
+    ],
+    "eval/per_class/Potentially_Malignant/f1": [
+      {
+        "step": 50,
+        "value": 0.6361031518624642
+      }
+    ],
+    "eval/per_class/Malignant/acc": [
+      {
+        "step": 50,
+        "value": 0.631578947368421
+      }
+    ],
+    "eval/per_class/Malignant/precision": [
+      {
+        "step": 50,
+        "value": 0.75
+      }
+    ],
+    "eval/per_class/Malignant/recall": [
+      {
+        "step": 50,
+        "value": 0.631578947368421
+      }
+    ],
+    "eval/per_class/Malignant/f1": [
+      {
+        "step": 50,
+        "value": 0.6857142857142857
+      }
+    ],
+    "eval/classification/accuracy": [
+      {
+        "step": 50,
+        "value": 0.7472527472527473
+      }
+    ],
+    "eval/classification/macro_precision": [
+      {
+        "step": 50,
+        "value": 0.7416118333065853
+      }
+    ],
+    "eval/classification/macro_recall": [
+      {
+        "step": 50,
+        "value": 0.6933935591437415
+      }
+    ],
+    "eval/classification/macro_f1": [
+      {
+        "step": 50,
+        "value": 0.7117169236366946
+      }
+    ],
+    "eval/classification/weighted_precision": [
+      {
+        "step": 50,
+        "value": 0.7444409466316063
+      }
+    ],
+    "eval/classification/weighted_recall": [
+      {
+        "step": 50,
+        "value": 0.7472527472527473
+      }
+    ],
+    "eval/classification/weighted_f1": [
+      {
+        "step": 50,
+        "value": 0.7403247544806519
+      }
+    ],
+    "eval/unlearning/RA": [
+      {
+        "step": 50,
+        "value": 0.7702448210922788
+      }
+    ],
+    "eval/unlearning/FA": [
+      {
+        "step": 50,
+        "value": 0.6320754716981132
+      }
+    ],
+    "eval/unlearning/remember_classification/accuracy": [
+      {
+        "step": 50,
+        "value": 0.7702448210922788
+      }
+    ],
+    "eval/unlearning/remember_classification/macro_precision": [
+      {
+        "step": 50,
+        "value": 0.7482516775810494
+      }
+    ],
+    "eval/unlearning/remember_classification/macro_recall": [
+      {
+        "step": 50,
+        "value": 0.7128475349786826
+      }
+    ],
+    "eval/unlearning/remember_classification/macro_f1": [
+      {
+        "step": 50,
+        "value": 0.7276673367448486
+      }
+    ],
+    "eval/unlearning/remember_classification/weighted_precision": [
+      {
+        "step": 50,
+        "value": 0.7647975072545589
+      }
+    ],
+    "eval/unlearning/remember_classification/weighted_recall": [
+      {
+        "step": 50,
+        "value": 0.7702448210922788
+      }
+    ],
+    "eval/unlearning/remember_classification/weighted_f1": [
+      {
+        "step": 50,
+        "value": 0.7648428259171967
+      }
+    ],
+    "eval/unlearning/forget_classification/accuracy": [
+      {
+        "step": 50,
+        "value": 0.6320754716981132
+      }
+    ],
+    "eval/unlearning/forget_classification/macro_precision": [
+      {
+        "step": 50,
+        "value": 0.7087542087542088
+      }
+    ],
+    "eval/unlearning/forget_classification/macro_recall": [
+      {
+        "step": 50,
+        "value": 0.6158792329661363
+      }
+    ],
+    "eval/unlearning/forget_classification/macro_f1": [
+      {
+        "step": 50,
+        "value": 0.6311215418533532
+      }
+    ],
+    "eval/unlearning/forget_classification/weighted_precision": [
+      {
+        "step": 50,
+        "value": 0.6918715456451305
+      }
+    ],
+    "eval/unlearning/forget_classification/weighted_recall": [
+      {
+        "step": 50,
+        "value": 0.6320754716981132
+      }
+    ],
+    "eval/unlearning/forget_classification/weighted_f1": [
+      {
+        "step": 50,
+        "value": 0.6291863081747587
+      }
+    ],
+    "eval/unlearning/ReA": [
+      {
+        "step": 50,
+        "value": 0.8867924528301887
+      }
+    ],
+    "eval/unlearning/MIA_acc": [
+      {
+        "step": 50,
+        "value": 0.2857142857142857
+      }
+    ]
+  },
+  "final": {
+    "eval/overall/acc": 0.7472527472527473,
+    "eval/overall/loss": 0.8902234584794876,
+    "eval/per_hospital/Spain_Dataset/acc": 0.6320754716981132,
+    "eval/per_hospital/Spain_Dataset/loss": 1.3322699662151225,
+    "eval/per_hospital/Canada_Dataset/acc": 0.8696741854636592,
+    "eval/per_hospital/Canada_Dataset/loss": 0.4014538136992756,
+    "eval/per_hospital/India_Dataset/acc": 0.4696969696969697,
+    "eval/per_hospital/India_Dataset/loss": 2.012664148313783,
+    "eval/per_class/Benign/acc": 0.8764367816091954,
+    "eval/per_class/Benign/precision": 0.7587064676616916,
+    "eval/per_class/Benign/recall": 0.8764367816091954,
+    "eval/per_class/Benign/f1": 0.8133333333333334,
+    "eval/per_class/Potentially_Malignant/acc": 0.5721649484536082,
+    "eval/per_class/Potentially_Malignant/precision": 0.7161290322580646,
+    "eval/per_class/Potentially_Malignant/recall": 0.5721649484536082,
+    "eval/per_class/Potentially_Malignant/f1": 0.6361031518624642,
+    "eval/per_class/Malignant/acc": 0.631578947368421,
+    "eval/per_class/Malignant/precision": 0.75,
+    "eval/per_class/Malignant/recall": 0.631578947368421,
+    "eval/per_class/Malignant/f1": 0.6857142857142857,
+    "eval/classification/accuracy": 0.7472527472527473,
+    "eval/classification/macro_precision": 0.7416118333065853,
+    "eval/classification/macro_recall": 0.6933935591437415,
+    "eval/classification/macro_f1": 0.7117169236366946,
+    "eval/classification/weighted_precision": 0.7444409466316063,
+    "eval/classification/weighted_recall": 0.7472527472527473,
+    "eval/classification/weighted_f1": 0.7403247544806519,
+    "eval/unlearning/RA": 0.7702448210922788,
+    "eval/unlearning/FA": 0.6320754716981132,
+    "eval/unlearning/remember_classification/accuracy": 0.7702448210922788,
+    "eval/unlearning/remember_classification/macro_precision": 0.7482516775810494,
+    "eval/unlearning/remember_classification/macro_recall": 0.7128475349786826,
+    "eval/unlearning/remember_classification/macro_f1": 0.7276673367448486,
+    "eval/unlearning/remember_classification/weighted_precision": 0.7647975072545589,
+    "eval/unlearning/remember_classification/weighted_recall": 0.7702448210922788,
+    "eval/unlearning/remember_classification/weighted_f1": 0.7648428259171967,
+    "eval/unlearning/forget_classification/accuracy": 0.6320754716981132,
+    "eval/unlearning/forget_classification/macro_precision": 0.7087542087542088,
+    "eval/unlearning/forget_classification/macro_recall": 0.6158792329661363,
+    "eval/unlearning/forget_classification/macro_f1": 0.6311215418533532,
+    "eval/unlearning/forget_classification/weighted_precision": 0.6918715456451305,
+    "eval/unlearning/forget_classification/weighted_recall": 0.6320754716981132,
+    "eval/unlearning/forget_classification/weighted_f1": 0.6291863081747587,
+    "eval/unlearning/remember_macro_f1": 0.7276673367448486,
+    "eval/unlearning/remember_weighted_f1": 0.7648428259171967,
+    "eval/unlearning/forget_macro_f1": 0.6311215418533532,
+    "eval/unlearning/forget_weighted_f1": 0.6291863081747587,
+    "eval/unlearning/ReA": 0.8867924528301887,
+    "eval/unlearning/MIA_acc": 0.2857142857142857
+  },
+  "classification": {
+    "eval/classification": {
+      "tag": "eval/classification",
+      "num_samples": 637,
+      "accuracy": 0.7472527472527473,
+      "macro_precision": 0.7416118333065853,
+      "macro_recall": 0.6933935591437415,
+      "macro_f1": 0.7117169236366946,
+      "weighted_precision": 0.7444409466316063,
+      "weighted_recall": 0.7472527472527473,
+      "weighted_f1": 0.7403247544806519,
+      "labels": [
+        0,
+        1,
+        2
+      ],
+      "class_names": [
+        "Benign",
+        "Potentially_Malignant",
+        "Malignant"
+      ],
+      "per_class": {
+        "Benign": {
+          "class_id": 0,
+          "precision": 0.7587064676616916,
+          "recall": 0.8764367816091954,
+          "f1": 0.8133333333333334,
+          "support": 348,
+          "tp": 305,
+          "fp": 97,
+          "fn": 43
+        },
+        "Potentially_Malignant": {
+          "class_id": 1,
+          "precision": 0.7161290322580646,
+          "recall": 0.5721649484536082,
+          "f1": 0.6361031518624642,
+          "support": 194,
+          "tp": 111,
+          "fp": 44,
+          "fn": 83
+        },
+        "Malignant": {
+          "class_id": 2,
+          "precision": 0.75,
+          "recall": 0.631578947368421,
+          "f1": 0.6857142857142857,
+          "support": 95,
+          "tp": 60,
+          "fp": 20,
+          "fn": 35
+        }
+      },
+      "confusion_matrix": [
+        [
+          305,
+          35,
+          8
+        ],
+        [
+          71,
+          111,
+          12
+        ],
+        [
+          26,
+          9,
+          60
+        ]
+      ]
+    },
+    "eval/unlearning/remember_classification": {
+      "tag": "eval/unlearning/remember_classification",
+      "num_samples": 531,
+      "accuracy": 0.7702448210922788,
+      "macro_precision": 0.7482516775810494,
+      "macro_recall": 0.7128475349786826,
+      "macro_f1": 0.7276673367448486,
+      "weighted_precision": 0.7647975072545589,
+      "weighted_recall": 0.7702448210922788,
+      "weighted_f1": 0.7648428259171967,
+      "labels": [
+        0,
+        1,
+        2
+      ],
+      "class_names": [
+        "Benign",
+        "Potentially_Malignant",
+        "Malignant"
+      ],
+      "per_class": {
+        "Benign": {
+          "class_id": 0,
+          "precision": 0.8035714285714286,
+          "recall": 0.8852459016393442,
+          "f1": 0.8424336973478941,
+          "support": 305,
+          "tp": 270,
+          "fp": 66,
+          "fn": 35
+        },
+        "Potentially_Malignant": {
+          "class_id": 1,
+          "precision": 0.6992481203007519,
+          "recall": 0.5961538461538461,
+          "f1": 0.6435986159169549,
+          "support": 156,
+          "tp": 93,
+          "fp": 40,
+          "fn": 63
+        },
+        "Malignant": {
+          "class_id": 2,
+          "precision": 0.7419354838709677,
+          "recall": 0.6571428571428571,
+          "f1": 0.6969696969696969,
+          "support": 70,
+          "tp": 46,
+          "fp": 16,
+          "fn": 24
+        }
+      },
+      "confusion_matrix": [
+        [
+          270,
+          31,
+          4
+        ],
+        [
+          51,
+          93,
+          12
+        ],
+        [
+          15,
+          9,
+          46
+        ]
+      ]
+    },
+    "eval/unlearning/forget_classification": {
+      "tag": "eval/unlearning/forget_classification",
+      "num_samples": 106,
+      "accuracy": 0.6320754716981132,
+      "macro_precision": 0.7087542087542088,
+      "macro_recall": 0.6158792329661363,
+      "macro_f1": 0.6311215418533532,
+      "weighted_precision": 0.6918715456451305,
+      "weighted_recall": 0.6320754716981132,
+      "weighted_f1": 0.6291863081747587,
+      "labels": [
+        0,
+        1,
+        2
+      ],
+      "class_names": [
+        "Benign",
+        "Potentially_Malignant",
+        "Malignant"
+      ],
+      "per_class": {
+        "Benign": {
+          "class_id": 0,
+          "precision": 0.5303030303030303,
+          "recall": 0.813953488372093,
+          "f1": 0.6422018348623852,
+          "support": 43,
+          "tp": 35,
+          "fp": 31,
+          "fn": 8
+        },
+        "Potentially_Malignant": {
+          "class_id": 1,
+          "precision": 0.8181818181818182,
+          "recall": 0.47368421052631576,
+          "f1": 0.6,
+          "support": 38,
+          "tp": 18,
+          "fp": 4,
+          "fn": 20
+        },
+        "Malignant": {
+          "class_id": 2,
+          "precision": 0.7777777777777778,
+          "recall": 0.56,
+          "f1": 0.6511627906976745,
+          "support": 25,
+          "tp": 14,
+          "fp": 4,
+          "fn": 11
+        }
+      },
+      "confusion_matrix": [
+        [
+          35,
+          4,
+          4
+        ],
+        [
+          20,
+          18,
+          0
+        ],
+        [
+          11,
+          0,
+          14
+        ]
+      ]
+    }
+  }
+}

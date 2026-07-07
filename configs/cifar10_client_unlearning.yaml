@@ -1,0 +1,74 @@
+# Faithful reproduction config for FUSED-Code's CIFAR-10, client-unlearning
+# scenario (paper's Table 1, "Cifar10-ResNet18" column).
+#
+# Values are sourced directly from the original FUSED-Code repository
+# (Zhong-Zhengyi/FUSED-Code), specifically:
+#   - main.py (CLI arg defaults)
+#   - README.md (quick-start example: global_epoch=100, local_epoch=5)
+#   - utils.py::model_init (cifar10 -> lr=0.005)
+#   - models/Model_base.py::Lora (LoRA r=16, alpha=32, dropout=0.1,
+#     target_modules for cifar10)
+#   - dataset/data_utils.py (Dirichlet partition, least_samples=100,
+#     proxy_frac default 0.2 from main.py)
+#
+# Epoch counts use the README's quick-start values (100/5) rather than
+# main.py's bare argparse defaults (2/1), since no one publishes Table 1
+# numbers from 2 global rounds on CIFAR-10/ResNet18/50 clients — see
+# README.md in this reproduction's root for the full reasoning. Override
+# via --set if you want to try the bare CLI defaults instead.
+
+# --- Dataset ---
+dataset_root: dataset/cifar10
+num_classes: 10
+num_clients: 50
+alpha: 1.0                      # Dirichlet concentration parameter
+proxy_frac: 0.2                  # fraction of each client's data held out for MIA shadow training
+
+# --- Model ---
+pretrained: true                 # torchvision resnet18(pretrained=True), per CNN_Cifar10.py
+
+# --- Training ---
+local_batch_size: 128
+test_batch_size: 64
+learning_rate: 0.005             # per utils.py::model_init, data_name == 'cifar10'
+global_epochs: 100                # Phase A (train_normal) round count — README quick-start value
+local_epochs: 5                   # per-round local epoch count — README quick-start value
+fused_iterations: 100             # Phase B (forget_client_train) round count; original reuses
+                                  # global_epochs for this phase too — kept separately
+                                  # configurable here in case you want to deviate
+relearn_rounds: 100                # relearn_unlearning_knowledge round count (also reuses
+                                   # global_epoch in the original)
+
+# --- Unlearning scenario ---
+forget_paradigm: client
+forget_client_idx: [0]            # which client index/indices are the Byzantine/forget client(s)
+
+# --- LoRA adapter (FUSED's "sparse adapter", as actually implemented) ---
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.1
+# target_modules are hardcoded in src/models/resnet_lora.py to match the
+# original's CIFAR-10 branch exactly: layer4.0.conv2, layer4.1.conv1,
+# layer4.1.conv2, fc (K=4)
+
+# --- MIA (membership inference attack) ---
+run_mia: true
+n_shadow: 5                       # per main.py default
+mia_attack_epochs: 50             # the original reuses args.global_epoch for attack-model training;
+                                  # kept separately configurable here
+
+# --- Compute ---
+device: cuda
+seed: 50                          # matches main.py's --seed default (NOTE: the original's
+                                  # set_random_seed() call is commented out in main.py, so this
+                                  # value is NOT actually applied upstream — see README for
+                                  # discussion. We DO apply it here for our own reproducibility,
+                                  # which is a deliberate, documented deviation.)
+num_workers: 2                     # DataLoader worker processes; set to 0 if running in a
+                                   # sandboxed/restricted environment where multiprocessing
+                                   # workers hang (no effect on correctness, only throughput)
+
+# --- Logging ---
+logs_root: logs/cifar10
+checkpoints_root: checkpoints/cifar10
+outputs_root: outputs/cifar10

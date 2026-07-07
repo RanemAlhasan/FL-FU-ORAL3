@@ -1,0 +1,33 @@
+# Shared defaults inherited by every other config via `defaults: base.yaml`.
+# Override any of these in a child config — only the keys you set there change.
+
+# --- Dataset ---
+dataset_path: dataset/oral_cancer
+hospitals: [Spain_Dataset, Canada_Dataset, India_Dataset]
+num_classes: 3
+image_size: 224
+augmentation: standard          # none | standard | strong
+load_metadata: false            # whether to parse the per-image .json metadata files
+handle_class_imbalance: true    # WeightedRandomSampler over inverse class frequency
+
+# --- Client partitioning ---
+client_split: hospital_based     # hospital_based | simulated
+clients_per_hospital: 1          # only used when client_split == simulated
+
+# --- Model ---
+model: resnet18                  # resnet18 | resnet50 | densenet121 | efficientnet_b0 | vit_b16
+pretrained: true
+
+# --- Training (shared knobs; FL/FU/retrain configs override as needed) ---
+batch_size: 16
+learning_rate: 0.001
+seed: 42
+
+# --- Compute ---
+device: cuda                     # cuda | cpu
+gpus_per_client: null            # null => auto (1 / num_clients); set explicitly to override
+
+# --- Logging ---
+logs_root: logs
+checkpoints_root: checkpoints
+outputs_root: outputs

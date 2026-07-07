@@ -1,0 +1,73 @@
+[2026-06-28 16:50:23] === Run started: retrain_canada_oral_330047 ===
+[2026-06-28 16:50:23] Config loaded from configs/retrain_baseline.yaml
+[2026-06-28 16:50:23] Retrain baseline: this is an INDEPENDENT FL run with the forget client/scope excluded from round 0. No source checkpoint is loaded.
+[2026-06-28 16:50:23] Unlearning scope: client. Forgetting hospital/client 'Canada_Dataset' (1 partition(s)); remembering 2 partition(s).
+[2026-06-28 16:50:23] Retraining FL model using ONLY remember partitions (forget data excluded from round 0).
+[2026-06-28 16:50:23] Run hyperparameters:
+  algorithm: fedavg
+  model: resnet18
+  num_clients: 2
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: False
+[2026-06-28 16:50:24] Starting Flower simulation: algorithm=fedavg, clients=2, rounds=50
+[2026-06-28 16:53:52] [FL round 1] comm=89501528B comp=245.47s
+[2026-06-28 16:57:25] [FL round 2] comm=89501528B comp=242.37s
+[2026-06-28 17:00:56] [FL round 3] comm=89501528B comp=242.72s
+[2026-06-28 17:04:34] [FL round 4] comm=89501528B comp=246.37s
+[2026-06-28 17:08:15] [FL round 5] comm=89501528B comp=251.76s
+[2026-06-28 17:11:50] [FL round 6] comm=89501528B comp=244.90s
+[2026-06-28 17:15:21] [FL round 7] comm=89501528B comp=240.45s
+[2026-06-28 17:18:57] [FL round 8] comm=89501528B comp=247.55s
+[2026-06-28 17:22:26] [FL round 9] comm=89501528B comp=239.43s
+[2026-06-28 17:26:01] [FL round 10] comm=89501528B comp=246.97s
+[2026-06-28 17:29:36] [FL round 11] comm=89501528B comp=245.13s
+[2026-06-28 17:33:09] [FL round 12] comm=89501528B comp=242.98s
+[2026-06-28 17:36:37] [FL round 13] comm=89501528B comp=238.94s
+[2026-06-28 17:40:15] [FL round 14] comm=89501528B comp=250.31s
+[2026-06-28 17:43:43] [FL round 15] comm=89501528B comp=240.36s
+[2026-06-28 17:47:17] [FL round 16] comm=89501528B comp=242.89s
+[2026-06-28 17:50:51] [FL round 17] comm=89501528B comp=246.77s
+[2026-06-28 17:54:31] [FL round 18] comm=89501528B comp=250.52s
+[2026-06-28 17:58:05] [FL round 19] comm=89501528B comp=243.84s
+[2026-06-28 18:01:40] [FL round 20] comm=89501528B comp=246.79s
+[2026-06-28 18:05:18] [FL round 21] comm=89501528B comp=247.09s
+[2026-06-28 18:08:55] [FL round 22] comm=89501528B comp=246.85s
+[2026-06-28 18:12:33] [FL round 23] comm=89501528B comp=247.49s
+[2026-06-28 18:16:11] [FL round 24] comm=89501528B comp=254.44s
+[2026-06-28 18:19:45] [FL round 25] comm=89501528B comp=244.24s
+[2026-06-28 18:23:23] [FL round 26] comm=89501528B comp=248.51s
+[2026-06-28 18:27:03] [FL round 27] comm=89501528B comp=249.01s
+[2026-06-28 18:30:39] [FL round 28] comm=89501528B comp=247.48s
+[2026-06-28 18:34:13] [FL round 29] comm=89501528B comp=243.71s
+[2026-06-28 18:37:53] [FL round 30] comm=89501528B comp=256.45s
+[2026-06-28 18:41:26] [FL round 31] comm=89501528B comp=241.88s
+[2026-06-28 18:45:08] [FL round 32] comm=89501528B comp=253.59s
+[2026-06-28 18:48:47] [FL round 33] comm=89501528B comp=247.32s
+[2026-06-28 18:52:22] [FL round 34] comm=89501528B comp=245.99s
+[2026-06-28 18:56:01] [FL round 35] comm=89501528B comp=249.51s
+[2026-06-28 18:59:37] [FL round 36] comm=89501528B comp=250.52s
+[2026-06-28 19:03:13] [FL round 37] comm=89501528B comp=243.04s
+[2026-06-28 19:06:52] [FL round 38] comm=89501528B comp=250.61s
+[2026-06-28 19:10:24] [FL round 39] comm=89501528B comp=245.42s
+[2026-06-28 19:13:59] [FL round 40] comm=89501528B comp=244.60s
+[2026-06-28 19:17:32] [FL round 41] comm=89501528B comp=244.11s
+[2026-06-28 19:21:07] [FL round 42] comm=89501528B comp=244.54s
+[2026-06-28 19:24:41] [FL round 43] comm=89501528B comp=242.85s
+[2026-06-28 19:28:14] [FL round 44] comm=89501528B comp=244.65s
+[2026-06-28 19:31:48] [FL round 45] comm=89501528B comp=243.75s
+[2026-06-28 19:35:24] [FL round 46] comm=89501528B comp=249.62s
+[2026-06-28 19:39:00] [FL round 47] comm=89501528B comp=249.05s
+[2026-06-28 19:42:37] [FL round 48] comm=89501528B comp=245.03s
+[2026-06-28 19:46:16] [FL round 49] comm=89501528B comp=251.23s
+[2026-06-28 19:49:54] [FL round 50] comm=89501528B comp=249.02s
+[2026-06-28 19:50:13] Checkpoint assembled from fully-federated parameters (no domain adaptation).
+[2026-06-28 19:51:57] [eval/classification] accuracy=0.3972 macro_precision=0.5486 macro_recall=0.5320 macro_f1=0.3676 weighted_f1=0.2726
+[2026-06-28 19:51:57] [eval] overall_acc=0.3972 overall_loss=5.6173 | macro_precision=0.5486 macro_recall=0.5320 macro_f1=0.3676 weighted_f1=0.2726 | per_hospital={ Spain_Dataset: 0.5660, Canada_Dataset: 0.1980, India_Dataset: 0.8636 }
+[2026-06-28 19:52:48] [eval/unlearning/remember_classification] accuracy=0.7311 macro_precision=0.7622 macro_recall=0.6030 macro_f1=0.5968 weighted_f1=0.6748
+[2026-06-28 19:52:53] [eval/unlearning/forget_classification] accuracy=0.1980 macro_precision=0.4629 macro_recall=0.4590 macro_f1=0.2082 weighted_f1=0.1006
+[2026-06-28 19:53:37] [eval/unlearning] RA=0.7311 FA=0.1980 ReA=0.6992 remember_macro_f1=0.5968 forget_macro_f1=0.2082 MIA_acc=0.2527
+[2026-06-28 19:53:38] Saved retrained baseline checkpoint to checkpoints/retrain/retrain_canada_oral_330047
+[2026-06-28 19:53:38] === Run finished: retrain_canada_oral_330047 (elapsed 10994.5s) ===

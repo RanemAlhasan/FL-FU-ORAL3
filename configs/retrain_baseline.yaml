@@ -1,0 +1,25 @@
+defaults: base.yaml
+logs_root: logs/retrain
+checkpoints_root: checkpoints/retrain
+outputs_root: outputs/retrain
+
+# Phase 3: retrain-from-scratch baseline — the FU "upper bound" per the
+# FUSED paper (Retraining = "the model having never encountered the
+# forgotten data"). This is a FULL, independent FL run that simply EXCLUDES
+# the forget client's data from the start. It does NOT load any other run's
+# checkpoint — run via:
+#   python scripts/run_retrain.py --config configs/retrain_baseline.yaml
+
+algorithm: FedAvg                 # which FL algorithm to use for the retrain run itself
+domain_adaptation: false
+
+unlearning_scope: client
+forget_client: Spain_Dataset
+
+global_epochs: 50
+local_epochs: 3
+batch_size: 16
+learning_rate: 0.001
+
+relearn_steps: 50
+relearn_lr: 0.001

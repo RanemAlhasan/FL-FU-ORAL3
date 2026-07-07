@@ -1,0 +1,56 @@
+[2026-07-07 10:11:41] === Run started: fused_cli_fedavg_cifar10_340220 ===
+[2026-07-07 10:11:41] Run hyperparameters:
+  dataset_root: /export/home/ralhasan/fl-fu-oral3/dataset/cifar10
+  num_classes: 10
+  num_clients: 50
+  alpha: 1.0
+  proxy_frac: 0.2
+  pretrained: True
+  local_batch_size: 128
+  test_batch_size: 64
+  learning_rate: 0.005
+  global_epochs: 100
+  local_epochs: 5
+  fused_iterations: 100
+  relearn_rounds: 100
+  forget_paradigm: client
+  forget_client_idx: [0]
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  run_mia: True
+  n_shadow: 5
+  mia_attack_epochs: 50
+  device: cuda
+  seed: 50
+  num_workers: 2
+  logs_root: logs/cifar10_cli
+  checkpoints_root: checkpoints/cifar10_cli
+  outputs_root: outputs/cifar10_cli
+  algorithm: fedavg
+  fedprox_mu: 0.01
+  fedmoon_mu: 1.0
+  fedmoon_temperature: 0.5
+  num_unlearning_layers: 4
+  adapter_sparsity: 0.05
+  source_run: fused_cifar10_full_327966
+  method: FUSED-CLI (Algorithm 1, real paper method)
+[2026-07-07 10:11:41] Rebuilding CIFAR-10 federated data (seed=50, matches source run's partition).
+[2026-07-07 10:12:09] Applying Byzantine label-shift attack to forget_client_idx=[0]...
+[2026-07-07 10:12:12] Loaded Phase-A checkpoint (read-only) from checkpoints/cifar10/fused_cifar10_full_327966/phase_a_model.pt
+[2026-07-07 10:12:12] === FUSED-CLI unlearning (algorithm=fedavg) ===
+[2026-07-07 10:12:12] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 10:12:41] Selected 4 critical layers: ['layer4.0.conv1.weight', 'layer3.1.conv1.weight', 'layer3.0.conv2.weight', 'layer3.1.conv2.weight']
+[2026-07-07 10:14:34] [FUSED-CLI:fedavg] Round=0, avg_r_acc=0.8323, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:16:30] [FUSED-CLI:fedavg] Round=1, avg_r_acc=0.8322, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:18:27] [FUSED-CLI:fedavg] Round=2, avg_r_acc=0.8338, avg_f_acc=0.5084, adapter_density=147437/2949120
+[2026-07-07 10:20:25] [FUSED-CLI:fedavg] Round=3, avg_r_acc=0.8345, avg_f_acc=0.5061, adapter_density=147437/2949120
+[2026-07-07 10:22:23] [FUSED-CLI:fedavg] Round=4, avg_r_acc=0.8341, avg_f_acc=0.5061, adapter_density=147437/2949120
+[2026-07-07 10:24:23] [FUSED-CLI:fedavg] Round=5, avg_r_acc=0.8334, avg_f_acc=0.5076, adapter_density=147437/2949120
+[2026-07-07 10:26:22] [FUSED-CLI:fedavg] Round=6, avg_r_acc=0.8317, avg_f_acc=0.5035, adapter_density=147437/2949120
+[2026-07-07 10:28:21] [FUSED-CLI:fedavg] Round=7, avg_r_acc=0.8316, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:30:19] [FUSED-CLI:fedavg] Round=8, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:32:18] [FUSED-CLI:fedavg] Round=9, avg_r_acc=0.8321, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:34:18] [FUSED-CLI:fedavg] Round=10, avg_r_acc=0.8319, avg_f_acc=0.4952, adapter_density=147437/2949120
+[2026-07-07 10:36:17] [FUSED-CLI:fedavg] Round=11, avg_r_acc=0.8322, avg_f_acc=0.4846, adapter_density=147437/2949120
+[2026-07-07 10:38:15] [FUSED-CLI:fedavg] Round=12, avg_r_acc=0.8320, avg_f_acc=0.4744, adapter_density=147437/2949120

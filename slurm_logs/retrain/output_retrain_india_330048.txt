@@ -1,0 +1,105 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Dataset path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3
+SLURM job ID: 330048
+Sun Jun 28 16:50:18 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.07             Driver Version: 570.133.07     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla P100-PCIE-16GB           Off |   00000000:3B:00.0 Off |                    0 |
+| N/A   27C    P0             25W /  250W |       0MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Cleaning old Ray state...
+
+=== Phase 3: Retrain-from-scratch baseline (exclude=India_Dataset, full scale) ===
+Applied --set overrides: {'dataset_path': '/export/home/ralhasan/fl-fu-oral3/dataset/oral3'}
+[2026-06-28 16:50:40] === Run started: retrain_india_oral_330048 ===
+[2026-06-28 16:50:40] Config loaded from configs/retrain_baseline.yaml
+[2026-06-28 16:50:40] Retrain baseline: this is an INDEPENDENT FL run with the forget client/scope excluded from round 0. No source checkpoint is loaded.
+[2026-06-28 16:50:43] Unlearning scope: client. Forgetting hospital/client 'India_Dataset' (1 partition(s)); remembering 2 partition(s).
+[2026-06-28 16:50:43] Retraining FL model using ONLY remember partitions (forget data excluded from round 0).
+[2026-06-28 16:50:43] Run hyperparameters:
+  algorithm: fedavg
+  model: resnet18
+  num_clients: 2
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: False
+[2026-06-28 16:50:44] Starting Flower simulation: algorithm=fedavg, clients=2, rounds=50
+[2026-06-28 16:53:50] [FL round 1] comm=89501528B comp=246.76s
+[2026-06-28 16:56:40] [FL round 2] comm=89501528B comp=203.06s
+[2026-06-28 16:59:29] [FL round 3] comm=89501528B comp=204.72s
+[2026-06-28 17:02:18] [FL round 4] comm=89501528B comp=203.89s
+[2026-06-28 17:05:07] [FL round 5] comm=89501528B comp=205.39s
+[2026-06-28 17:07:54] [FL round 6] comm=89501528B comp=201.47s
+[2026-06-28 17:10:46] [FL round 7] comm=89501528B comp=208.14s
+[2026-06-28 17:13:34] [FL round 8] comm=89501528B comp=201.60s
+[2026-06-28 17:16:22] [FL round 9] comm=89501528B comp=202.97s
+[2026-06-28 17:19:16] [FL round 10] comm=89501528B comp=209.75s
+[2026-06-28 17:21:59] [FL round 11] comm=89501528B comp=197.79s
+[2026-06-28 17:24:48] [FL round 12] comm=89501528B comp=203.61s
+[2026-06-28 17:27:41] [FL round 13] comm=89501528B comp=207.57s
+[2026-06-28 17:30:28] [FL round 14] comm=89501528B comp=201.16s
+[2026-06-28 17:33:18] [FL round 15] comm=89501528B comp=205.60s
+[2026-06-28 17:36:07] [FL round 16] comm=89501528B comp=202.59s
+[2026-06-28 17:39:01] [FL round 17] comm=89501528B comp=209.14s
+[2026-06-28 17:41:58] [FL round 18] comm=89501528B comp=210.64s
+[2026-06-28 17:44:48] [FL round 19] comm=89501528B comp=205.17s
+[2026-06-28 17:47:40] [FL round 20] comm=89501528B comp=207.64s
+[2026-06-28 17:50:30] [FL round 21] comm=89501528B comp=204.11s
+[2026-06-28 17:53:22] [FL round 22] comm=89501528B comp=207.19s
+[2026-06-28 17:56:15] [FL round 23] comm=89501528B comp=207.93s
+[2026-06-28 17:59:02] [FL round 24] comm=89501528B comp=202.91s
+[2026-06-28 18:01:52] [FL round 25] comm=89501528B comp=204.53s
+[2026-06-28 18:04:46] [FL round 26] comm=89501528B comp=207.69s
+[2026-06-28 18:07:36] [FL round 27] comm=89501528B comp=204.23s
+[2026-06-28 18:10:27] [FL round 28] comm=89501528B comp=205.84s
+[2026-06-28 18:13:16] [FL round 29] comm=89501528B comp=205.95s
+[2026-06-28 18:16:08] [FL round 30] comm=89501528B comp=207.14s
+[2026-06-28 18:18:56] [FL round 31] comm=89501528B comp=203.84s
+[2026-06-28 18:21:48] [FL round 32] comm=89501528B comp=206.66s
+[2026-06-28 18:24:40] [FL round 33] comm=89501528B comp=206.90s
+[2026-06-28 18:27:28] [FL round 34] comm=89501528B comp=203.83s
+[2026-06-28 18:30:22] [FL round 35] comm=89501528B comp=208.39s
+[2026-06-28 18:33:11] [FL round 36] comm=89501528B comp=203.71s
+[2026-06-28 18:36:04] [FL round 37] comm=89501528B comp=208.12s
+[2026-06-28 18:38:55] [FL round 38] comm=89501528B comp=205.75s
+[2026-06-28 18:41:47] [FL round 39] comm=89501528B comp=206.47s
+[2026-06-28 18:44:37] [FL round 40] comm=89501528B comp=205.38s
+[2026-06-28 18:47:27] [FL round 41] comm=89501528B comp=205.54s
+[2026-06-28 18:50:20] [FL round 42] comm=89501528B comp=207.37s
+[2026-06-28 18:53:14] [FL round 43] comm=89501528B comp=208.83s
+[2026-06-28 18:56:07] [FL round 44] comm=89501528B comp=207.55s
+[2026-06-28 18:59:01] [FL round 45] comm=89501528B comp=209.62s
+[2026-06-28 19:01:53] [FL round 46] comm=89501528B comp=207.38s
+[2026-06-28 19:04:47] [FL round 47] comm=89501528B comp=208.62s
+[2026-06-28 19:07:39] [FL round 48] comm=89501528B comp=207.33s
+[2026-06-28 19:10:29] [FL round 49] comm=89501528B comp=204.77s
+[2026-06-28 19:13:23] [FL round 50] comm=89501528B comp=209.81s
+[2026-06-28 19:13:39] Checkpoint assembled from fully-federated parameters (no domain adaptation).
+[2026-06-28 19:15:07] [eval/classification] accuracy=0.7331 macro_precision=0.7382 macro_recall=0.6648 macro_f1=0.6739 weighted_f1=0.7110
+[2026-06-28 19:15:07] [eval] overall_acc=0.7331 overall_loss=1.6158 | macro_precision=0.7382 macro_recall=0.6648 macro_f1=0.6739 weighted_f1=0.7110 | per_hospital={ Spain_Dataset: 0.6698, Canada_Dataset: 0.9023, India_Dataset: 0.2727 }
+[2026-06-28 19:15:47] [eval/unlearning/remember_classification] accuracy=0.8535 macro_precision=0.8490 macro_recall=0.7628 macro_f1=0.7973 weighted_f1=0.8469
+[2026-06-28 19:15:51] [eval/unlearning/forget_classification] accuracy=0.2727 macro_precision=0.4000 macro_recall=0.3889 macro_f1=0.2781 weighted_f1=0.3162
+[2026-06-28 19:16:44] [eval/unlearning] RA=0.8535 FA=0.2727 ReA=0.8636 remember_macro_f1=0.7973 forget_macro_f1=0.2781 MIA_acc=0.1601
+[2026-06-28 19:16:44] Saved retrained baseline checkpoint to checkpoints/retrain/retrain_india_oral_330048
+[2026-06-28 19:16:44] === Run finished: retrain_india_oral_330048 (elapsed 8764.1s) ===
+
+Done. run_id = retrain_india_oral_330048
+
+Done. run_id = retrain_india_oral_330048

@@ -1,0 +1,73 @@
+[2026-07-02 15:55:32] === Run started: retrain_india_fedmoon_oral_333874 ===
+[2026-07-02 15:55:32] Config loaded from configs/retrain_baseline.yaml
+[2026-07-02 15:55:32] Retrain baseline: this is an INDEPENDENT FL run with the forget client/scope excluded from round 0. No source checkpoint is loaded.
+[2026-07-02 15:55:32] Unlearning scope: client. Forgetting hospital/client 'India_Dataset' (1 partition(s)); remembering 2 partition(s).
+[2026-07-02 15:55:32] Retraining FL model using ONLY remember partitions (forget data excluded from round 0).
+[2026-07-02 15:55:32] Run hyperparameters:
+  algorithm: fedmoon
+  model: resnet18
+  num_clients: 2
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: False
+[2026-07-02 15:55:33] Starting Flower simulation: algorithm=fedmoon, clients=2, rounds=50
+[2026-07-02 15:58:18] [FL round 1] comm=89501528B comp=252.89s
+[2026-07-02 16:01:11] [FL round 2] comm=89501528B comp=208.23s
+[2026-07-02 16:03:57] [FL round 3] comm=89501528B comp=201.19s
+[2026-07-02 16:06:45] [FL round 4] comm=89501528B comp=200.04s
+[2026-07-02 16:09:30] [FL round 5] comm=89501528B comp=196.92s
+[2026-07-02 16:12:21] [FL round 6] comm=89501528B comp=201.77s
+[2026-07-02 16:15:12] [FL round 7] comm=89501528B comp=202.67s
+[2026-07-02 16:18:01] [FL round 8] comm=89501528B comp=200.55s
+[2026-07-02 16:20:49] [FL round 9] comm=89501528B comp=200.41s
+[2026-07-02 16:23:37] [FL round 10] comm=89501528B comp=199.41s
+[2026-07-02 16:26:27] [FL round 11] comm=89501528B comp=201.74s
+[2026-07-02 16:29:18] [FL round 12] comm=89501528B comp=203.43s
+[2026-07-02 16:32:06] [FL round 13] comm=89501528B comp=200.76s
+[2026-07-02 16:34:57] [FL round 14] comm=89501528B comp=203.91s
+[2026-07-02 16:37:49] [FL round 15] comm=89501528B comp=203.28s
+[2026-07-02 16:40:38] [FL round 16] comm=89501528B comp=200.09s
+[2026-07-02 16:43:28] [FL round 17] comm=89501528B comp=202.73s
+[2026-07-02 16:46:13] [FL round 18] comm=89501528B comp=196.15s
+[2026-07-02 16:49:01] [FL round 19] comm=89501528B comp=200.86s
+[2026-07-02 16:51:51] [FL round 20] comm=89501528B comp=201.58s
+[2026-07-02 16:54:43] [FL round 21] comm=89501528B comp=203.51s
+[2026-07-02 16:57:32] [FL round 22] comm=89501528B comp=200.12s
+[2026-07-02 17:00:21] [FL round 23] comm=89501528B comp=199.85s
+[2026-07-02 17:03:06] [FL round 24] comm=89501528B comp=195.43s
+[2026-07-02 17:05:55] [FL round 25] comm=89501528B comp=198.06s
+[2026-07-02 17:08:39] [FL round 26] comm=89501528B comp=195.21s
+[2026-07-02 17:11:24] [FL round 27] comm=89501528B comp=195.16s
+[2026-07-02 17:14:07] [FL round 28] comm=89501528B comp=193.84s
+[2026-07-02 17:16:49] [FL round 29] comm=89501528B comp=192.53s
+[2026-07-02 17:19:34] [FL round 30] comm=89501528B comp=195.60s
+[2026-07-02 17:22:19] [FL round 31] comm=89501528B comp=194.62s
+[2026-07-02 17:25:03] [FL round 32] comm=89501528B comp=195.13s
+[2026-07-02 17:27:49] [FL round 33] comm=89501528B comp=196.80s
+[2026-07-02 17:30:32] [FL round 34] comm=89501528B comp=193.26s
+[2026-07-02 17:33:16] [FL round 35] comm=89501528B comp=195.06s
+[2026-07-02 17:36:05] [FL round 36] comm=89501528B comp=199.30s
+[2026-07-02 17:38:50] [FL round 37] comm=89501528B comp=195.18s
+[2026-07-02 17:41:34] [FL round 38] comm=89501528B comp=194.92s
+[2026-07-02 17:44:21] [FL round 39] comm=89501528B comp=196.59s
+[2026-07-02 17:47:05] [FL round 40] comm=89501528B comp=193.63s
+[2026-07-02 17:49:51] [FL round 41] comm=89501528B comp=196.77s
+[2026-07-02 17:52:39] [FL round 42] comm=89501528B comp=198.57s
+[2026-07-02 17:55:26] [FL round 43] comm=89501528B comp=197.69s
+[2026-07-02 17:58:11] [FL round 44] comm=89501528B comp=196.07s
+[2026-07-02 18:00:59] [FL round 45] comm=89501528B comp=198.81s
+[2026-07-02 18:03:41] [FL round 46] comm=89501528B comp=192.77s
+[2026-07-02 18:06:30] [FL round 47] comm=89501528B comp=198.74s
+[2026-07-02 18:09:10] [FL round 48] comm=89501528B comp=191.09s
+[2026-07-02 18:11:56] [FL round 49] comm=89501528B comp=196.17s
+[2026-07-02 18:14:45] [FL round 50] comm=89501528B comp=198.90s
+[2026-07-02 18:14:59] Checkpoint assembled from fully-federated parameters (no domain adaptation).
+[2026-07-02 18:16:16] [eval/classification] accuracy=0.7457 macro_precision=0.7661 macro_recall=0.6652 macro_f1=0.6924 weighted_f1=0.7287
+[2026-07-02 18:16:16] [eval] overall_acc=0.7457 overall_loss=1.6153 | macro_precision=0.7661 macro_recall=0.6652 macro_f1=0.6924 weighted_f1=0.7287 | per_hospital={ Spain_Dataset: 0.7170, Canada_Dataset: 0.8947, India_Dataset: 0.3182 }
+[2026-07-02 18:16:54] [eval/unlearning/remember_classification] accuracy=0.8574 macro_precision=0.8732 macro_recall=0.7609 macro_f1=0.8057 weighted_f1=0.8512
+[2026-07-02 18:16:59] [eval/unlearning/forget_classification] accuracy=0.3182 macro_precision=0.4076 macro_recall=0.3365 macro_f1=0.2944 weighted_f1=0.4020
+[2026-07-02 18:17:50] [eval/unlearning] RA=0.8574 FA=0.3182 ReA=0.8712 remember_macro_f1=0.8057 forget_macro_f1=0.2944 MIA_acc=0.1743
+[2026-07-02 18:17:50] Saved retrained baseline checkpoint to checkpoints/retrain/retrain_india_fedmoon_oral_333874
+[2026-07-02 18:17:50] === Run finished: retrain_india_fedmoon_oral_333874 (elapsed 8538.3s) ===

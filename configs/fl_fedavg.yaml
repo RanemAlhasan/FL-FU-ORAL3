@@ -1,0 +1,10 @@
+defaults: base.yaml
+logs_root: logs/fl
+checkpoints_root: checkpoints/fl
+outputs_root: outputs/fl
+
+algorithm: FedAvg
+domain_adaptation: false
+
+global_epochs: 50
+local_epochs: 3

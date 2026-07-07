@@ -1,0 +1,11 @@
+defaults: base.yaml
+logs_root: logs/fl
+checkpoints_root: checkpoints/fl
+outputs_root: outputs/fl
+
+algorithm: FedProx
+domain_adaptation: false
+fedprox_mu: 0.01            # proximal term weight (Eq. used in src/fl/client.py::_fedprox_term)
+
+global_epochs: 50
+local_epochs: 3
