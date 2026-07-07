@@ -1,0 +1,65 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fl_fedmoon_oral_330530 (real fedmoon-personalized backbone)
+SLURM job ID: 340806
+Tue Jul  7 12:46:46 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.07             Driver Version: 570.133.07     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       Off |   00000000:3B:00.0 Off |                    0 |
+| N/A   30C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+=== FUSED-CLI oral3 (BACKBONE ablation), algorithm=fedmoon, forget=Spain_Dataset ===
+[2026-07-07 12:47:00] === Run started: fu_cli_fedmoon_spain_backbone_oral_340806 ===
+[2026-07-07 12:47:00] Forking from source FL run: fl_fedmoon_oral_330530
+[2026-07-07 12:47:00] Forgetting: Spain_Dataset (index 0 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-07 12:47:00] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedmoon
+[2026-07-07 12:47:03] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedmoon_oral_330530/best.pt
+[2026-07-07 12:47:03] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505]
+[2026-07-07 12:47:03] Running FUSED-CLI unlearning (algorithm=fedmoon)...
+[2026-07-07 12:47:03] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 12:47:31] Selected 4 critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6208, avg_f_acc=0.7537, adapter_density=413080/8257536
+[2026-07-07 12:49:07] [FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6208, avg_f_acc=0.7537, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6202, avg_f_acc=0.7625, adapter_density=413080/8257536
+[2026-07-07 12:50:36] [FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6202, avg_f_acc=0.7625, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6202, avg_f_acc=0.7625, adapter_density=413080/8257536
+[2026-07-07 12:52:07] [FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6202, avg_f_acc=0.7625, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6214, avg_f_acc=0.7625, adapter_density=413080/8257536
+[2026-07-07 12:53:36] [FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6214, avg_f_acc=0.7625, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6209, avg_f_acc=0.7800, adapter_density=413080/8257536
+[2026-07-07 12:55:06] [FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6209, avg_f_acc=0.7800, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6235, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 12:56:34] [FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6235, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6247, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 12:58:05] [FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6247, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6236, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 12:59:36] [FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6236, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6299, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:01:06] [FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6299, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6305, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:02:36] [FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6305, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6115, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:04:04] [FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6115, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6115, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:05:36] [FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6115, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6104, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:07:06] [FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6104, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6098, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:08:36] [FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6098, avg_f_acc=0.7888, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6044, avg_f_acc=0.7888, adapter_density=413080/8257536
+[2026-07-07 13:10:06] [FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6044, avg_f_acc=0.7888, adapter_density=413080/8257536

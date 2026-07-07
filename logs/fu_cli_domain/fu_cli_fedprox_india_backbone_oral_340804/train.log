@@ -1,0 +1,15 @@
+[2026-07-07 12:47:00] === Run started: fu_cli_fedprox_india_backbone_oral_340804 ===
+[2026-07-07 12:47:00] Forking from source FL run: fl_fedprox_oral_330529
+[2026-07-07 12:47:00] Forgetting: India_Dataset (index 2 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-07 12:47:00] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedprox
+[2026-07-07 12:47:01] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedprox_oral_330529/best.pt
+[2026-07-07 12:47:01] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505]
+[2026-07-07 12:47:01] Running FUSED-CLI unlearning (algorithm=fedprox)...
+[2026-07-07 12:47:01] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 12:48:04] Selected 4 critical layers: ['layer3.0.conv1.weight', 'layer3.0.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight']
+[2026-07-07 12:51:21] [FUSED-CLI:fedprox] Round=0, avg_r_acc=0.8631, avg_f_acc=0.6452, adapter_density=280265/5603328
+[2026-07-07 12:54:33] [FUSED-CLI:fedprox] Round=1, avg_r_acc=0.8535, avg_f_acc=0.6272, adapter_density=280265/5603328
+[2026-07-07 12:57:46] [FUSED-CLI:fedprox] Round=2, avg_r_acc=0.8520, avg_f_acc=0.6272, adapter_density=280265/5603328
+[2026-07-07 13:00:56] [FUSED-CLI:fedprox] Round=3, avg_r_acc=0.8494, avg_f_acc=0.6165, adapter_density=280265/5603328
+[2026-07-07 13:04:08] [FUSED-CLI:fedprox] Round=4, avg_r_acc=0.8526, avg_f_acc=0.6201, adapter_density=280265/5603328
+[2026-07-07 13:07:17] [FUSED-CLI:fedprox] Round=5, avg_r_acc=0.8505, avg_f_acc=0.6201, adapter_density=280265/5603328

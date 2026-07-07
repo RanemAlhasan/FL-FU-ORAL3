@@ -1,0 +1,49 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fl_fedmoon_oral_330530 (real fedmoon-personalized backbone)
+SLURM job ID: 340803
+Tue Jul  7 12:46:46 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.07             Driver Version: 570.133.07     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       Off |   00000000:3B:00.0 Off |                    0 |
+| N/A   31C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+=== FUSED-CLI oral3 (BACKBONE ablation), algorithm=fedmoon, forget=India_Dataset ===
+[2026-07-07 12:47:00] === Run started: fu_cli_fedmoon_india_backbone_oral_340803 ===
+[2026-07-07 12:47:00] Forking from source FL run: fl_fedmoon_oral_330530
+[2026-07-07 12:47:00] Forgetting: India_Dataset (index 2 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-07 12:47:00] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedmoon
+[2026-07-07 12:47:01] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedmoon_oral_330530/best.pt
+[2026-07-07 12:47:01] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505]
+[2026-07-07 12:47:01] Running FUSED-CLI unlearning (algorithm=fedmoon)...
+[2026-07-07 12:47:01] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 12:48:03] Selected 4 critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.7719, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 12:51:17] [FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.7719, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.7719, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 12:54:41] [FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.7719, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 12:57:49] [FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 13:01:01] [FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 13:04:09] [FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.7763, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.7807, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 13:07:11] [FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.7807, avg_f_acc=0.4427, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.7801, avg_f_acc=0.4427, adapter_density=413080/8257536
+[2026-07-07 13:10:11] [FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.7801, avg_f_acc=0.4427, adapter_density=413080/8257536

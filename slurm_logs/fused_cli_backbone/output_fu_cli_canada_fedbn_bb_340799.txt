@@ -1,0 +1,50 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fl_fedbn_oral_330775 (real fedbn-personalized backbone)
+SLURM job ID: 340799
+Tue Jul  7 12:46:46 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:D8:00.0 Off |                    0 |
+| N/A   29C    P0              24W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+
+=== FUSED-CLI oral3 (BACKBONE ablation), algorithm=fedbn, forget=Canada_Dataset ===
+[2026-07-07 12:47:00] === Run started: fu_cli_fedbn_canada_backbone_oral_340799 ===
+[2026-07-07 12:47:00] Forking from source FL run: fl_fedbn_oral_330775
+[2026-07-07 12:47:00] Forgetting: Canada_Dataset (index 1 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-07 12:47:00] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedbn
+[2026-07-07 12:47:00] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedbn_oral_330775/best.pt
+[2026-07-07 12:47:00] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505]
+[2026-07-07 12:47:00] Running FUSED-CLI unlearning (algorithm=fedbn)...
+[2026-07-07 12:47:00] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-07 12:48:00] Selected 4 critical layers: ['layer4.0.conv2.weight', 'layer4.0.conv1.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight']
+[2026-07-07 12:48:00] FedBN-local (never-aggregated) critical layers among selection: none
+[FUSED-CLI:fedbn] Round=0, avg_r_acc=0.6102, avg_f_acc=0.7290, adapter_density=413080/8257536
+[2026-07-07 12:50:52] [FUSED-CLI:fedbn] Round=0, avg_r_acc=0.6102, avg_f_acc=0.7290, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=1, avg_r_acc=0.6140, avg_f_acc=0.7404, adapter_density=413080/8257536
+[2026-07-07 12:53:47] [FUSED-CLI:fedbn] Round=1, avg_r_acc=0.6140, avg_f_acc=0.7404, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=2, avg_r_acc=0.6176, avg_f_acc=0.7456, adapter_density=413080/8257536
+[2026-07-07 12:56:41] [FUSED-CLI:fedbn] Round=2, avg_r_acc=0.6176, avg_f_acc=0.7456, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=3, avg_r_acc=0.6212, avg_f_acc=0.7400, adapter_density=413080/8257536
+[2026-07-07 12:59:36] [FUSED-CLI:fedbn] Round=3, avg_r_acc=0.6212, avg_f_acc=0.7400, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=4, avg_r_acc=0.6283, avg_f_acc=0.7355, adapter_density=413080/8257536
+[2026-07-07 13:02:30] [FUSED-CLI:fedbn] Round=4, avg_r_acc=0.6283, avg_f_acc=0.7355, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=5, avg_r_acc=0.6337, avg_f_acc=0.7332, adapter_density=413080/8257536
+[2026-07-07 13:05:23] [FUSED-CLI:fedbn] Round=5, avg_r_acc=0.6337, avg_f_acc=0.7332, adapter_density=413080/8257536
+[FUSED-CLI:fedbn] Round=6, avg_r_acc=0.6165, avg_f_acc=0.7288, adapter_density=413080/8257536
+[2026-07-07 13:08:19] [FUSED-CLI:fedbn] Round=6, avg_r_acc=0.6165, avg_f_acc=0.7288, adapter_density=413080/8257536
