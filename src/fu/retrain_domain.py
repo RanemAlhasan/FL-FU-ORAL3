@@ -10,8 +10,10 @@ Existing FedAvg-sourced retrain checkpoints (retrain_spain_oral_330047,
 etc.) are NOT reusable as the baseline for this comparison, since those
 were trained with plain FedAvg throughout. To fairly compare "FUSED with
 FedBN/FedProx" against "Retrain with the SAME FedBN/FedProx setting", you
-need a matching retrain_domain run at the same algorithm setting — see
-scripts/run_retrain_domain.py.
+need a matching retrain_domain run at the same algorithm setting — invoke
+this module's fl_retrain_domain() directly, or via run_fu_lora_domain.py's
+/ run_fu_cli_domain.py's --run_retrain_baseline flag (there is no separate
+standalone run_retrain_domain.py script).
 """
 from __future__ import annotations
 

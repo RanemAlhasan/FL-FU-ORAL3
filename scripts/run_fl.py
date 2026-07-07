@@ -668,10 +668,7 @@ def main():
     dataset_tag = "oralcancer"
 
     run_id = args.run_id or make_run_id(
-        phase="fl",
-        algorithm=config["algorithm"],
-        backbone=config["model"],
-        dataset_tag=dataset_tag,
+        f"fl_{config['algorithm'].lower()}_{config['model'].lower()}_{dataset_tag}"
     )
 
     dirs = resolve_run_dirs(

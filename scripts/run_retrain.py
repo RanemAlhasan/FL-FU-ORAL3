@@ -82,7 +82,7 @@ def main():
     dataset_tag = "oralcancer"
     algorithm_tag = f"retrain-{config['unlearning_scope']}"
     run_id = args.run_id or make_run_id(
-        phase="retrain", algorithm=algorithm_tag, backbone=config["model"], dataset_tag=dataset_tag,
+        f"{algorithm_tag}_{config['model'].lower()}_{dataset_tag}"
     )
     dirs = resolve_run_dirs(run_id, config["logs_root"], config["checkpoints_root"], config["outputs_root"])
     save_config_snapshot(config, os.path.join(dirs["log_dir"], "config.snapshot.yaml"))

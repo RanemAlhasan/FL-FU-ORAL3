@@ -23,6 +23,12 @@ SOURCE_RUN="fl_fedavg_oral_329811"
 cd "$PROJECT_DIR"
 
 mkdir -p logs/fu_lora checkpoints/fu_lora outputs/fu_lora slurm_logs/fu_lora
+# NOTE: scripts/run_fu_lora.py no longer exists in this repo; substituted
+# below with run_fu_lora_domain.py --algorithm fedavg, which its own
+# docstring documents as byte-for-byte equivalent to the original
+# run_fu_lora.py behavior. Output lands under logs/fu_domain (not
+# logs/fu_lora) accordingly.
+mkdir -p logs/fu_domain checkpoints/fu_domain outputs/fu_domain
 
 echo "Working dir: $(pwd)"
 echo "Python: $(which python3)"
@@ -47,16 +53,17 @@ if [ ! -f "checkpoints/fl/${SOURCE_RUN}/best.pt" ]; then
 fi
 
 if [ ! -f "logs/fl/${SOURCE_RUN}/config.snapshot.yaml" ]; then
-    echo "ERROR: logs/fl/${SOURCE_RUN}/config.snapshot.yaml not found. run_fu_lora.py needs this."
+    echo "ERROR: logs/fl/${SOURCE_RUN}/config.snapshot.yaml not found. run_fu_lora_domain.py needs this."
     exit 1
 fi
 
 echo ""
 echo "=== Phase 2: FUSED LoRA unlearning (forget=Spain_Dataset) ==="
 
-python3 scripts/run_fu_lora.py \
+python3 scripts/run_fu_lora_domain.py \
     --source_run "${SOURCE_RUN}" \
     --forget_client Spain_Dataset \
+    --algorithm fedavg \
     --global_epoch 50 \
     --local_epoch 3 \
     --batch_size 16 \

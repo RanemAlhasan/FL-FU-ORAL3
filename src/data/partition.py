@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Tuple
 
 from src.data.dataset import OralCancerDataset, Sample
 
@@ -94,6 +94,46 @@ def build_client_partitions(
             f"Unknown client_split mode '{client_split}'. "
             f"Expected 'hospital_based' or 'simulated'."
         )
+
+
+def carve_proxy_partitions(
+    partitions: List[ClientPartition],
+    proxy_frac: float,
+    seed: int = 42,
+) -> Tuple[List[ClientPartition], List[ClientPartition]]:
+    """Split each partition's samples into a "main" partition
+    ((1 - proxy_frac) fraction) and a "proxy" partition (proxy_frac
+    fraction), via a seeded per-partition shuffle. Returns (main_partitions,
+    proxy_partitions), same order/client_id/hospital as the input.
+
+    The main partitions are what the real FL/FU run trains and evaluates
+    on; the proxy partitions are held out, structurally identical (same
+    hospital/client layout), and used ONLY for MIA shadow-model training —
+    never touched by the real run, so the shadow models' "membership"
+    ground truth stays uncontaminated by data the real model has actually
+    seen. Same purpose as src/data/proxy_split.py's CIFAR-10 proxy carving,
+    adapted here to work on ClientPartition/Sample objects directly instead
+    of raw tensors, since the oral-cancer pipeline doesn't pool images into
+    numpy arrays the way the CIFAR-10 reproduction does.
+    """
+    rng = random.Random(seed)
+    main_partitions: List[ClientPartition] = []
+    proxy_partitions: List[ClientPartition] = []
+
+    for partition in partitions:
+        samples = list(partition.samples)
+        rng.shuffle(samples)
+        n_proxy = int(len(samples) * proxy_frac)
+        proxy_samples = samples[:n_proxy]
+        main_samples = samples[n_proxy:]
+        main_partitions.append(ClientPartition(
+            client_id=partition.client_id, hospital=partition.hospital, samples=main_samples,
+        ))
+        proxy_partitions.append(ClientPartition(
+            client_id=partition.client_id, hospital=partition.hospital, samples=proxy_samples,
+        ))
+
+    return main_partitions, proxy_partitions
 
 
 def partitions_to_datasets(
