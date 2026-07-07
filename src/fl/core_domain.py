@@ -255,7 +255,11 @@ def global_train_once_domain(
     return client_models
 
 
-def fedavg_domain(local_models: List[nn.Module], algorithm: str = "fedavg") -> nn.Module:
+def fedavg_domain(
+    local_models: List[nn.Module],
+    algorithm: str = "fedavg",
+    weights: Optional[List[float]] = None,
+) -> nn.Module:
     """Same contract as core.py::fedavg, plus:
 
     - algorithm="fedbn": BatchNorm keys (per
@@ -266,6 +270,14 @@ def fedavg_domain(local_models: List[nn.Module], algorithm: str = "fedavg") -> n
       core.py::fedavg (FedProx and FedMoon only change the client-side
       loss, never server-side aggregation — matches
       src/fl/strategies.py, where both reuse plain FedAvg aggregation).
+
+    - `weights`: optional per-client aggregation weights (pass each
+      client's local dataset size), matching Flower's default FedAvg
+      strategy used in Phase 1 (src/fl/strategies.py), which weights by
+      num_examples. Normalized internally, so absolute scale doesn't
+      matter. When omitted (default), falls back to the original plain
+      unweighted mean over `local_models` — every existing caller that
+      doesn't pass `weights` keeps its exact prior behavior.
     """
     algorithm = _check_algorithm(algorithm)
     domain_adaptation = algorithm == "fedbn"
@@ -273,6 +285,17 @@ def fedavg_domain(local_models: List[nn.Module], algorithm: str = "fedavg") -> n
     global_model = copy.deepcopy(local_models[0])
     avg_state_dict = global_model.state_dict()
     local_state_dicts = [model.state_dict() for model in local_models]
+
+    if weights is not None:
+        if len(weights) != len(local_models):
+            raise ValueError(
+                f"weights must have one entry per model in local_models "
+                f"({len(weights)} given, {len(local_models)} expected)."
+            )
+        total_weight = sum(weights)
+        norm_weights = [w / total_weight for w in weights]
+    else:
+        norm_weights = [1.0 / len(local_models)] * len(local_models)
 
     if domain_adaptation:
         bn_keys = set(split_federated_and_local_params(local_models[0], True)["local"])
@@ -283,14 +306,14 @@ def fedavg_domain(local_models: List[nn.Module], algorithm: str = "fedavg") -> n
         if layer in bn_keys:
             continue
 
-        summed = torch.zeros_like(local_state_dicts[0][layer], dtype=torch.float32)
+        weighted_sum = torch.zeros_like(local_state_dicts[0][layer], dtype=torch.float32)
         for client_idx in range(len(local_models)):
-            summed += local_state_dicts[client_idx][layer].float()
+            weighted_sum += local_state_dicts[client_idx][layer].float() * norm_weights[client_idx]
 
         if "num_batches_tracked" in layer:
-            avg_state_dict[layer] = (summed / len(local_models)).long()
+            avg_state_dict[layer] = weighted_sum.round().long()
         else:
-            avg_state_dict[layer] = (summed / len(local_models)).to(local_state_dicts[0][layer].dtype)
+            avg_state_dict[layer] = weighted_sum.to(local_state_dicts[0][layer].dtype)
 
     global_model.load_state_dict(avg_state_dict)
     return global_model

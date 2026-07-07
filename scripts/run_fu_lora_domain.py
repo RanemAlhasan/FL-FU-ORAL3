@@ -84,13 +84,16 @@ def as_tensor_pair_loader(oral_dataset: OralCancerDataset, batch_size: int, shuf
                        shuffle=shuffle, num_workers=2)
 
 
-def concat_as_loader(oral_datasets, batch_size: int, shuffle: bool) -> DataLoader:
-    """Concatenate several per-hospital OralCancerDataset objects into a single
-    (image, label) DataLoader. Used to build the remember/forget test loaders
-    needed for the shared RA/FA/ReA/MIA evaluator (FIX: symmetric evaluation
-    with run_retrain.py — see run_unlearning_evaluation call below)."""
-    wrapped = [TensorPairDataset(ds) for ds in oral_datasets]
-    combined = wrapped[0] if len(wrapped) == 1 else ConcatDataset(wrapped)
+def concat_as_dict_loader(oral_datasets, batch_size: int, shuffle: bool) -> DataLoader:
+    """Same as concat_as_loader, but WITHOUT the TensorPairDataset bridge:
+    yields OralCancerDataset's native dict batches ({"image", "label",
+    "hospital", ...}), which is what src/eval/evaluator.py and
+    src/eval/metrics.py expect. Only use this for loaders passed to
+    run_standard_evaluation / run_unlearning_evaluation — everything else
+    in this script (training, test_client_forget, relearn, the plain
+    evaluate() call) expects (image, label) tuples via
+    as_tensor_pair_loader/concat_as_loader and must keep using those."""
+    combined = oral_datasets[0] if len(oral_datasets) == 1 else ConcatDataset(oral_datasets)
     return DataLoader(combined, batch_size=batch_size, shuffle=shuffle, num_workers=2)
 
 
@@ -210,9 +213,11 @@ def main():
         as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=False)
         for ds in test_oral_datasets
     ]
+    client_data_sizes = [len(ds) for ds in train_oral_datasets]
 
     logger.info(f"Built {len(all_clean_client_loaders)} hospital train loaders, "
-                f"{len(all_test_loaders)} hospital test loaders, in order {hospitals}.")
+                f"{len(all_test_loaders)} hospital test loaders, in order {hospitals}, "
+                f"sizes={client_data_sizes}.")
 
     logger.info(f"Running FUSED forget_client_train_domain (algorithm={args.algorithm})...")
     unlearned_model, fu_history = forget_client_train_domain(
@@ -229,6 +234,7 @@ def main():
         fedprox_mu=args.fedprox_mu,
         fedmoon_mu=args.fedmoon_mu,
         fedmoon_temperature=args.fedmoon_temperature,
+        client_data_sizes=client_data_sizes,
         logger=logger,
     )
 
@@ -273,6 +279,7 @@ def main():
             fedprox_mu=args.fedprox_mu,
             fedmoon_mu=args.fedmoon_mu,
             fedmoon_temperature=args.fedmoon_temperature,
+            client_data_sizes=client_data_sizes,
             logger=logger,
         )
         save_checkpoint(retrained_model, dirs["checkpoint_dir"], "retrain_baseline_model",
@@ -288,15 +295,24 @@ def main():
     logger.info(f"Final unlearned model: global test loss={final_loss:.4f}, acc={final_acc:.4f}")
 
     # FIX: symmetric final evaluation (see identical fix in run_fu_cli_domain.py).
+    # NOTE: run_standard_evaluation/run_unlearning_evaluation expect dict-format
+    # batches ({"image": ..., "label": ...}), unlike every other loader in this
+    # script (which yields (image, label) tuples for the tuple-based training/
+    # test_client_forget/evaluate() code paths). Use concat_as_dict_loader /
+    # a plain DataLoader over the OralCancerDataset directly for these two calls
+    # only — do not swap in the tuple-based loaders here (see the TypeError this
+    # previously caused: batch["image"] on a tuple/list, not a dict).
+    global_test_loader_dict = DataLoader(global_test_dataset, batch_size=args.batch_size,
+                                          shuffle=False, num_workers=2)
     remember_idx = [i for i in range(len(hospitals)) if i != forget_client_idx[0]]
-    remember_test_loader = concat_as_loader(
+    remember_test_loader = concat_as_dict_loader(
         [test_oral_datasets[i] for i in remember_idx], args.batch_size, shuffle=False,
     )
-    forget_test_loader = concat_as_loader(
+    forget_test_loader = concat_as_dict_loader(
         [test_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
     )
     run_standard_evaluation(
-        unlearned_model, global_test_loader, device, fl_config["num_classes"],
+        unlearned_model, global_test_loader_dict, device, fl_config["num_classes"],
         logger, step=args.global_epoch, tag_prefix="eval",
     )
     unlearning_eval = run_unlearning_evaluation(

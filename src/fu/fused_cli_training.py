@@ -280,7 +280,7 @@ def run_fused_cli_unlearning(
             client_adapters.append(client_adapter)
 
         # --- Server aggregation: FedAvg over adapter deltas only -------
-        global_adapter = average_adapter_deltas(client_adapters)
+        global_adapter = average_adapter_deltas(client_adapters, weights=remember_data_sizes)
         if algorithm == "fedbn":
             # BN-critical deltas are NOT meaningfully averaged across
             # clients (each client keeps its own via client_local_bn_deltas

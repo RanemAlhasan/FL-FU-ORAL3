@@ -43,11 +43,18 @@ def train_normal_domain(
     fedprox_mu: float = 0.01,
     fedmoon_mu: float = 1.0,
     fedmoon_temperature: float = 0.5,
+    client_data_sizes: List[int] = None,
     logger=None,
 ) -> Tuple[nn.Module, dict]:
     """Domain-adaptation-aware train_normal. See fused_training.py's
     train_normal for the base contract (identical here when
-    algorithm='fedavg')."""
+    algorithm='fedavg').
+
+    `client_data_sizes`: optional, one entry per entry of `client_loaders`
+    (same order) — each client's local dataset size, used to weight
+    aggregation the same way Phase 1's Flower FedAvg strategy does
+    (weighted by num_examples). Omit to keep the original unweighted
+    mean."""
     history = {"round": [], "avg_f_acc": [], "avg_r_acc": []}
     client_bn_states: dict = {}
     client_prev_models: dict = {}
@@ -58,7 +65,7 @@ def train_normal_domain(
             algorithm=algorithm, mu=fedprox_mu, moon_mu=fedmoon_mu, moon_temperature=fedmoon_temperature,
             client_bn_states=client_bn_states, client_prev_models=client_prev_models,
         )
-        global_model = fedavg_domain(client_models, algorithm=algorithm)
+        global_model = fedavg_domain(client_models, algorithm=algorithm, weights=client_data_sizes)
 
         eval_model = global_model
         if algorithm == "fedbn" and client_bn_states:
@@ -99,6 +106,7 @@ def forget_client_train_domain(
     fedprox_mu: float = 0.01,
     fedmoon_mu: float = 1.0,
     fedmoon_temperature: float = 0.5,
+    client_data_sizes: List[int] = None,
     logger=None,
 ) -> Tuple[nn.Module, dict]:
     """Domain-adaptation-aware forget_client_train. Same contract as
@@ -113,11 +121,21 @@ def forget_client_train_domain(
     model-contrastive term, persisting each remember client's own
     previous-round adapter model across rounds (client_prev_models) —
     same persistence pattern as FedBN's BN state.
+
+    `client_data_sizes`: optional, one entry per entry of
+    `all_clean_client_loaders` (ALL clients, same order/indexing as
+    `forget_client_idx` — NOT pre-filtered to remember clients; this
+    function filters it down internally, same as the loaders). Used to
+    weight remember-client aggregation the same way Phase 1's Flower
+    FedAvg strategy does (weighted by num_examples). Omit to keep the
+    original unweighted mean.
     """
     num_clients = len(all_clean_client_loaders)
-    remember_client_loaders = [
-        all_clean_client_loaders[i] for i in range(num_clients) if i not in forget_client_idx
-    ]
+    remember_idx = [i for i in range(num_clients) if i not in forget_client_idx]
+    remember_client_loaders = [all_clean_client_loaders[i] for i in remember_idx]
+    remember_data_sizes = (
+        [client_data_sizes[i] for i in remember_idx] if client_data_sizes is not None else None
+    )
 
     fused_model = build_lora_adapter(copy.deepcopy(trained_global_model))
 
@@ -132,7 +150,7 @@ def forget_client_train_domain(
             algorithm=algorithm, mu=fedprox_mu, moon_mu=fedmoon_mu, moon_temperature=fedmoon_temperature,
             client_bn_states=client_bn_states, client_prev_models=client_prev_models,
         )
-        fused_model = fedavg_domain(client_models, algorithm=algorithm)
+        fused_model = fedavg_domain(client_models, algorithm=algorithm, weights=remember_data_sizes)
         fused_model.eval()
 
         eval_model = fused_model

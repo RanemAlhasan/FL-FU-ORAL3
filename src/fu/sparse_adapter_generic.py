@@ -141,7 +141,10 @@ class SparseAdapterSet:
         return model
 
 
-def average_adapter_deltas(adapter_sets: List[SparseAdapterSet]) -> SparseAdapterSet:
+def average_adapter_deltas(
+    adapter_sets: List[SparseAdapterSet],
+    weights: Optional[List[float]] = None,
+) -> SparseAdapterSet:
     """FedAvg over ONLY the delta tensors (Algorithm 1, line 16: "Server
     aggregates adapter deltas via FedAvg") — masks are per-client and
     NOT averaged (each client's mask stays fixed for its own lifetime;
@@ -149,15 +152,33 @@ def average_adapter_deltas(adapter_sets: List[SparseAdapterSet]) -> SparseAdapte
     any other trainable parameter under FedAvg). All adapter_sets must
     share the same critical_layers/sparsity (i.e. all built from the
     same SparseAdapterSet.build(..., critical_layers=..., sparsity=...)
-    call structure, just possibly different random seeds per client)."""
+    call structure, just possibly different random seeds per client).
+
+    `weights`: optional per-client aggregation weights (pass each
+    remember-client's local dataset size), matching Phase 1's Flower
+    FedAvg strategy, which weights by num_examples. Normalized
+    internally. Omit to fall back to the original plain unweighted mean
+    (every existing caller that doesn't pass `weights` keeps its exact
+    prior behavior)."""
     reference = adapter_sets[0]
     averaged = SparseAdapterSet(reference.critical_layers, reference.sparsity)
     averaged.masks = {name: mask.clone() for name, mask in reference.masks.items()}
 
+    if weights is not None:
+        if len(weights) != len(adapter_sets):
+            raise ValueError(
+                f"weights must have one entry per adapter set in adapter_sets "
+                f"({len(weights)} given, {len(adapter_sets)} expected)."
+            )
+        total_weight = sum(weights)
+        norm_weights = [w / total_weight for w in weights]
+    else:
+        norm_weights = [1.0 / len(adapter_sets)] * len(adapter_sets)
+
     for name in reference.deltas:
-        summed = torch.zeros_like(reference.deltas[name].data)
-        for adapter_set in adapter_sets:
-            summed += adapter_set.deltas[name].data
-        averaged.deltas[name] = nn.Parameter(summed / len(adapter_sets), requires_grad=True)
+        weighted_sum = torch.zeros_like(reference.deltas[name].data)
+        for adapter_set, w in zip(adapter_sets, norm_weights):
+            weighted_sum += adapter_set.deltas[name].data * w
+        averaged.deltas[name] = nn.Parameter(weighted_sum, requires_grad=True)
 
     return averaged
