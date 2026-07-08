@@ -1,0 +1,37 @@
+dataset_path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3
+hospitals:
+- Spain_Dataset
+- Canada_Dataset
+- India_Dataset
+num_classes: 3
+image_size: 224
+augmentation: standard
+load_metadata: false
+handle_class_imbalance: true
+client_split: hospital_based
+clients_per_hospital: 1
+model: resnet18
+pretrained: true
+batch_size: 16
+learning_rate: 0.001
+seed: 42
+device: cuda
+gpus_per_client: null
+logs_root: logs/fl
+checkpoints_root: checkpoints/fl
+outputs_root: outputs/fl
+algorithm: FedProx
+domain_adaptation: false
+fedprox_mu: 0.01
+global_epochs: 50
+local_epochs: 3
+forget_client: Canada_Dataset
+phase2_algorithm: fedprox
+phase2_fedprox_mu: 0.01
+phase2_fedmoon_mu: 1.0
+num_unlearning_layers: 4
+adapter_sparsity: 0.05
+global_epoch: 50
+local_epoch: 3
+source_run: fl_fedprox_oral_330529
+method: FUSED-CLI (Algorithm 1, real paper method)

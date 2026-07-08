@@ -1,0 +1,456 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fl_fedavg_oral_329811
+SLURM job ID: 341148
+Tue Jul  7 23:26:11 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.133.07             Driver Version: 570.133.07     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       Off |   00000000:D8:00.0 Off |                    0 |
+| N/A   33C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+=== FUSED unlearning, algorithm=fedbn, forget=Canada_Dataset ===
+[2026-07-07 23:26:25] === Run started: fu_domain_fedbn_canada_oral_341148 ===
+[2026-07-07 23:26:25] Forking from source FL run: fl_fedavg_oral_329811
+[2026-07-07 23:26:25] Forgetting hospital: Canada_Dataset (index 1 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-07 23:26:25] Phase-2 algorithm: fedbn
+[2026-07-07 23:26:25] global_epoch=50, local_epoch=3, batch_size=16
+[2026-07-07 23:26:25] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedavg_oral_329811/best.pt
+[2026-07-07 23:26:25] Built 3 hospital train loaders, 3 hospital test loaders, in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[319, 1308, 404].
+[2026-07-07 23:26:25] Built 3 proxy hospital train loaders (proxy_frac=0.2), sizes=[79, 327, 101].
+[2026-07-07 23:26:25] Running FUSED forget_client_train_domain (algorithm=fedbn)...
+[FUSED forget_client_train:fedbn] Epoch=0, avg_r_acc=0.5777, avg_f_acc=0.7848
+[2026-07-07 23:29:05] [FUSED forget_client_train:fedbn] Epoch=0, avg_r_acc=0.5777, avg_f_acc=0.7848
+[FUSED forget_client_train:fedbn] Epoch=1, avg_r_acc=0.6020, avg_f_acc=0.7955
+[2026-07-07 23:31:40] [FUSED forget_client_train:fedbn] Epoch=1, avg_r_acc=0.6020, avg_f_acc=0.7955
+[FUSED forget_client_train:fedbn] Epoch=2, avg_r_acc=0.6160, avg_f_acc=0.7986
+[2026-07-07 23:34:13] [FUSED forget_client_train:fedbn] Epoch=2, avg_r_acc=0.6160, avg_f_acc=0.7986
+[FUSED forget_client_train:fedbn] Epoch=3, avg_r_acc=0.5714, avg_f_acc=0.7820
+[2026-07-07 23:36:32] [FUSED forget_client_train:fedbn] Epoch=3, avg_r_acc=0.5714, avg_f_acc=0.7820
+[FUSED forget_client_train:fedbn] Epoch=4, avg_r_acc=0.5733, avg_f_acc=0.7905
+[2026-07-07 23:38:55] [FUSED forget_client_train:fedbn] Epoch=4, avg_r_acc=0.5733, avg_f_acc=0.7905
+[FUSED forget_client_train:fedbn] Epoch=5, avg_r_acc=0.5601, avg_f_acc=0.7189
+[2026-07-07 23:41:21] [FUSED forget_client_train:fedbn] Epoch=5, avg_r_acc=0.5601, avg_f_acc=0.7189
+[FUSED forget_client_train:fedbn] Epoch=6, avg_r_acc=0.5762, avg_f_acc=0.7876
+[2026-07-07 23:43:53] [FUSED forget_client_train:fedbn] Epoch=6, avg_r_acc=0.5762, avg_f_acc=0.7876
+[FUSED forget_client_train:fedbn] Epoch=7, avg_r_acc=0.5745, avg_f_acc=0.7701
+[2026-07-07 23:46:22] [FUSED forget_client_train:fedbn] Epoch=7, avg_r_acc=0.5745, avg_f_acc=0.7701
+[FUSED forget_client_train:fedbn] Epoch=8, avg_r_acc=0.6182, avg_f_acc=0.8176
+[2026-07-07 23:48:56] [FUSED forget_client_train:fedbn] Epoch=8, avg_r_acc=0.6182, avg_f_acc=0.8176
+[FUSED forget_client_train:fedbn] Epoch=9, avg_r_acc=0.5912, avg_f_acc=0.7668
+[2026-07-07 23:51:26] [FUSED forget_client_train:fedbn] Epoch=9, avg_r_acc=0.5912, avg_f_acc=0.7668
+[FUSED forget_client_train:fedbn] Epoch=10, avg_r_acc=0.5887, avg_f_acc=0.7342
+[2026-07-07 23:53:55] [FUSED forget_client_train:fedbn] Epoch=10, avg_r_acc=0.5887, avg_f_acc=0.7342
+[FUSED forget_client_train:fedbn] Epoch=11, avg_r_acc=0.5700, avg_f_acc=0.7493
+[2026-07-07 23:56:27] [FUSED forget_client_train:fedbn] Epoch=11, avg_r_acc=0.5700, avg_f_acc=0.7493
+[FUSED forget_client_train:fedbn] Epoch=12, avg_r_acc=0.5124, avg_f_acc=0.6656
+[2026-07-07 23:58:47] [FUSED forget_client_train:fedbn] Epoch=12, avg_r_acc=0.5124, avg_f_acc=0.6656
+[FUSED forget_client_train:fedbn] Epoch=13, avg_r_acc=0.6539, avg_f_acc=0.8325
+[2026-07-08 00:01:19] [FUSED forget_client_train:fedbn] Epoch=13, avg_r_acc=0.6539, avg_f_acc=0.8325
+[FUSED forget_client_train:fedbn] Epoch=14, avg_r_acc=0.5548, avg_f_acc=0.7403
+[2026-07-08 00:03:46] [FUSED forget_client_train:fedbn] Epoch=14, avg_r_acc=0.5548, avg_f_acc=0.7403
+[FUSED forget_client_train:fedbn] Epoch=15, avg_r_acc=0.5903, avg_f_acc=0.7691
+[2026-07-08 00:06:06] [FUSED forget_client_train:fedbn] Epoch=15, avg_r_acc=0.5903, avg_f_acc=0.7691
+[FUSED forget_client_train:fedbn] Epoch=16, avg_r_acc=0.5803, avg_f_acc=0.7919
+[2026-07-08 00:08:29] [FUSED forget_client_train:fedbn] Epoch=16, avg_r_acc=0.5803, avg_f_acc=0.7919
+[FUSED forget_client_train:fedbn] Epoch=17, avg_r_acc=0.6144, avg_f_acc=0.7967
+[2026-07-08 00:10:52] [FUSED forget_client_train:fedbn] Epoch=17, avg_r_acc=0.6144, avg_f_acc=0.7967
+[FUSED forget_client_train:fedbn] Epoch=18, avg_r_acc=0.6179, avg_f_acc=0.8154
+[2026-07-08 00:13:15] [FUSED forget_client_train:fedbn] Epoch=18, avg_r_acc=0.6179, avg_f_acc=0.8154
+[FUSED forget_client_train:fedbn] Epoch=19, avg_r_acc=0.5811, avg_f_acc=0.7479
+[2026-07-08 00:15:37] [FUSED forget_client_train:fedbn] Epoch=19, avg_r_acc=0.5811, avg_f_acc=0.7479
+[FUSED forget_client_train:fedbn] Epoch=20, avg_r_acc=0.5837, avg_f_acc=0.7805
+[2026-07-08 00:18:02] [FUSED forget_client_train:fedbn] Epoch=20, avg_r_acc=0.5837, avg_f_acc=0.7805
+[FUSED forget_client_train:fedbn] Epoch=21, avg_r_acc=0.5852, avg_f_acc=0.7487
+[2026-07-08 00:20:26] [FUSED forget_client_train:fedbn] Epoch=21, avg_r_acc=0.5852, avg_f_acc=0.7487
+[FUSED forget_client_train:fedbn] Epoch=22, avg_r_acc=0.6265, avg_f_acc=0.8059
+[2026-07-08 00:22:46] [FUSED forget_client_train:fedbn] Epoch=22, avg_r_acc=0.6265, avg_f_acc=0.8059
+[FUSED forget_client_train:fedbn] Epoch=23, avg_r_acc=0.5551, avg_f_acc=0.7054
+[2026-07-08 00:25:06] [FUSED forget_client_train:fedbn] Epoch=23, avg_r_acc=0.5551, avg_f_acc=0.7054
+[FUSED forget_client_train:fedbn] Epoch=24, avg_r_acc=0.5730, avg_f_acc=0.7843
+[2026-07-08 00:27:24] [FUSED forget_client_train:fedbn] Epoch=24, avg_r_acc=0.5730, avg_f_acc=0.7843
+[FUSED forget_client_train:fedbn] Epoch=25, avg_r_acc=0.5920, avg_f_acc=0.7664
+[2026-07-08 00:29:38] [FUSED forget_client_train:fedbn] Epoch=25, avg_r_acc=0.5920, avg_f_acc=0.7664
+[FUSED forget_client_train:fedbn] Epoch=26, avg_r_acc=0.6198, avg_f_acc=0.8232
+[2026-07-08 00:31:47] [FUSED forget_client_train:fedbn] Epoch=26, avg_r_acc=0.6198, avg_f_acc=0.8232
+[FUSED forget_client_train:fedbn] Epoch=27, avg_r_acc=0.6052, avg_f_acc=0.7839
+[2026-07-08 00:34:06] [FUSED forget_client_train:fedbn] Epoch=27, avg_r_acc=0.6052, avg_f_acc=0.7839
+[FUSED forget_client_train:fedbn] Epoch=28, avg_r_acc=0.5783, avg_f_acc=0.7649
+[2026-07-08 00:36:20] [FUSED forget_client_train:fedbn] Epoch=28, avg_r_acc=0.5783, avg_f_acc=0.7649
+[FUSED forget_client_train:fedbn] Epoch=29, avg_r_acc=0.5879, avg_f_acc=0.7892
+[2026-07-08 00:38:41] [FUSED forget_client_train:fedbn] Epoch=29, avg_r_acc=0.5879, avg_f_acc=0.7892
+[FUSED forget_client_train:fedbn] Epoch=30, avg_r_acc=0.5665, avg_f_acc=0.6921
+[2026-07-08 00:41:05] [FUSED forget_client_train:fedbn] Epoch=30, avg_r_acc=0.5665, avg_f_acc=0.6921
+[FUSED forget_client_train:fedbn] Epoch=31, avg_r_acc=0.5887, avg_f_acc=0.7331
+[2026-07-08 00:43:25] [FUSED forget_client_train:fedbn] Epoch=31, avg_r_acc=0.5887, avg_f_acc=0.7331
+[FUSED forget_client_train:fedbn] Epoch=32, avg_r_acc=0.5716, avg_f_acc=0.7139
+[2026-07-08 00:45:47] [FUSED forget_client_train:fedbn] Epoch=32, avg_r_acc=0.5716, avg_f_acc=0.7139
+[FUSED forget_client_train:fedbn] Epoch=33, avg_r_acc=0.5691, avg_f_acc=0.7550
+[2026-07-08 00:48:09] [FUSED forget_client_train:fedbn] Epoch=33, avg_r_acc=0.5691, avg_f_acc=0.7550
+[FUSED forget_client_train:fedbn] Epoch=34, avg_r_acc=0.5892, avg_f_acc=0.7960
+[2026-07-08 00:50:30] [FUSED forget_client_train:fedbn] Epoch=34, avg_r_acc=0.5892, avg_f_acc=0.7960
+[FUSED forget_client_train:fedbn] Epoch=35, avg_r_acc=0.5635, avg_f_acc=0.7068
+[2026-07-08 00:52:51] [FUSED forget_client_train:fedbn] Epoch=35, avg_r_acc=0.5635, avg_f_acc=0.7068
+[FUSED forget_client_train:fedbn] Epoch=36, avg_r_acc=0.5806, avg_f_acc=0.8074
+[2026-07-08 00:55:13] [FUSED forget_client_train:fedbn] Epoch=36, avg_r_acc=0.5806, avg_f_acc=0.8074
+[FUSED forget_client_train:fedbn] Epoch=37, avg_r_acc=0.5624, avg_f_acc=0.7110
+[2026-07-08 00:57:30] [FUSED forget_client_train:fedbn] Epoch=37, avg_r_acc=0.5624, avg_f_acc=0.7110
+[FUSED forget_client_train:fedbn] Epoch=38, avg_r_acc=0.5931, avg_f_acc=0.7654
+[2026-07-08 00:59:46] [FUSED forget_client_train:fedbn] Epoch=38, avg_r_acc=0.5931, avg_f_acc=0.7654
+[FUSED forget_client_train:fedbn] Epoch=39, avg_r_acc=0.5833, avg_f_acc=0.7380
+[2026-07-08 01:02:00] [FUSED forget_client_train:fedbn] Epoch=39, avg_r_acc=0.5833, avg_f_acc=0.7380
+[FUSED forget_client_train:fedbn] Epoch=40, avg_r_acc=0.5901, avg_f_acc=0.8140
+[2026-07-08 01:04:18] [FUSED forget_client_train:fedbn] Epoch=40, avg_r_acc=0.5901, avg_f_acc=0.8140
+[FUSED forget_client_train:fedbn] Epoch=41, avg_r_acc=0.5731, avg_f_acc=0.7607
+[2026-07-08 01:06:45] [FUSED forget_client_train:fedbn] Epoch=41, avg_r_acc=0.5731, avg_f_acc=0.7607
+[FUSED forget_client_train:fedbn] Epoch=42, avg_r_acc=0.5770, avg_f_acc=0.7323
+[2026-07-08 01:09:11] [FUSED forget_client_train:fedbn] Epoch=42, avg_r_acc=0.5770, avg_f_acc=0.7323
+[FUSED forget_client_train:fedbn] Epoch=43, avg_r_acc=0.6467, avg_f_acc=0.8211
+[2026-07-08 01:11:32] [FUSED forget_client_train:fedbn] Epoch=43, avg_r_acc=0.6467, avg_f_acc=0.8211
+[FUSED forget_client_train:fedbn] Epoch=44, avg_r_acc=0.5449, avg_f_acc=0.6983
+[2026-07-08 01:13:34] [FUSED forget_client_train:fedbn] Epoch=44, avg_r_acc=0.5449, avg_f_acc=0.6983
+[FUSED forget_client_train:fedbn] Epoch=45, avg_r_acc=0.5870, avg_f_acc=0.8080
+[2026-07-08 01:16:01] [FUSED forget_client_train:fedbn] Epoch=45, avg_r_acc=0.5870, avg_f_acc=0.8080
+[FUSED forget_client_train:fedbn] Epoch=46, avg_r_acc=0.5662, avg_f_acc=0.7215
+[2026-07-08 01:18:04] [FUSED forget_client_train:fedbn] Epoch=46, avg_r_acc=0.5662, avg_f_acc=0.7215
+[FUSED forget_client_train:fedbn] Epoch=47, avg_r_acc=0.6024, avg_f_acc=0.7725
+[2026-07-08 01:20:22] [FUSED forget_client_train:fedbn] Epoch=47, avg_r_acc=0.6024, avg_f_acc=0.7725
+[FUSED forget_client_train:fedbn] Epoch=48, avg_r_acc=0.5922, avg_f_acc=0.7555
+[2026-07-08 01:22:22] [FUSED forget_client_train:fedbn] Epoch=48, avg_r_acc=0.5922, avg_f_acc=0.7555
+[FUSED forget_client_train:fedbn] Epoch=49, avg_r_acc=0.5408, avg_f_acc=0.6954
+[2026-07-08 01:24:47] [FUSED forget_client_train:fedbn] Epoch=49, avg_r_acc=0.5408, avg_f_acc=0.6954
+[2026-07-08 01:24:47] FUSED unlearning complete. LoRA trainable params: 254000/11432051 (2.2218%).
+[2026-07-08 01:24:47] Running relearn (ReA) probe for 50 rounds (algorithm-agnostic)...
+[Relearn] Round=0, avg_f_acc=0.7239 (ReA), avg_r_acc=0.5386
+[2026-07-08 01:25:34] [Relearn] Round=0, avg_f_acc=0.7239 (ReA), avg_r_acc=0.5386
+[Relearn] Round=1, avg_f_acc=0.8150 (ReA), avg_r_acc=0.6259
+[2026-07-08 01:26:21] [Relearn] Round=1, avg_f_acc=0.8150 (ReA), avg_r_acc=0.6259
+[Relearn] Round=2, avg_f_acc=0.7204 (ReA), avg_r_acc=0.5392
+[2026-07-08 01:27:08] [Relearn] Round=2, avg_f_acc=0.7204 (ReA), avg_r_acc=0.5392
+[Relearn] Round=3, avg_f_acc=0.7565 (ReA), avg_r_acc=0.5459
+[2026-07-08 01:27:56] [Relearn] Round=3, avg_f_acc=0.7565 (ReA), avg_r_acc=0.5459
+[Relearn] Round=4, avg_f_acc=0.8004 (ReA), avg_r_acc=0.6130
+[2026-07-08 01:28:44] [Relearn] Round=4, avg_f_acc=0.8004 (ReA), avg_r_acc=0.6130
+[Relearn] Round=5, avg_f_acc=0.7454 (ReA), avg_r_acc=0.5670
+[2026-07-08 01:29:33] [Relearn] Round=5, avg_f_acc=0.7454 (ReA), avg_r_acc=0.5670
+[Relearn] Round=6, avg_f_acc=0.7477 (ReA), avg_r_acc=0.5480
+[2026-07-08 01:30:20] [Relearn] Round=6, avg_f_acc=0.7477 (ReA), avg_r_acc=0.5480
+[Relearn] Round=7, avg_f_acc=0.7718 (ReA), avg_r_acc=0.5895
+[2026-07-08 01:31:08] [Relearn] Round=7, avg_f_acc=0.7718 (ReA), avg_r_acc=0.5895
+[Relearn] Round=8, avg_f_acc=0.8316 (ReA), avg_r_acc=0.6183
+[2026-07-08 01:31:57] [Relearn] Round=8, avg_f_acc=0.8316 (ReA), avg_r_acc=0.6183
+[Relearn] Round=9, avg_f_acc=0.8025 (ReA), avg_r_acc=0.5755
+[2026-07-08 01:32:48] [Relearn] Round=9, avg_f_acc=0.8025 (ReA), avg_r_acc=0.5755
+[Relearn] Round=10, avg_f_acc=0.8052 (ReA), avg_r_acc=0.6225
+[2026-07-08 01:33:38] [Relearn] Round=10, avg_f_acc=0.8052 (ReA), avg_r_acc=0.6225
+[Relearn] Round=11, avg_f_acc=0.7468 (ReA), avg_r_acc=0.5588
+[2026-07-08 01:34:27] [Relearn] Round=11, avg_f_acc=0.7468 (ReA), avg_r_acc=0.5588
+[Relearn] Round=12, avg_f_acc=0.6618 (ReA), avg_r_acc=0.4803
+[2026-07-08 01:35:15] [Relearn] Round=12, avg_f_acc=0.6618 (ReA), avg_r_acc=0.4803
+[Relearn] Round=13, avg_f_acc=0.6765 (ReA), avg_r_acc=0.5356
+[2026-07-08 01:36:04] [Relearn] Round=13, avg_f_acc=0.6765 (ReA), avg_r_acc=0.5356
+[Relearn] Round=14, avg_f_acc=0.7670 (ReA), avg_r_acc=0.5346
+[2026-07-08 01:36:53] [Relearn] Round=14, avg_f_acc=0.7670 (ReA), avg_r_acc=0.5346
+[Relearn] Round=15, avg_f_acc=0.7119 (ReA), avg_r_acc=0.5432
+[2026-07-08 01:37:41] [Relearn] Round=15, avg_f_acc=0.7119 (ReA), avg_r_acc=0.5432
+[Relearn] Round=16, avg_f_acc=0.7223 (ReA), avg_r_acc=0.5574
+[2026-07-08 01:38:30] [Relearn] Round=16, avg_f_acc=0.7223 (ReA), avg_r_acc=0.5574
+[Relearn] Round=17, avg_f_acc=0.7766 (ReA), avg_r_acc=0.5735
+[2026-07-08 01:39:20] [Relearn] Round=17, avg_f_acc=0.7766 (ReA), avg_r_acc=0.5735
+[Relearn] Round=18, avg_f_acc=0.7689 (ReA), avg_r_acc=0.5879
+[2026-07-08 01:40:09] [Relearn] Round=18, avg_f_acc=0.7689 (ReA), avg_r_acc=0.5879
+[Relearn] Round=19, avg_f_acc=0.7446 (ReA), avg_r_acc=0.5641
+[2026-07-08 01:41:00] [Relearn] Round=19, avg_f_acc=0.7446 (ReA), avg_r_acc=0.5641
+[Relearn] Round=20, avg_f_acc=0.7051 (ReA), avg_r_acc=0.5086
+[2026-07-08 01:41:50] [Relearn] Round=20, avg_f_acc=0.7051 (ReA), avg_r_acc=0.5086
+[Relearn] Round=21, avg_f_acc=0.7488 (ReA), avg_r_acc=0.5438
+[2026-07-08 01:42:40] [Relearn] Round=21, avg_f_acc=0.7488 (ReA), avg_r_acc=0.5438
+[Relearn] Round=22, avg_f_acc=0.7662 (ReA), avg_r_acc=0.5885
+[2026-07-08 01:43:32] [Relearn] Round=22, avg_f_acc=0.7662 (ReA), avg_r_acc=0.5885
+[Relearn] Round=23, avg_f_acc=0.7384 (ReA), avg_r_acc=0.5422
+[2026-07-08 01:44:21] [Relearn] Round=23, avg_f_acc=0.7384 (ReA), avg_r_acc=0.5422
+[Relearn] Round=24, avg_f_acc=0.7342 (ReA), avg_r_acc=0.5530
+[2026-07-08 01:45:10] [Relearn] Round=24, avg_f_acc=0.7342 (ReA), avg_r_acc=0.5530
+[Relearn] Round=25, avg_f_acc=0.7626 (ReA), avg_r_acc=0.5867
+[2026-07-08 01:45:59] [Relearn] Round=25, avg_f_acc=0.7626 (ReA), avg_r_acc=0.5867
+[Relearn] Round=26, avg_f_acc=0.7565 (ReA), avg_r_acc=0.5766
+[2026-07-08 01:46:49] [Relearn] Round=26, avg_f_acc=0.7565 (ReA), avg_r_acc=0.5766
+[Relearn] Round=27, avg_f_acc=0.7752 (ReA), avg_r_acc=0.5797
+[2026-07-08 01:47:40] [Relearn] Round=27, avg_f_acc=0.7752 (ReA), avg_r_acc=0.5797
+[Relearn] Round=28, avg_f_acc=0.7133 (ReA), avg_r_acc=0.5207
+[2026-07-08 01:48:31] [Relearn] Round=28, avg_f_acc=0.7133 (ReA), avg_r_acc=0.5207
+[Relearn] Round=29, avg_f_acc=0.7043 (ReA), avg_r_acc=0.5273
+[2026-07-08 01:49:22] [Relearn] Round=29, avg_f_acc=0.7043 (ReA), avg_r_acc=0.5273
+[Relearn] Round=30, avg_f_acc=0.7252 (ReA), avg_r_acc=0.5294
+[2026-07-08 01:50:14] [Relearn] Round=30, avg_f_acc=0.7252 (ReA), avg_r_acc=0.5294
+[Relearn] Round=31, avg_f_acc=0.7411 (ReA), avg_r_acc=0.5499
+[2026-07-08 01:51:05] [Relearn] Round=31, avg_f_acc=0.7411 (ReA), avg_r_acc=0.5499
+[Relearn] Round=32, avg_f_acc=0.7349 (ReA), avg_r_acc=0.5422
+[2026-07-08 01:51:56] [Relearn] Round=32, avg_f_acc=0.7349 (ReA), avg_r_acc=0.5422
+[Relearn] Round=33, avg_f_acc=0.7237 (ReA), avg_r_acc=0.5454
+[2026-07-08 01:52:45] [Relearn] Round=33, avg_f_acc=0.7237 (ReA), avg_r_acc=0.5454
+[Relearn] Round=34, avg_f_acc=0.7737 (ReA), avg_r_acc=0.5808
+[2026-07-08 01:53:36] [Relearn] Round=34, avg_f_acc=0.7737 (ReA), avg_r_acc=0.5808
+[Relearn] Round=35, avg_f_acc=0.6047 (ReA), avg_r_acc=0.4062
+[2026-07-08 01:54:28] [Relearn] Round=35, avg_f_acc=0.6047 (ReA), avg_r_acc=0.4062
+[Relearn] Round=36, avg_f_acc=0.7279 (ReA), avg_r_acc=0.5595
+[2026-07-08 01:55:20] [Relearn] Round=36, avg_f_acc=0.7279 (ReA), avg_r_acc=0.5595
+[Relearn] Round=37, avg_f_acc=0.7349 (ReA), avg_r_acc=0.5280
+[2026-07-08 01:56:11] [Relearn] Round=37, avg_f_acc=0.7349 (ReA), avg_r_acc=0.5280
+[Relearn] Round=38, avg_f_acc=0.7286 (ReA), avg_r_acc=0.5258
+[2026-07-08 01:57:01] [Relearn] Round=38, avg_f_acc=0.7286 (ReA), avg_r_acc=0.5258
+[Relearn] Round=39, avg_f_acc=0.7592 (ReA), avg_r_acc=0.5873
+[2026-07-08 01:57:52] [Relearn] Round=39, avg_f_acc=0.7592 (ReA), avg_r_acc=0.5873
+[Relearn] Round=40, avg_f_acc=0.7766 (ReA), avg_r_acc=0.5630
+[2026-07-08 01:58:42] [Relearn] Round=40, avg_f_acc=0.7766 (ReA), avg_r_acc=0.5630
+[Relearn] Round=41, avg_f_acc=0.7453 (ReA), avg_r_acc=0.5580
+[2026-07-08 01:59:34] [Relearn] Round=41, avg_f_acc=0.7453 (ReA), avg_r_acc=0.5580
+[Relearn] Round=42, avg_f_acc=0.7488 (ReA), avg_r_acc=0.5579
+[2026-07-08 02:00:25] [Relearn] Round=42, avg_f_acc=0.7488 (ReA), avg_r_acc=0.5579
+[Relearn] Round=43, avg_f_acc=0.7509 (ReA), avg_r_acc=0.5476
+[2026-07-08 02:01:16] [Relearn] Round=43, avg_f_acc=0.7509 (ReA), avg_r_acc=0.5476
+[Relearn] Round=44, avg_f_acc=0.7508 (ReA), avg_r_acc=0.5835
+[2026-07-08 02:02:07] [Relearn] Round=44, avg_f_acc=0.7508 (ReA), avg_r_acc=0.5835
+[Relearn] Round=45, avg_f_acc=0.7293 (ReA), avg_r_acc=0.5356
+[2026-07-08 02:02:57] [Relearn] Round=45, avg_f_acc=0.7293 (ReA), avg_r_acc=0.5356
+[Relearn] Round=46, avg_f_acc=0.7133 (ReA), avg_r_acc=0.5394
+[2026-07-08 02:03:46] [Relearn] Round=46, avg_f_acc=0.7133 (ReA), avg_r_acc=0.5394
+[Relearn] Round=47, avg_f_acc=0.7925 (ReA), avg_r_acc=0.6186
+[2026-07-08 02:04:39] [Relearn] Round=47, avg_f_acc=0.7925 (ReA), avg_r_acc=0.6186
+[Relearn] Round=48, avg_f_acc=0.7308 (ReA), avg_r_acc=0.5514
+[2026-07-08 02:05:30] [Relearn] Round=48, avg_f_acc=0.7308 (ReA), avg_r_acc=0.5514
+[Relearn] Round=49, avg_f_acc=0.7592 (ReA), avg_r_acc=0.5731
+[2026-07-08 02:06:20] [Relearn] Round=49, avg_f_acc=0.7592 (ReA), avg_r_acc=0.5731
+[2026-07-08 02:06:20] ReA (post-relearn forget-client accuracy) = 0.7592
+[2026-07-08 02:06:37] Final unlearned model: global test loss=0.1501, acc=0.4976
+[2026-07-08 02:07:43] [eval/classification] accuracy=0.4976 macro_precision=0.6138 macro_recall=0.6090 macro_f1=0.5147 weighted_f1=0.4657
+[2026-07-08 02:07:43] [eval] overall_acc=0.4976 overall_loss=2.3837 | macro_precision=0.6138 macro_recall=0.6090 macro_f1=0.5147 weighted_f1=0.4657 | per_hospital={ Spain_Dataset: 0.6415, Canada_Dataset: 0.4185, India_Dataset: 0.6212 }
+[2026-07-08 02:08:10] [eval/unlearning/remember_classification] accuracy=0.6126 macro_precision=0.6106 macro_recall=0.5538 macro_f1=0.5425 weighted_f1=0.5902
+[2026-07-08 02:08:13] [eval/unlearning/forget_classification] accuracy=0.4281 macro_precision=0.5858 macro_recall=0.6954 macro_f1=0.4826 weighted_f1=0.4171
+[2026-07-08 02:08:37] [eval/unlearning] RA=0.6126 FA=0.4281 ReA=0.8562 remember_macro_f1=0.5425 forget_macro_f1=0.4826 MIA_acc=0.4716
+[2026-07-08 02:08:37] [symmetric eval] RA=0.6126 FA=0.4281 ReA=0.8562 MIA_acc=0.4716
+[2026-07-08 02:08:37] Running shadow-model MIA (n_shadow=3, attack_epochs=50, proxy_frac=0.2)...
+[MIA] Training shadow model 1/3...
+[FUSED forget_client_train:fedbn] Epoch=0, avg_r_acc=0.6167, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=1, avg_r_acc=0.6167, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=2, avg_r_acc=0.6167, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=3, avg_r_acc=0.6167, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=4, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=5, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=6, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=7, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=8, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=9, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=10, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=11, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=12, avg_r_acc=0.6333, avg_f_acc=0.7298
+[FUSED forget_client_train:fedbn] Epoch=13, avg_r_acc=0.6241, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=14, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=15, avg_r_acc=0.6056, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=16, avg_r_acc=0.6333, avg_f_acc=0.7406
+[FUSED forget_client_train:fedbn] Epoch=17, avg_r_acc=0.6074, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=18, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=19, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=20, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=21, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=22, avg_r_acc=0.7167, avg_f_acc=0.7091
+[FUSED forget_client_train:fedbn] Epoch=23, avg_r_acc=0.6333, avg_f_acc=0.7137
+[FUSED forget_client_train:fedbn] Epoch=24, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=25, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=26, avg_r_acc=0.6333, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=27, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=28, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=29, avg_r_acc=0.6241, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=30, avg_r_acc=0.6241, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=31, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=32, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=33, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=34, avg_r_acc=0.6241, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=35, avg_r_acc=0.6241, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=36, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=37, avg_r_acc=0.6241, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=38, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=39, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=40, avg_r_acc=0.6148, avg_f_acc=0.7943
+[FUSED forget_client_train:fedbn] Epoch=41, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=42, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=43, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=44, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=45, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=46, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=47, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=48, avg_r_acc=0.6333, avg_f_acc=0.7298
+[FUSED forget_client_train:fedbn] Epoch=49, avg_r_acc=0.6333, avg_f_acc=0.7728
+[MIA] Training shadow model 2/3...
+[FUSED forget_client_train:fedbn] Epoch=0, avg_r_acc=0.6167, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=1, avg_r_acc=0.6167, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=2, avg_r_acc=0.6167, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=3, avg_r_acc=0.6167, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=4, avg_r_acc=0.6167, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=5, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=6, avg_r_acc=0.6167, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=7, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=8, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=9, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=10, avg_r_acc=0.6148, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=11, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=12, avg_r_acc=0.6148, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=13, avg_r_acc=0.6148, avg_f_acc=0.6983
+[FUSED forget_client_train:fedbn] Epoch=14, avg_r_acc=0.6148, avg_f_acc=0.7091
+[FUSED forget_client_train:fedbn] Epoch=15, avg_r_acc=0.6148, avg_f_acc=0.7252
+[FUSED forget_client_train:fedbn] Epoch=16, avg_r_acc=0.6148, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=17, avg_r_acc=0.6333, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=18, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=19, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=20, avg_r_acc=0.6241, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=21, avg_r_acc=0.6333, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=22, avg_r_acc=0.6148, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=23, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=24, avg_r_acc=0.7074, avg_f_acc=0.7359
+[FUSED forget_client_train:fedbn] Epoch=25, avg_r_acc=0.6333, avg_f_acc=0.7352
+[FUSED forget_client_train:fedbn] Epoch=26, avg_r_acc=0.6148, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=27, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=28, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=29, avg_r_acc=0.6241, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=30, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=31, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=32, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=33, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=34, avg_r_acc=0.6148, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=35, avg_r_acc=0.6148, avg_f_acc=0.7359
+[FUSED forget_client_train:fedbn] Epoch=36, avg_r_acc=0.6241, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=37, avg_r_acc=0.6241, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=38, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=39, avg_r_acc=0.6148, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=40, avg_r_acc=0.6981, avg_f_acc=0.7252
+[FUSED forget_client_train:fedbn] Epoch=41, avg_r_acc=0.6333, avg_f_acc=0.7244
+[FUSED forget_client_train:fedbn] Epoch=42, avg_r_acc=0.6148, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=43, avg_r_acc=0.7259, avg_f_acc=0.6822
+[FUSED forget_client_train:fedbn] Epoch=44, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=45, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=46, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=47, avg_r_acc=0.6426, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=48, avg_r_acc=0.6148, avg_f_acc=0.7997
+[FUSED forget_client_train:fedbn] Epoch=49, avg_r_acc=0.6241, avg_f_acc=0.7782
+[MIA] Training shadow model 3/3...
+[FUSED forget_client_train:fedbn] Epoch=0, avg_r_acc=0.6167, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=1, avg_r_acc=0.6167, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=2, avg_r_acc=0.6167, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=3, avg_r_acc=0.6167, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=4, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=5, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=6, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=7, avg_r_acc=0.6333, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=8, avg_r_acc=0.6333, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=9, avg_r_acc=0.6333, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=10, avg_r_acc=0.6241, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=11, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=12, avg_r_acc=0.6241, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=13, avg_r_acc=0.6241, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=14, avg_r_acc=0.6148, avg_f_acc=0.7091
+[FUSED forget_client_train:fedbn] Epoch=15, avg_r_acc=0.6241, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=16, avg_r_acc=0.6333, avg_f_acc=0.6929
+[FUSED forget_client_train:fedbn] Epoch=17, avg_r_acc=0.6241, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=18, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=19, avg_r_acc=0.6148, avg_f_acc=0.7359
+[FUSED forget_client_train:fedbn] Epoch=20, avg_r_acc=0.6241, avg_f_acc=0.7567
+[FUSED forget_client_train:fedbn] Epoch=21, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=22, avg_r_acc=0.6333, avg_f_acc=0.7406
+[FUSED forget_client_train:fedbn] Epoch=23, avg_r_acc=0.6241, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=24, avg_r_acc=0.6333, avg_f_acc=0.7406
+[FUSED forget_client_train:fedbn] Epoch=25, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=26, avg_r_acc=0.6148, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=27, avg_r_acc=0.6148, avg_f_acc=0.7782
+[FUSED forget_client_train:fedbn] Epoch=28, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=29, avg_r_acc=0.6241, avg_f_acc=0.7621
+[FUSED forget_client_train:fedbn] Epoch=30, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=31, avg_r_acc=0.6241, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=32, avg_r_acc=0.6333, avg_f_acc=0.7352
+[FUSED forget_client_train:fedbn] Epoch=33, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=34, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=35, avg_r_acc=0.6333, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=36, avg_r_acc=0.6333, avg_f_acc=0.7137
+[FUSED forget_client_train:fedbn] Epoch=37, avg_r_acc=0.6333, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=38, avg_r_acc=0.6333, avg_f_acc=0.7298
+[FUSED forget_client_train:fedbn] Epoch=39, avg_r_acc=0.6241, avg_f_acc=0.7836
+[FUSED forget_client_train:fedbn] Epoch=40, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=41, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=42, avg_r_acc=0.6241, avg_f_acc=0.7728
+[FUSED forget_client_train:fedbn] Epoch=43, avg_r_acc=0.6241, avg_f_acc=0.7674
+[FUSED forget_client_train:fedbn] Epoch=44, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=45, avg_r_acc=0.6333, avg_f_acc=0.7459
+[FUSED forget_client_train:fedbn] Epoch=46, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=47, avg_r_acc=0.6333, avg_f_acc=0.7513
+[FUSED forget_client_train:fedbn] Epoch=48, avg_r_acc=0.6148, avg_f_acc=0.7252
+[FUSED forget_client_train:fedbn] Epoch=49, avg_r_acc=0.6333, avg_f_acc=0.7459
+[MIA] Attack model epoch=0, mean_client_accuracy=0.3344
+[MIA] Attack model epoch=1, mean_client_accuracy=0.3899
+[MIA] Attack model epoch=2, mean_client_accuracy=0.3731
+[MIA] Attack model epoch=3, mean_client_accuracy=0.3987
+[MIA] Attack model epoch=4, mean_client_accuracy=0.4136
+[MIA] Attack model epoch=5, mean_client_accuracy=0.3595
+[MIA] Attack model epoch=6, mean_client_accuracy=0.4502
+[MIA] Attack model epoch=7, mean_client_accuracy=0.3635
+[MIA] Attack model epoch=8, mean_client_accuracy=0.4290
+[MIA] Attack model epoch=9, mean_client_accuracy=0.4125
+[MIA] Attack model epoch=10, mean_client_accuracy=0.5453
+[MIA] Attack model epoch=11, mean_client_accuracy=0.5697
+[MIA] Attack model epoch=12, mean_client_accuracy=0.4225
+[MIA] Attack model epoch=13, mean_client_accuracy=0.4982
+[MIA] Attack model epoch=14, mean_client_accuracy=0.5719
+[MIA] Attack model epoch=15, mean_client_accuracy=0.5739
+[MIA] Attack model epoch=16, mean_client_accuracy=0.4996
+[MIA] Attack model epoch=17, mean_client_accuracy=0.6236
+[MIA] Attack model epoch=18, mean_client_accuracy=0.5317
+[MIA] Attack model epoch=19, mean_client_accuracy=0.5694
+[MIA] Attack model epoch=20, mean_client_accuracy=0.5555
+[MIA] Attack model epoch=21, mean_client_accuracy=0.5663
+[MIA] Attack model epoch=22, mean_client_accuracy=0.5901
+[MIA] Attack model epoch=23, mean_client_accuracy=0.5137
+[MIA] Attack model epoch=24, mean_client_accuracy=0.4975
+[MIA] Attack model epoch=25, mean_client_accuracy=0.4576
+[MIA] Attack model epoch=26, mean_client_accuracy=0.6176
+[MIA] Attack model epoch=27, mean_client_accuracy=0.5546
+[MIA] Attack model epoch=28, mean_client_accuracy=0.5639
+[MIA] Attack model epoch=29, mean_client_accuracy=0.6227
+[MIA] Attack model epoch=30, mean_client_accuracy=0.5692
+[MIA] Attack model epoch=31, mean_client_accuracy=0.5798
+[MIA] Attack model epoch=32, mean_client_accuracy=0.6047
+[MIA] Attack model epoch=33, mean_client_accuracy=0.5673
+[MIA] Attack model epoch=34, mean_client_accuracy=0.6209
+[MIA] Attack model epoch=35, mean_client_accuracy=0.5373
+[MIA] Attack model epoch=36, mean_client_accuracy=0.5891
+[MIA] Attack model epoch=37, mean_client_accuracy=0.6036
+[MIA] Attack model epoch=38, mean_client_accuracy=0.5410
+[MIA] Attack model epoch=39, mean_client_accuracy=0.5480
+[MIA] Attack model epoch=40, mean_client_accuracy=0.6293
+[MIA] Attack model epoch=41, mean_client_accuracy=0.5353
+[MIA] Attack model epoch=42, mean_client_accuracy=0.6063
+[MIA] Attack model epoch=43, mean_client_accuracy=0.6254
+[MIA] Attack model epoch=44, mean_client_accuracy=0.5296
+[MIA] Attack model epoch=45, mean_client_accuracy=0.5589
+[MIA] Attack model epoch=46, mean_client_accuracy=0.6086
+[MIA] Attack model epoch=47, mean_client_accuracy=0.5676
+[MIA] Attack model epoch=48, mean_client_accuracy=0.5372
+[MIA] Attack model epoch=49, mean_client_accuracy=0.5794
+[2026-07-08 04:05:23] Shadow-model MIA accuracy = 0.5794 (per-client: {0: 0.33910891089108913, 1: 0.8421375921375921, 2: 0.5568627450980392})
+[2026-07-08 04:05:23] Saved unlearned model to checkpoints/fu_domain/fu_domain_fedbn_canada_oral_341148/unlearned_model.pt
+[2026-07-08 04:05:23] === Run finished: fu_domain_fedbn_canada_oral_341148 (elapsed 16738.4s) ===
+
+Done. run_id = fu_domain_fedbn_canada_oral_341148 (source_run = fl_fedavg_oral_329811, algorithm = fedbn, forgot Canada_Dataset)
+
+Done. run_id = fu_domain_fedbn_canada_oral_341148
