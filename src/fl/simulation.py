@@ -13,23 +13,15 @@ from typing import Dict, List
 import flwr as fl
 from flwr.common import Context
 from flwr.common.constant import PARTITION_ID_KEY
-from torch.utils.data import DataLoader, WeightedRandomSampler
 
 from src.data.partition import ClientPartition
+from src.data.sampler import build_loader as _build_loader
 from src.fl.client import (OralCancerFlowerClient, decode_state_dict_b64,
                             ndarrays_to_state_dict, state_dict_to_ndarrays)
 from src.fl.strategies import build_strategy
 from src.models.backbone import build_model
 from src.models.fedbn import extract_federated_state_dict, merge_local_bn_into_global
 from src.utils.logger import ExperimentLogger
-
-
-def _build_loader(dataset, batch_size: int, train: bool, handle_imbalance: bool) -> DataLoader:
-    if train and handle_imbalance and len(dataset) > 0:
-        weights = dataset.class_sample_weights()
-        sampler = WeightedRandomSampler(weights, num_samples=len(weights), replacement=True)
-        return DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=2)
-    return DataLoader(dataset, batch_size=batch_size, shuffle=train, num_workers=2)
 
 
 def run_federated_learning(

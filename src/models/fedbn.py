@@ -38,6 +38,23 @@ def split_federated_and_local_params(
         return {"federated": list(model.state_dict().keys()), "local": []}
 
     bn_layer_names = set(get_batchnorm_layer_names(model))
+    if not bn_layer_names:
+        # BUG FIX: previously silently returned local_keys=[] here, so a
+        # "fedbn" run against a backbone with zero BatchNorm modules (e.g.
+        # model=vit_b16, which normalizes exclusively via nn.LayerNorm)
+        # federated 100% of parameters like plain FedAvg, produced
+        # byte-identical "per-hospital" checkpoints, and reported spurious
+        # domain-adaptation results — all with no warning anywhere. Fail
+        # loudly instead: FedBN has nothing to keep local for this backbone.
+        raise ValueError(
+            f"domain_adaptation=True (FedBN) but {type(model).__name__} has no "
+            f"BatchNorm1d/2d/3d layers to keep local (see "
+            f"src/models/backbone.py::get_batchnorm_layer_names) — FedBN would "
+            f"silently degrade to plain FedAvg. This backbone likely normalizes "
+            f"via LayerNorm instead (e.g. vit_b16); FedBN as implemented here "
+            f"is not applicable to it. Use a BatchNorm-based backbone (resnet18/"
+            f"resnet50/densenet121/efficientnet_b0) for FedBN runs."
+        )
     federated_keys, local_keys = [], []
     for key in model.state_dict().keys():
         # state_dict keys look like "bn1.weight", "layer1.0.bn1.running_mean", etc.

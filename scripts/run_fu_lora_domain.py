@@ -57,6 +57,7 @@ from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
 from src.data.dataset import index_dataset, OralCancerDataset
 from src.data.partition import build_client_partitions, carve_proxy_partitions, partitions_to_datasets
+from src.data.sampler import build_tensor_pair_loader as _weighted_tensor_pair_loader
 from src.data.transforms import build_transforms
 from src.eval.evaluator import run_standard_evaluation, run_unlearning_evaluation
 from src.eval.mia import membership_inference_attack
@@ -85,9 +86,17 @@ class TensorPairDataset(Dataset):
         return item["image"], item["label"]
 
 
-def as_tensor_pair_loader(oral_dataset: OralCancerDataset, batch_size: int, shuffle: bool) -> DataLoader:
-    return DataLoader(TensorPairDataset(oral_dataset), batch_size=batch_size,
-                       shuffle=shuffle, num_workers=2)
+def as_tensor_pair_loader(oral_dataset: OralCancerDataset, batch_size: int, shuffle: bool,
+                           handle_imbalance: bool = False) -> DataLoader:
+    """`handle_imbalance=True` (only meaningful when `shuffle=True`, i.e. a
+    training loader) builds a class-balanced WeightedRandomSampler loader
+    via src/data/sampler.py instead of a plain shuffled one — see that
+    module's docstring. Never pass True for eval/test loaders."""
+    tensor_pair_dataset = TensorPairDataset(oral_dataset)
+    return _weighted_tensor_pair_loader(
+        tensor_pair_dataset, oral_dataset, batch_size,
+        train=shuffle, handle_imbalance=handle_imbalance,
+    )
 
 
 def concat_as_dict_loader(oral_datasets, batch_size: int, shuffle: bool) -> DataLoader:
@@ -164,7 +173,9 @@ def main():
             f"--forget_client '{args.forget_client}' is not in source run's hospitals "
             f"{hospitals}. Pick one of these exactly."
         )
-    forget_client_idx = [hospitals.index(args.forget_client)]
+    # NOTE: forget_client_idx is computed further below, once train_partitions
+    # is built — see the comment there for why `hospitals.index(...)` is
+    # wrong under client_split="simulated".
 
     run_id = args.run_id or make_run_id(
         f"fu_domain_{args.algorithm}_{args.forget_client.replace('_Dataset', '').lower()}_oral"
@@ -173,7 +184,7 @@ def main():
 
     logger = build_logger(run_id, dirs["log_dir"], dirs["tb_dir"])
     logger.info(f"Forking from source FL run: {args.source_run}")
-    logger.info(f"Forgetting hospital: {args.forget_client} (index {forget_client_idx[0]} of {hospitals})")
+    logger.info(f"Forgetting hospital: {args.forget_client}")
     logger.info(f"Phase-2 algorithm: {args.algorithm}"
                 + (f" (mu={args.fedprox_mu})" if args.algorithm == "fedprox" else ""))
     logger.info(f"global_epoch={args.global_epoch}, local_epoch={args.local_epoch}, "
@@ -251,6 +262,29 @@ def main():
         test_partitions, args.proxy_frac, merged_config["seed"],
     )
 
+    # BUG FIX: forget_client_idx used to be `[hospitals.index(args.forget_client)]`
+    # — a numeric index into `hospitals` (length == number of hospitals) —
+    # then used directly to index into `train_partitions`/`test_partitions`/
+    # per-client loader lists. That's only correct under the default
+    # client_split="hospital_based" (one partition per hospital, same order
+    # as `hospitals`). Under client_split="simulated" (clients_per_hospital
+    # > 1 — see src/data/partition.py::partition_simulated), each hospital
+    # spans MULTIPLE consecutive partitions ("{hospital}__shard{n}"), so
+    # `hospitals.index(...)` silently pointed at the wrong client's data.
+    # Compute it from train_partitions' own `.hospital` field instead — this
+    # correctly yields exactly one index under hospital_based and ALL of a
+    # hospital's shard indices under simulated (downstream functions like
+    # forget_client_train_domain already filter via `not in forget_client_idx`,
+    # not a fixed count, so a multi-element list here works out of the box).
+    # test_partitions has the same order/count as train_partitions (both
+    # built from the same hospitals/client_split/clients_per_hospital/seed),
+    # so these indices are valid into test_oral_datasets too.
+    forget_client_idx = [i for i, p in enumerate(train_partitions) if p.hospital == args.forget_client]
+    if not forget_client_idx:
+        raise ValueError(f"No client partitions found for hospital '{args.forget_client}'.")
+    logger.info(f"Forgetting hospital: {args.forget_client} -> partition indices {forget_client_idx} "
+                f"of {len(train_partitions)} total clients (client_split={merged_config['client_split']}).")
+
     train_oral_datasets = partitions_to_datasets(
         train_partitions, train_transform, merged_config["load_metadata"], hospital_to_idx,
     )
@@ -258,8 +292,14 @@ def main():
         test_partitions, eval_transform, merged_config["load_metadata"], hospital_to_idx,
     )
 
+    # Class-balanced sampling for TRAIN loaders only, toggled by the
+    # `handle_class_imbalance` config key (see configs/base.yaml and
+    # src/data/sampler.py) — previously this phase built plain, unweighted
+    # loaders unconditionally, unlike Phase 1/3 (src/fl/simulation.py),
+    # which made class-imbalance handling inconsistent across phases.
+    handle_imbalance = merged_config.get("handle_class_imbalance", True)
     all_clean_client_loaders = [
-        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True)
+        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True, handle_imbalance=handle_imbalance)
         for ds in train_oral_datasets
     ]
     all_test_loaders = [
@@ -270,7 +310,7 @@ def main():
 
     logger.info(f"Built {len(all_clean_client_loaders)} hospital train loaders, "
                 f"{len(all_test_loaders)} hospital test loaders, in order {hospitals}, "
-                f"sizes={client_data_sizes}.")
+                f"sizes={client_data_sizes}, handle_class_imbalance={handle_imbalance}.")
 
     # Proxy loaders — held-out data for shadow-model MIA training only (see
     # carve_proxy_partitions above). Same loader format (tuple-yielding) as
@@ -283,7 +323,7 @@ def main():
         proxy_test_partitions, eval_transform, merged_config["load_metadata"], hospital_to_idx,
     )
     proxy_train_loaders = [
-        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True)
+        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True, handle_imbalance=handle_imbalance)
         for ds in proxy_train_oral_datasets
     ]
     proxy_test_loaders = [
@@ -383,12 +423,21 @@ def main():
     # previously caused: batch["image"] on a tuple/list, not a dict).
     global_test_loader_dict = DataLoader(global_test_dataset, batch_size=args.batch_size,
                                           shuffle=False, num_workers=2)
-    remember_idx = [i for i in range(len(hospitals)) if i != forget_client_idx[0]]
+    # BUG FIX: `remember_idx` used to be `range(len(hospitals))` filtered by
+    # `!= forget_client_idx[0]` — wrong on two counts under
+    # client_split="simulated": (1) the partition count can exceed
+    # len(hospitals) (multiple shards per hospital), and (2) it only ever
+    # excluded ONE index even when forget_client_idx has several (all of a
+    # forgotten hospital's shards). Use the actual partition count and
+    # membership test instead. Same fix for forget_test_loader/
+    # forget_train_loader_dict below: gather ALL of forget_client_idx's
+    # datasets, not just index [0].
+    remember_idx = [i for i in range(len(train_partitions)) if i not in forget_client_idx]
     remember_test_loader = concat_as_dict_loader(
         [test_oral_datasets[i] for i in remember_idx], args.batch_size, shuffle=False,
     )
     forget_test_loader = concat_as_dict_loader(
-        [test_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
+        [test_oral_datasets[i] for i in forget_client_idx], args.batch_size, shuffle=False,
     )
     # FIX: MIA's member set must be data the model was actually TRAINED on
     # (see compute_mia_accuracy's docstring). forget_test_loader is the
@@ -400,7 +449,7 @@ def main():
     # member set for asking "does the unlearned model still leak whether it
     # saw this data?".
     forget_train_loader_dict = concat_as_dict_loader(
-        [train_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
+        [train_oral_datasets[i] for i in forget_client_idx], args.batch_size, shuffle=False,
     )
     run_standard_evaluation(
         unlearned_model, global_test_loader_dict, device, fl_config["num_classes"],
@@ -411,7 +460,17 @@ def main():
         step=args.global_epoch,
         relearn_steps=merged_config.get("relearn_steps", 50),
         relearn_lr=merged_config.get("relearn_lr", 1e-3),
-        nonmember_loader=remember_test_loader,
+        # BUG FIX: was `nonmember_loader=remember_test_loader` — pooling the
+        # OTHER TWO hospitals' test data as the "non-member" control set.
+        # Since each hospital is a distinct imaging domain (see
+        # src/models/fedbn.py's docstring), a loss-threshold attacker can
+        # trivially separate member (forget hospital) vs. nonmember
+        # (different hospitals) purely via domain shift, independent of true
+        # membership — inflating MIA_acc regardless of how well unlearning
+        # actually worked. Use the forget hospital's OWN held-out test split
+        # instead: same domain as the member set, genuinely never trained
+        # on, isolating the membership signal from the domain confound.
+        nonmember_loader=forget_test_loader,
         member_loader=forget_train_loader_dict,
         before_unlearning_acc=None,
     )

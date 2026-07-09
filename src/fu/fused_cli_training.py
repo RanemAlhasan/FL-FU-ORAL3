@@ -119,6 +119,43 @@ def _identify_bn_critical_layers(model: nn.Module, critical_layers: List[str]) -
     return {name for name in critical_layers if any(name.startswith(bn) for bn in bn_names)}
 
 
+def _representative_bn_adapter(
+    global_adapter: SparseAdapterSet,
+    client_local_bn_deltas: Dict[int, Dict[str, torch.Tensor]],
+    bn_critical_layers: set,
+    device: str,
+) -> SparseAdapterSet:
+    """BUG FIX: for algorithm="fedbn", per-client BN-critical adapter
+    deltas were tracked in `client_local_bn_deltas` across rounds (used
+    only to seed each client's OWN next round) but never actually reached
+    the evaluated/saved model — both the per-round eval model and the
+    final merged model baked in `global_adapter`, the cross-client FedAvg
+    of BN-critical deltas, which this file's own comments already flag as
+    "NOT meaningfully averaged." That defeated the point of the FedBN
+    ablation for this pipeline. Build one representative adapter instead:
+    identical to `global_adapter` everywhere, except BN-critical layers are
+    overridden with ONE client's own tracked local delta (deterministic:
+    lowest client index that has reported), mirroring the same
+    "representative client" pattern src/fl/core_domain.py::
+    assemble_representative_bn_model already uses for the LoRA/FedBN path.
+    """
+    if not bn_critical_layers or not client_local_bn_deltas:
+        return global_adapter
+
+    representative_idx = sorted(client_local_bn_deltas.keys())[0]
+    representative_deltas = client_local_bn_deltas[representative_idx]
+
+    merged = SparseAdapterSet(global_adapter.critical_layers, global_adapter.sparsity)
+    merged.masks = {k: v.clone() for k, v in global_adapter.masks.items()}
+    merged.deltas = {k: nn.Parameter(v.data.clone(), requires_grad=False)
+                      for k, v in global_adapter.deltas.items()}
+    for name in bn_critical_layers:
+        if name in representative_deltas:
+            merged.deltas[name] = nn.Parameter(
+                representative_deltas[name].clone().to(device), requires_grad=False)
+    return merged
+
+
 def run_fused_cli_unlearning(
     source_model: nn.Module,
     all_clean_client_loaders: List[DataLoader],
@@ -329,8 +366,12 @@ def run_fused_cli_unlearning(
         # --- Evaluate (attacked test set, matching the LoRA pipeline) --
         # No gradients needed here, so a real (non-functional) finalized
         # copy is simplest and correct.
+        eval_adapter = global_adapter
+        if algorithm == "fedbn":
+            eval_adapter = _representative_bn_adapter(
+                global_adapter, client_local_bn_deltas, bn_critical_layers, device)
         eval_model = copy.deepcopy(source_model)
-        global_adapter.finalize_into(eval_model)
+        eval_adapter.finalize_into(eval_model)
         eval_model.eval()
         avg_f_acc, avg_r_acc, _ = test_client_forget(
             eval_model, attacked_test_loaders, forget_client_idx, device, test_batch_size,
@@ -351,8 +392,12 @@ def run_fused_cli_unlearning(
             logger.log_scalar("fu_cli/remember_client_acc", avg_r_acc, round_idx)
 
     # --- Final merge: M^f = merge(M^r, A^f) ----------------------------
+    final_adapter = global_adapter
+    if algorithm == "fedbn":
+        final_adapter = _representative_bn_adapter(
+            global_adapter, client_local_bn_deltas, bn_critical_layers, device)
     unlearned_model = copy.deepcopy(source_model)
-    global_adapter.finalize_into(unlearned_model)
+    final_adapter.finalize_into(unlearned_model)
 
     for p in unlearned_model.parameters():
         p.requires_grad = True

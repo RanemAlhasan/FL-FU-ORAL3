@@ -177,10 +177,8 @@ def compute_mia_accuracy(
     For each sample, compute the model's per-sample cross-entropy loss.
     Members of the training set typically have LOWER loss than non-members
     (the classic MIA signal). We fit the threshold as the midpoint between
-    the two populations' mean losses on a held-out split of each (here we
-    just use the full provided loaders directly for simplicity — see
-    docstring note above about this being a lightweight proxy), then report
-    the attacker's classification accuracy on a balanced mix.
+    the two populations' mean losses on a HELD-OUT HALF of each population,
+    then report the attacker's classification accuracy on the OTHER half.
 
     Lower returned accuracy (closer to 0.5) = less privacy leakage.
     """
@@ -202,11 +200,32 @@ def compute_mia_accuracy(
     if len(member_losses) == 0 or len(nonmember_losses) == 0:
         return float("nan")
 
-    threshold = (member_losses.mean() + nonmember_losses.mean()) / 2.0
+    # BUG FIX: this used to fit the threshold from `member_losses.mean()`/
+    # `nonmember_losses.mean()` and then evaluate accuracy on those SAME
+    # full arrays — i.e. the attacker was tuned and scored on identical
+    # data, self-tuning away from a valid attack-train/attack-test split
+    # and inflating (or otherwise biasing, in a sample-size-dependent way)
+    # the reported MIA_acc. Split each population in half via a threshold-
+    # FIT half and a separately-scored EVAL half instead. Falls back to the
+    # old (fit==eval) behavior only when a population has exactly 1 sample
+    # (too small to split) so this never crashes on tiny loaders.
+    rng = np.random.RandomState(0)
+
+    def fit_eval_split(losses: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        if len(losses) < 2:
+            return losses, losses
+        idx = rng.permutation(len(losses))
+        half = len(losses) // 2
+        return losses[idx[:half]], losses[idx[half:]]
+
+    member_fit, member_eval = fit_eval_split(member_losses)
+    nonmember_fit, nonmember_eval = fit_eval_split(nonmember_losses)
+
+    threshold = (member_fit.mean() + nonmember_fit.mean()) / 2.0
     # Attacker predicts "member" when loss < threshold.
-    member_preds = member_losses < threshold       # should be True (correct) ideally
-    nonmember_preds = nonmember_losses >= threshold  # should be True (correct) ideally
+    member_preds = member_eval < threshold          # should be True (correct) ideally
+    nonmember_preds = nonmember_eval >= threshold    # should be True (correct) ideally
 
     correct = member_preds.sum() + nonmember_preds.sum()
-    total = len(member_losses) + len(nonmember_losses)
+    total = len(member_eval) + len(nonmember_eval)
     return float(correct / total)

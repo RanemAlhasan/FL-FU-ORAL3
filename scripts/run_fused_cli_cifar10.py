@@ -128,7 +128,18 @@ def main():
     logger.info(f"=== FUSED-CLI unlearning (algorithm={args.algorithm}) ===")
     fused_model, fu_history, critical_layers = run_fused_cli_unlearning(
         source_model=copy.deepcopy(trained_model),
-        all_clean_client_loaders=attacked_client_loaders,
+        # BUG FIX: was `attacked_client_loaders` — the label-shifted train
+        # loaders — passed as the "clean" client loaders. Remember clients'
+        # loaders are byte-identical either way (baizhanting_attack only
+        # replaces forget_client_idx's own loader), so this never affected
+        # actual adapter training, but it DID feed the forget client's
+        # mislabeled data into the Critical Layer Identification diagnostic
+        # pass (cli_use_all_clients=True, the default) instead of its true
+        # clean labels, corrupting which layers get selected as "critical."
+        # The sibling LoRA script (run_fused_cifar10.py) correctly passes
+        # the genuinely clean `data.client_loaders` to the analogous
+        # parameter — match that convention here.
+        all_clean_client_loaders=data.client_loaders,
         attacked_test_loaders=attacked_test_loaders,
         forget_client_idx=forget_client_idx,
         client_data_sizes=data.client_data_sizes,

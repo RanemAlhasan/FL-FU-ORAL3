@@ -360,15 +360,40 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         return avg_loss, acc
 
 
+_PEFT_LORA_ADAPTER_ATTRS = {"lora_A", "lora_B", "lora_embedding_A", "lora_embedding_B"}
+
+
 def _find_classifier_module(model: nn.Module) -> Tuple[nn.Module, str]:
-    """Locate the final Linear classifier layer generically across backbones."""
+    """Locate the final Linear classifier layer generically across backbones.
+
+    BUG FIX: this used to keep whichever nn.Linear was found LAST while
+    walking named_modules(), with no filtering. For a plain backbone that
+    correctly resolves to the true `fc`/`classifier` head. But for a model
+    wrapped by src/models/resnet_lora.py::build_lora_adapter (peft's
+    get_peft_model), PEFT's LoraLayer registers `base_layer` (the real
+    frozen classifier) BEFORE its `lora_A`/`lora_B` ModuleDicts, so the
+    unfiltered "last Linear wins" scan ends up on `fc.lora_B.default` — a
+    (r=16 -> num_classes) Linear that is the LoRA adapter's own up-
+    projection, not the model's true penultimate-feature classifier. Every
+    caller of this function (FedMoon's feature hook, here and in
+    src/fl/core_domain.py / src/fu/fused_cli_training.py) would then treat
+    that 16-dim LoRA projection's input as "features," corrupting the
+    contrastive term whenever FedMoon runs against a LoRA-adapted model
+    (src/fu/fused_training_domain.py's algorithm="fedmoon" path). Skipping
+    any Linear nested under a `lora_A`/`lora_B`/`lora_embedding_A`/
+    `lora_embedding_B` container fixes this for LoRA models while leaving
+    plain (non-PEFT) backbones' behavior unchanged.
+    """
     last_linear_name = None
     last_linear = None
 
     for name, module in model.named_modules():
-        if isinstance(module, nn.Linear):
-            last_linear_name = name
-            last_linear = module
+        if not isinstance(module, nn.Linear):
+            continue
+        if _PEFT_LORA_ADAPTER_ATTRS & set(name.split(".")):
+            continue
+        last_linear_name = name
+        last_linear = module
 
     if last_linear is None:
         raise ValueError("Could not find a Linear classifier head in model.")

@@ -151,11 +151,21 @@ def evaluate(model: nn.Module, test_loader: DataLoader, device: str) -> Tuple[fl
         data = data.to(device)
         target = target.to(device)
         output = model(data)
-        test_loss += criteria(output, target).item()
+        # BUG FIX: criteria(...) defaults to reduction='mean', i.e. each
+        # term is already a PER-BATCH mean loss. The original code summed
+        # these per-batch means and then divided by the total SAMPLE count
+        # (`len(test_loader.dataset)`), which is dividing a sum-of-means by
+        # the wrong denominator — it systematically deflates test_loss by
+        # roughly a factor of batch_size and has no effect on test_acc
+        # (accuracy bookkeeping below was always correct). Weighting each
+        # batch's mean loss by its own batch size and dividing by the total
+        # sample count gives the correct overall mean loss, matching how
+        # src/fl/client.py::_local_evaluate already computes it.
+        test_loss += criteria(output, target).item() * len(target)
         pred = torch.argmax(output, dim=1)
         correct += torch.sum(torch.eq(pred.cpu(), target.cpu())).item()
         total += len(target)
 
-    test_loss /= max(1, len(test_loader.dataset))
+    test_loss /= max(1, total)
     test_acc = correct / max(1, total)
     return test_loss, test_acc

@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import random
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from src.data.dataset import OralCancerDataset, Sample
 
@@ -121,11 +121,29 @@ def carve_proxy_partitions(
     proxy_partitions: List[ClientPartition] = []
 
     for partition in partitions:
-        samples = list(partition.samples)
-        rng.shuffle(samples)
-        n_proxy = int(len(samples) * proxy_frac)
-        proxy_samples = samples[:n_proxy]
-        main_samples = samples[n_proxy:]
+        # BUG FIX: this used to shuffle+slice the partition's samples as one
+        # FLAT list, with no per-class stratification. A hospital's minority
+        # class (e.g. a handful of Malignant images) could then land almost
+        # entirely in the proxy slice (or none of it) purely by chance,
+        # silently depleting that class from the real training/eval
+        # partition for that hospital. Carve per class instead — same
+        # proxy_frac fraction of EACH class's own samples — mirroring
+        # src/data/proxy_split.py::split_proxy's per-class carving for the
+        # CIFAR-10 pipeline, so both pipelines share the same
+        # class-balance-preserving intent.
+        by_class: Dict[int, List[Sample]] = {}
+        for s in partition.samples:
+            by_class.setdefault(s.label, []).append(s)
+
+        proxy_samples: List[Sample] = []
+        main_samples: List[Sample] = []
+        for label in sorted(by_class.keys()):
+            class_samples = list(by_class[label])
+            rng.shuffle(class_samples)
+            n_proxy = int(len(class_samples) * proxy_frac)
+            proxy_samples.extend(class_samples[:n_proxy])
+            main_samples.extend(class_samples[n_proxy:])
+
         main_partitions.append(ClientPartition(
             client_id=partition.client_id, hospital=partition.hospital, samples=main_samples,
         ))

@@ -448,6 +448,7 @@ def evaluate_fedbn_per_hospital(
     device,
     logger,
     log_dir,
+    client_partitions,
 ):
     """
     Correct FedBN evaluation.
@@ -481,13 +482,40 @@ def evaluate_fedbn_per_hospital(
     all_y_prob: List[List[float]] = []
     all_hospitals: List[str] = []
 
+    # BUG FIX: previously looked up `per_hospital_models[hospital]` directly.
+    # per_hospital_models (built in src/fl/simulation.py) is keyed by
+    # CLIENT_ID, which only equals the bare hospital name under
+    # client_split="hospital_based" (the default). Under
+    # client_split="simulated" (a supported config option — see
+    # src/data/partition.py::partition_simulated), client_id is
+    # "{hospital}__shard{n}", so the direct lookup always missed and every
+    # hospital was silently skipped, reporting 0% accuracy for a model that
+    # actually trained fine. Map hospital -> its client_id(s) via
+    # client_partitions instead, and evaluate with one representative
+    # shard's model (deterministic: lowest client_id) when a hospital has
+    # more than one, same "representative client" pattern already used for
+    # this run's single exported checkpoint (see simulation.py).
+    hospital_to_client_ids: Dict[str, List[str]] = {}
+    for partition in client_partitions:
+        hospital_to_client_ids.setdefault(partition.hospital, []).append(partition.client_id)
+
     for hospital in config["hospitals"]:
-        if hospital not in per_hospital_models:
+        candidate_ids = sorted(
+            cid for cid in hospital_to_client_ids.get(hospital, []) if cid in per_hospital_models
+        )
+        if not candidate_ids:
             logger.info(
                 f"[eval/fedbn] WARNING: no BN-complete model found for "
                 f"hospital={hospital}; skipping."
             )
             continue
+        representative_client_id = candidate_ids[0]
+        if len(candidate_ids) > 1:
+            logger.info(
+                f"[eval/fedbn] hospital={hospital} has {len(candidate_ids)} shards "
+                f"({candidate_ids}); evaluating with representative shard "
+                f"'{representative_client_id}'."
+            )
 
         hospital_samples = [s for s in test_samples if s.hospital == hospital]
 
@@ -505,7 +533,7 @@ def evaluate_fedbn_per_hospital(
             num_workers=2,
         )
 
-        model = per_hospital_models[hospital].to(device)
+        model = per_hospital_models[representative_client_id].to(device)
         model.eval()
 
         hospital_correct = 0
@@ -832,6 +860,7 @@ def main():
             device=device,
             logger=logger,
             log_dir=dirs["log_dir"],
+            client_partitions=client_partitions,
         )
     else:
         run_standard_evaluation(
