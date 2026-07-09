@@ -171,7 +171,20 @@ def run_fused_cli_unlearning(
         logger.info(f"FedBN-local (never-aggregated) critical layers among selection: {bn_critical_layers or 'none'}")
 
     # --- Step 2-4: sparse adapter construction + FUSED federation ------
-    source_model = source_model.to(device)
+    # BUG FIX: this used to reassign `source_model = source_model.to(device)`
+    # and then freeze `.requires_grad` on those SAME parameter objects —
+    # `.to(device)` returns the same module (in-place), so this mutated the
+    # CALLER's source_model, contradicting this function's own "read-only"
+    # docstring above. Harmless as long as nothing reused source_model after
+    # this call — until the shadow-model MIA (src/eval/mia.py, wired in via
+    # run_fu_cli_domain.py's shadow_fn) started doing exactly that: reusing
+    # source_model post-call to build each shadow model. Once frozen here,
+    # every shadow's fresh Critical Layer Identification pass got a model
+    # with requires_grad=False everywhere, so loss.backward() had no
+    # gradient path: "element 0 of tensors does not require grad and does
+    # not have a grad_fn". Deep-copy here so freezing only ever touches a
+    # local copy, making this function actually read-only as documented.
+    source_model = copy.deepcopy(source_model).to(device)
     source_model.eval()
     for p in source_model.parameters():
         p.requires_grad = False

@@ -1,0 +1,460 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Source run: fl_fedavg_oral_329811
+SLURM job ID: 342724
+Wed Jul  8 20:48:55 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:D8:00.0 Off |                    0 |
+| N/A   34C    P0              26W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+
+=== FUSED-CLI oral3, algorithm=fedmoon, forget=Spain_Dataset ===
+[2026-07-08 20:49:07] === Run started: fu_cli_fedmoon_spain_oral_342724 ===
+[2026-07-08 20:49:07] Forking from source FL run: fl_fedavg_oral_329811
+[2026-07-08 20:49:07] Forgetting: Spain_Dataset (index 0 of ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'])
+[2026-07-08 20:49:07] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedmoon
+[2026-07-08 20:49:07] Loaded source checkpoint (read-only) from checkpoints/fl/fl_fedavg_oral_329811/best.pt
+[2026-07-08 20:49:07] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[319, 1308, 404]
+[2026-07-08 20:49:07] Built 3 proxy hospital train loaders (proxy_frac=0.2), sizes=[79, 327, 101].
+[2026-07-08 20:49:07] Running FUSED-CLI unlearning (algorithm=fedmoon)...
+[2026-07-08 20:49:07] Running Critical Layer Identification (one federated round, remember clients only)...
+[2026-07-08 20:49:30] Selected 4 critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6661, avg_f_acc=0.7903, adapter_density=413080/8257536
+[2026-07-08 20:50:54] [FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6661, avg_f_acc=0.7903, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6684, avg_f_acc=0.7903, adapter_density=413080/8257536
+[2026-07-08 20:52:13] [FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6684, avg_f_acc=0.7903, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6676, avg_f_acc=0.7903, adapter_density=413080/8257536
+[2026-07-08 20:53:31] [FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6676, avg_f_acc=0.7903, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6669, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 20:54:48] [FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6669, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6662, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 20:56:06] [FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6662, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6677, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 20:57:24] [FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6677, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6733, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 20:58:44] [FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6733, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6778, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:00:03] [FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6778, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6500, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:01:21] [FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6500, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6493, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:02:40] [FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6493, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6486, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:03:59] [FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6486, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6508, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:05:17] [FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6508, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6508, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:06:36] [FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6508, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6539, avg_f_acc=0.7807, adapter_density=413080/8257536
+[2026-07-08 21:07:53] [FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6539, avg_f_acc=0.7807, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6539, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:09:08] [FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6539, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=15, avg_r_acc=0.6532, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:10:26] [FUSED-CLI:fedmoon] Round=15, avg_r_acc=0.6532, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=16, avg_r_acc=0.6532, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:11:43] [FUSED-CLI:fedmoon] Round=16, avg_r_acc=0.6532, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=17, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:12:58] [FUSED-CLI:fedmoon] Round=17, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=18, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:14:16] [FUSED-CLI:fedmoon] Round=18, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=19, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:15:34] [FUSED-CLI:fedmoon] Round=19, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=20, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:16:52] [FUSED-CLI:fedmoon] Round=20, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=21, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:18:09] [FUSED-CLI:fedmoon] Round=21, avg_r_acc=0.6518, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=22, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:19:28] [FUSED-CLI:fedmoon] Round=22, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=23, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:20:46] [FUSED-CLI:fedmoon] Round=23, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=24, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:22:05] [FUSED-CLI:fedmoon] Round=24, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=25, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:23:22] [FUSED-CLI:fedmoon] Round=25, avg_r_acc=0.6511, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=26, avg_r_acc=0.6563, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:24:39] [FUSED-CLI:fedmoon] Round=26, avg_r_acc=0.6563, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=27, avg_r_acc=0.6563, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:25:57] [FUSED-CLI:fedmoon] Round=27, avg_r_acc=0.6563, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=28, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:27:15] [FUSED-CLI:fedmoon] Round=28, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=29, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:28:33] [FUSED-CLI:fedmoon] Round=29, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=30, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:29:51] [FUSED-CLI:fedmoon] Round=30, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=31, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:31:11] [FUSED-CLI:fedmoon] Round=31, avg_r_acc=0.6585, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=32, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:32:29] [FUSED-CLI:fedmoon] Round=32, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=33, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:33:47] [FUSED-CLI:fedmoon] Round=33, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=34, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:35:06] [FUSED-CLI:fedmoon] Round=34, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=35, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:36:25] [FUSED-CLI:fedmoon] Round=35, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=36, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:37:42] [FUSED-CLI:fedmoon] Round=36, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=37, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:39:01] [FUSED-CLI:fedmoon] Round=37, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=38, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:40:19] [FUSED-CLI:fedmoon] Round=38, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=39, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:41:35] [FUSED-CLI:fedmoon] Round=39, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=40, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:42:53] [FUSED-CLI:fedmoon] Round=40, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=41, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:44:11] [FUSED-CLI:fedmoon] Round=41, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=42, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:45:25] [FUSED-CLI:fedmoon] Round=42, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=43, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:46:44] [FUSED-CLI:fedmoon] Round=43, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=44, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:48:01] [FUSED-CLI:fedmoon] Round=44, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=45, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:49:18] [FUSED-CLI:fedmoon] Round=45, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=46, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:50:36] [FUSED-CLI:fedmoon] Round=46, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=47, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:51:53] [FUSED-CLI:fedmoon] Round=47, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=48, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:53:12] [FUSED-CLI:fedmoon] Round=48, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=49, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:54:29] [FUSED-CLI:fedmoon] Round=49, avg_r_acc=0.6578, avg_f_acc=0.7712, adapter_density=413080/8257536
+[2026-07-08 21:54:29] FUSED-CLI unlearning complete. Critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[2026-07-08 21:54:29] Running relearn (ReA) probe for 50 rounds...
+[Relearn] Round=0, avg_f_acc=0.8545 (ReA), avg_r_acc=0.6489
+[2026-07-08 21:56:36] [Relearn] Round=0, avg_f_acc=0.8545 (ReA), avg_r_acc=0.6489
+[Relearn] Round=1, avg_f_acc=0.8355 (ReA), avg_r_acc=0.6441
+[2026-07-08 21:58:36] [Relearn] Round=1, avg_f_acc=0.8355 (ReA), avg_r_acc=0.6441
+[Relearn] Round=2, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6575
+[2026-07-08 22:00:36] [Relearn] Round=2, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6575
+[Relearn] Round=3, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6615
+[2026-07-08 22:02:26] [Relearn] Round=3, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6615
+[Relearn] Round=4, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6595
+[2026-07-08 22:04:26] [Relearn] Round=4, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6595
+[Relearn] Round=5, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6508
+[2026-07-08 22:06:23] [Relearn] Round=5, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6508
+[Relearn] Round=6, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6619
+[2026-07-08 22:08:25] [Relearn] Round=6, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6619
+[Relearn] Round=7, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6364
+[2026-07-08 22:10:21] [Relearn] Round=7, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6364
+[Relearn] Round=8, avg_f_acc=0.8697 (ReA), avg_r_acc=0.6638
+[2026-07-08 22:12:15] [Relearn] Round=8, avg_f_acc=0.8697 (ReA), avg_r_acc=0.6638
+[Relearn] Round=9, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6618
+[2026-07-08 22:14:13] [Relearn] Round=9, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6618
+[Relearn] Round=10, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6584
+[2026-07-08 22:16:14] [Relearn] Round=10, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6584
+[Relearn] Round=11, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6547
+[2026-07-08 22:18:13] [Relearn] Round=11, avg_f_acc=0.8602 (ReA), avg_r_acc=0.6547
+[Relearn] Round=12, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6590
+[2026-07-08 22:20:18] [Relearn] Round=12, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6590
+[Relearn] Round=13, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6605
+[2026-07-08 22:22:20] [Relearn] Round=13, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6605
+[Relearn] Round=14, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6634
+[2026-07-08 22:24:17] [Relearn] Round=14, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6634
+[Relearn] Round=15, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6590
+[2026-07-08 22:26:22] [Relearn] Round=15, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6590
+[Relearn] Round=16, avg_f_acc=0.8331 (ReA), avg_r_acc=0.6589
+[2026-07-08 22:28:28] [Relearn] Round=16, avg_f_acc=0.8331 (ReA), avg_r_acc=0.6589
+[Relearn] Round=17, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6582
+[2026-07-08 22:30:31] [Relearn] Round=17, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6582
+[Relearn] Round=18, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6762
+[2026-07-08 22:32:35] [Relearn] Round=18, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6762
+[Relearn] Round=19, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6622
+[2026-07-08 22:34:41] [Relearn] Round=19, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6622
+[Relearn] Round=20, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6630
+[2026-07-08 22:36:42] [Relearn] Round=20, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6630
+[Relearn] Round=21, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6598
+[2026-07-08 22:38:44] [Relearn] Round=21, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6598
+[Relearn] Round=22, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6582
+[2026-07-08 22:40:47] [Relearn] Round=22, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6582
+[Relearn] Round=23, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6760
+[2026-07-08 22:42:52] [Relearn] Round=23, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6760
+[Relearn] Round=24, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6715
+[2026-07-08 22:44:50] [Relearn] Round=24, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6715
+[Relearn] Round=25, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6773
+[2026-07-08 22:46:52] [Relearn] Round=25, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6773
+[Relearn] Round=26, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6724
+[2026-07-08 22:48:51] [Relearn] Round=26, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6724
+[Relearn] Round=27, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6794
+[2026-07-08 22:50:57] [Relearn] Round=27, avg_f_acc=0.8578 (ReA), avg_r_acc=0.6794
+[Relearn] Round=28, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6812
+[2026-07-08 22:52:59] [Relearn] Round=28, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6812
+[Relearn] Round=29, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6723
+[2026-07-08 22:55:04] [Relearn] Round=29, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6723
+[Relearn] Round=30, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6849
+[2026-07-08 22:57:03] [Relearn] Round=30, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6849
+[Relearn] Round=31, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6752
+[2026-07-08 22:59:00] [Relearn] Round=31, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6752
+[Relearn] Round=32, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6767
+[2026-07-08 23:00:59] [Relearn] Round=32, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6767
+[Relearn] Round=33, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6693
+[2026-07-08 23:02:59] [Relearn] Round=33, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6693
+[Relearn] Round=34, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6752
+[2026-07-08 23:05:01] [Relearn] Round=34, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6752
+[Relearn] Round=35, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6688
+[2026-07-08 23:06:58] [Relearn] Round=35, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6688
+[Relearn] Round=36, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6746
+[2026-07-08 23:08:59] [Relearn] Round=36, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6746
+[Relearn] Round=37, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6731
+[2026-07-08 23:11:04] [Relearn] Round=37, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6731
+[Relearn] Round=38, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6661
+[2026-07-08 23:13:02] [Relearn] Round=38, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6661
+[Relearn] Round=39, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6710
+[2026-07-08 23:14:56] [Relearn] Round=39, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6710
+[Relearn] Round=40, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6761
+[2026-07-08 23:16:57] [Relearn] Round=40, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6761
+[Relearn] Round=41, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6658
+[2026-07-08 23:18:52] [Relearn] Round=41, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6658
+[Relearn] Round=42, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6648
+[2026-07-08 23:20:58] [Relearn] Round=42, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6648
+[Relearn] Round=43, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6539
+[2026-07-08 23:22:54] [Relearn] Round=43, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6539
+[Relearn] Round=44, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6775
+[2026-07-08 23:24:59] [Relearn] Round=44, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6775
+[Relearn] Round=45, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6707
+[2026-07-08 23:26:55] [Relearn] Round=45, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6707
+[Relearn] Round=46, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6641
+[2026-07-08 23:28:59] [Relearn] Round=46, avg_f_acc=0.8634 (ReA), avg_r_acc=0.6641
+[Relearn] Round=47, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6708
+[2026-07-08 23:30:55] [Relearn] Round=47, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6708
+[Relearn] Round=48, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6605
+[2026-07-08 23:33:02] [Relearn] Round=48, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6605
+[Relearn] Round=49, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6709
+[2026-07-08 23:35:01] [Relearn] Round=49, avg_f_acc=0.8483 (ReA), avg_r_acc=0.6709
+[2026-07-08 23:35:01] ReA = 0.8483
+[2026-07-08 23:35:18] Final unlearned model: global test loss=0.0809, acc=0.7520
+[2026-07-08 23:36:27] [eval/classification] accuracy=0.7520 macro_precision=0.7221 macro_recall=0.7220 macro_f1=0.7192 weighted_f1=0.7492
+[2026-07-08 23:36:27] [eval] overall_acc=0.7520 overall_loss=1.2751 | macro_precision=0.7221 macro_recall=0.7220 macro_f1=0.7192 weighted_f1=0.7492 | per_hospital={ Spain_Dataset: 0.7547, Canada_Dataset: 0.8471, India_Dataset: 0.4621 }
+[2026-07-08 23:36:47] [eval/unlearning/remember_classification] accuracy=0.7488 macro_precision=0.7024 macro_recall=0.7061 macro_f1=0.7012 weighted_f1=0.7471
+[2026-07-08 23:36:57] [eval/unlearning/forget_classification] accuracy=0.7765 macro_precision=0.8112 macro_recall=0.7712 macro_f1=0.7753 weighted_f1=0.7689
+[2026-07-08 23:38:51] [eval/unlearning] RA=0.7488 FA=0.7765 ReA=1.0000 remember_macro_f1=0.7012 forget_macro_f1=0.7753 MIA_acc=0.3190
+[2026-07-08 23:38:51] [symmetric eval] RA=0.7488 FA=0.7765 ReA=1.0000 MIA_acc=0.3190
+[2026-07-08 23:38:51] Running shadow-model MIA (n_shadow=3, attack_epochs=50, proxy_frac=0.2)...
+[MIA] Training shadow model 1/3...
+[CLI] Selected critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6304, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6304, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=15, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=16, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=17, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=18, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=19, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=20, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=21, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=22, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=23, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=24, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=25, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=26, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=27, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=28, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=29, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=30, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=31, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=32, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=33, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=34, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=35, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=36, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=37, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=38, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=39, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=40, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=41, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=42, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=43, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=44, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=45, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=46, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=47, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=48, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=49, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[MIA] Training shadow model 2/3...
+[CLI] Selected critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight', 'layer3.0.conv2.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6304, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=15, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=16, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=17, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=18, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=19, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=20, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=21, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=22, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=23, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=24, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=25, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=26, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=27, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=28, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=29, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=30, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=31, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=32, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=33, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=34, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=35, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=36, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=37, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=38, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=39, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=40, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=41, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=42, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=43, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=44, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=45, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=46, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=47, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=48, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[FUSED-CLI:fedmoon] Round=49, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=324695/6488064
+[MIA] Training shadow model 3/3...
+[CLI] Selected critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedmoon] Round=0, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=1, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=2, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=3, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=4, avg_r_acc=0.6304, avg_f_acc=0.7833, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=5, avg_r_acc=0.6304, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=6, avg_r_acc=0.6304, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=7, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=8, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=9, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=10, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=11, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=12, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=13, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=14, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=15, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=16, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=17, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=18, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=19, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=20, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=21, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=22, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=23, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=24, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=25, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=26, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=27, avg_r_acc=0.6277, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=28, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=29, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=30, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=31, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=32, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=33, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=34, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=35, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=36, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=37, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=38, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=39, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=40, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=41, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=42, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=43, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=44, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=45, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=46, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=47, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=48, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[FUSED-CLI:fedmoon] Round=49, avg_r_acc=0.6251, avg_f_acc=0.8167, adapter_density=413080/8257536
+[MIA] Attack model epoch=0, mean_client_accuracy=0.5645
+[MIA] Attack model epoch=1, mean_client_accuracy=0.4729
+[MIA] Attack model epoch=2, mean_client_accuracy=0.5524
+[MIA] Attack model epoch=3, mean_client_accuracy=0.5099
+[MIA] Attack model epoch=4, mean_client_accuracy=0.5088
+[MIA] Attack model epoch=5, mean_client_accuracy=0.4766
+[MIA] Attack model epoch=6, mean_client_accuracy=0.5354
+[MIA] Attack model epoch=7, mean_client_accuracy=0.5572
+[MIA] Attack model epoch=8, mean_client_accuracy=0.5746
+[MIA] Attack model epoch=9, mean_client_accuracy=0.5537
+[MIA] Attack model epoch=10, mean_client_accuracy=0.5450
+[MIA] Attack model epoch=11, mean_client_accuracy=0.5620
+[MIA] Attack model epoch=12, mean_client_accuracy=0.5776
+[MIA] Attack model epoch=13, mean_client_accuracy=0.5430
+[MIA] Attack model epoch=14, mean_client_accuracy=0.5296
+[MIA] Attack model epoch=15, mean_client_accuracy=0.5204
+[MIA] Attack model epoch=16, mean_client_accuracy=0.5547
+[MIA] Attack model epoch=17, mean_client_accuracy=0.5734
+[MIA] Attack model epoch=18, mean_client_accuracy=0.5270
+[MIA] Attack model epoch=19, mean_client_accuracy=0.5937
+[MIA] Attack model epoch=20, mean_client_accuracy=0.5468
+[MIA] Attack model epoch=21, mean_client_accuracy=0.5431
+[MIA] Attack model epoch=22, mean_client_accuracy=0.5457
+[MIA] Attack model epoch=23, mean_client_accuracy=0.5419
+[MIA] Attack model epoch=24, mean_client_accuracy=0.5434
+[MIA] Attack model epoch=25, mean_client_accuracy=0.5731
+[MIA] Attack model epoch=26, mean_client_accuracy=0.5663
+[MIA] Attack model epoch=27, mean_client_accuracy=0.5674
+[MIA] Attack model epoch=28, mean_client_accuracy=0.5737
+[MIA] Attack model epoch=29, mean_client_accuracy=0.5356
+[MIA] Attack model epoch=30, mean_client_accuracy=0.5678
+[MIA] Attack model epoch=31, mean_client_accuracy=0.5468
+[MIA] Attack model epoch=32, mean_client_accuracy=0.5812
+[MIA] Attack model epoch=33, mean_client_accuracy=0.5496
+[MIA] Attack model epoch=34, mean_client_accuracy=0.4762
+[MIA] Attack model epoch=35, mean_client_accuracy=0.5606
+[MIA] Attack model epoch=36, mean_client_accuracy=0.5628
+[MIA] Attack model epoch=37, mean_client_accuracy=0.5705
+[MIA] Attack model epoch=38, mean_client_accuracy=0.5655
+[MIA] Attack model epoch=39, mean_client_accuracy=0.5641
+[MIA] Attack model epoch=40, mean_client_accuracy=0.5368
+[MIA] Attack model epoch=41, mean_client_accuracy=0.6044
+[MIA] Attack model epoch=42, mean_client_accuracy=0.5919
+[MIA] Attack model epoch=43, mean_client_accuracy=0.5553
+[MIA] Attack model epoch=44, mean_client_accuracy=0.5294
+[MIA] Attack model epoch=45, mean_client_accuracy=0.5538
+[MIA] Attack model epoch=46, mean_client_accuracy=0.5642
+[MIA] Attack model epoch=47, mean_client_accuracy=0.6053
+[MIA] Attack model epoch=48, mean_client_accuracy=0.5793
+[MIA] Attack model epoch=49, mean_client_accuracy=0.5426
+[2026-07-09 00:35:17] Shadow-model MIA accuracy = 0.5426 (per-client: {0: 0.6014851485148515, 1: 0.691031941031941, 2: 0.3352941176470588})
+[2026-07-09 00:35:17] Saved unlearned model to checkpoints/fu_cli_domain/fu_cli_fedmoon_spain_oral_342724/unlearned_model.pt
+[2026-07-09 00:35:17] === Run finished: fu_cli_fedmoon_spain_oral_342724 (elapsed 13570.4s) ===
+
+Done. run_id = fu_cli_fedmoon_spain_oral_342724 (source_run = fl_fedavg_oral_329811, algorithm = fedmoon, forgot Spain_Dataset, critical_layers = ['layer4.0.conv2.weight', 'layer4.1.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight'])
+
+Done. run_id = fu_cli_fedmoon_spain_oral_342724
