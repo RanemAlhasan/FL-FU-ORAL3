@@ -84,6 +84,13 @@ def parse_args():
     parser.add_argument("--fedmoon_temperature", type=float, default=0.5)
     parser.add_argument("--num_unlearning_layers", type=int, default=4)
     parser.add_argument("--adapter_sparsity", type=float, default=0.05)
+    parser.add_argument("--cli_use_all_clients", dest="cli_use_all_clients", action="store_true", default=True,
+                         help="Critical Layer Identification measures diffs across ALL clients "
+                              "(paper Eq 11-13), including the forget client — its data is used only "
+                              "for this one diagnostic pass, never for actual adapter training. On by default.")
+    parser.add_argument("--cli_remember_only", dest="cli_use_all_clients", action="store_false",
+                         help="Compliance mode: exclude the forget client from CLI too, deviating from "
+                              "Eq 11-13, if your policy requires never touching its data at all.")
     parser.add_argument("--global_epoch", type=int, default=50)
     parser.add_argument("--local_epoch", type=int, default=3)
     parser.add_argument("--batch_size", type=int, default=16)
@@ -227,6 +234,7 @@ def main():
         device=device, test_batch_size=args.batch_size,
         algorithm=args.algorithm, fedprox_mu=args.fedprox_mu,
         fedmoon_mu=args.fedmoon_mu, fedmoon_temperature=args.fedmoon_temperature,
+        cli_use_all_clients=args.cli_use_all_clients,
         seed=fl_config["seed"], logger=logger,
     )
     logger.info(f"FUSED-CLI unlearning complete. Critical layers: {critical_layers}")
@@ -334,6 +342,7 @@ def main():
                 device=device, test_batch_size=args.batch_size,
                 algorithm=args.algorithm, fedprox_mu=args.fedprox_mu,
                 fedmoon_mu=args.fedmoon_mu, fedmoon_temperature=args.fedmoon_temperature,
+                cli_use_all_clients=args.cli_use_all_clients,
                 seed=fl_config["seed"],
             )
             return shadow_model

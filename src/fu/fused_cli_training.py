@@ -137,6 +137,7 @@ def run_fused_cli_unlearning(
     fedmoon_mu: float = 1.0,
     fedmoon_temperature: float = 0.5,
     cli_local_epochs: int = 1,
+    cli_use_all_clients: bool = True,
     seed: int = 42,
     logger=None,
 ) -> Tuple[nn.Module, dict, List[str]]:
@@ -146,6 +147,23 @@ def run_fused_cli_unlearning(
     Returns (unlearned_model, history, critical_layer_names).
     `source_model` is treated as READ-ONLY throughout (never mutated in
     place) until the very last step, which merges into a fresh deepcopy.
+
+    `cli_use_all_clients` (default True, paper-faithful): Eq 11-13 defines
+    the CLI diff as a data-volume-weighted sum over ALL N clients (n =
+    1, ..., N), which — in the client-unlearning setting — includes the
+    client that's about to be forgotten. That's intentional: CLI's stated
+    purpose (Sec 4.1) is to find "the layers that are sensitive to
+    [the] knowledge" being removed, so the forget client's own local
+    update is exactly the signal that tells you which layers actually
+    hold ITS knowledge, not just which layers are sensitive to remember-
+    client heterogeneity. The forget client's data is used ONLY for this
+    one diagnostic federated round (one local-epoch pass to measure a
+    Manhattan distance) — it is never used again afterward; all actual
+    adapter training below still uses remember clients exclusively.
+    Set this to False if your deployment's right-to-be-forgotten policy
+    requires the forget client's data to never be touched at all, even
+    for this one measurement pass — you'll deviate from Eq 11-13, but
+    stay strictly compliant.
     """
     algorithm = _check_algorithm(algorithm)
     num_clients = len(all_clean_client_loaders)
@@ -153,11 +171,17 @@ def run_fused_cli_unlearning(
     remember_loaders = [all_clean_client_loaders[i] for i in remember_idx]
     remember_data_sizes = [client_data_sizes[i] for i in remember_idx]
 
-    # --- Step 1: Critical Layer Identification (paper Sec 4.1) ---------
+    # --- Step 1: Critical Layer Identification (paper Sec 4.1, Eq 11-13) ---
+    # Eq 13 sums over ALL N clients — including the forget client — not just
+    # remember clients (see cli_use_all_clients docstring above for why this
+    # matters mechanically, not just for literal paper-fidelity).
+    cli_loaders = all_clean_client_loaders if cli_use_all_clients else remember_loaders
+    cli_data_sizes = client_data_sizes if cli_use_all_clients else remember_data_sizes
     if logger is not None:
-        logger.info("Running Critical Layer Identification (one federated round, remember clients only)...")
+        scope = "ALL clients (paper Eq 11-13)" if cli_use_all_clients else "remember clients only (compliance mode)"
+        logger.info(f"Running Critical Layer Identification (one federated round, {scope})...")
     diffs = run_critical_layer_identification(
-        source_model, remember_loaders, remember_data_sizes, device,
+        source_model, cli_loaders, cli_data_sizes, device,
         local_epochs=cli_local_epochs, learning_rate=learning_rate,
     )
     critical_layers = select_top_k_critical_layers(diffs, num_unlearning_layers)
