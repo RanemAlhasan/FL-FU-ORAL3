@@ -39,7 +39,7 @@ from src.fl.core import evaluate
 from src.fu import relearn as relearn_mod
 from src.fu.fused_cli_training import run_fused_cli_unlearning
 from src.fu.retrain_domain import fl_retrain_domain
-from src.models.resnet_lora import build_resnet18_cifar10
+from src.models.backbone import build_model
 from src.utils.checkpoint import get_checkpoint_path, load_checkpoint_into_new_model, save_checkpoint
 from src.utils.config import load_source_run_config, make_run_id, resolve_run_dirs, save_config_snapshot
 from src.utils.logger import build_logger
@@ -153,7 +153,18 @@ def main():
     source_checkpoint_path = get_checkpoint_path(source_checkpoint_dir, "best")
 
     def model_builder():
-        return build_resnet18_cifar10(num_classes=fl_config["num_classes"], pretrained=fl_config.get("pretrained", True))
+        # FIX: was hardcoded to build_resnet18_cifar10 regardless of what
+        # architecture the source run actually trained (fl_config["model"]).
+        # Harmless while every config defaults to resnet18, but would
+        # silently build the WRONG architecture (and then fail/garbage-load
+        # weights) for a resnet50/densenet121/efficientnet/vit source run.
+        # Unlike run_fu_lora_domain.py, this CLI+sparse-adapter pipeline has
+        # no LoRA target_modules hardcoded to resnet18's layer names (Critical
+        # Layer Identification and sparse adapters both operate generically
+        # over get_named_layers()), so it's safe to just build whatever
+        # architecture the source run used.
+        return build_model(fl_config.get("model", "resnet18"), num_classes=fl_config["num_classes"],
+                            pretrained=fl_config.get("pretrained", True))
 
     source_model = load_checkpoint_into_new_model(model_builder, source_checkpoint_path, device=device)
     logger.info(f"Loaded source checkpoint (read-only) from {source_checkpoint_path}")
@@ -270,10 +281,14 @@ def main():
                          extra={"forget_client": args.forget_client, "algorithm": args.algorithm,
                                 "history": retrain_result})
 
-    global_test_dataset = OralCancerDataset(
-        test_samples, transform=eval_transform, load_metadata=merged_config["load_metadata"],
-        hospital_to_idx=hospital_to_idx,
-    )
+    # FIX: previously built from `test_samples` — the RAW, pre-carve sample
+    # list indexed at the top of this function — which silently included
+    # the proxy_frac slice that carve_proxy_partitions() carved out
+    # specifically to stay isolated from the real run (shadow-MIA-only).
+    # Build from the post-carve `test_oral_datasets` instead, exactly like
+    # every other "real" evaluation set in this script, so the "final
+    # global test" metric never touches proxy data.
+    global_test_dataset = ConcatDataset(test_oral_datasets)
     global_test_loader = as_tensor_pair_loader(global_test_dataset, args.batch_size, shuffle=False)
     final_loss, final_acc = evaluate(unlearned_model, global_test_loader, device)
     logger.info(f"Final unlearned model: global test loss={final_loss:.4f}, acc={final_acc:.4f}")
@@ -294,6 +309,18 @@ def main():
     forget_test_loader = concat_as_dict_loader(
         [test_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
     )
+    # FIX: MIA's member set must be data the model was actually TRAINED on
+    # (see compute_mia_accuracy's docstring). forget_test_loader is the
+    # forget hospital's TEST split, which — like every test split — was
+    # never in any training set. The forget client's TRAIN split
+    # (train_oral_datasets, post-carve), on the other hand, WAS trained on
+    # during Phase 1 (source_model was forked from a Phase-1 FL run trained
+    # over all hospitals, forget client included), so it's the correct
+    # member set for asking "does the unlearned model still leak whether it
+    # saw this data?".
+    forget_train_loader_dict = concat_as_dict_loader(
+        [train_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
+    )
     run_standard_evaluation(
         unlearned_model, global_test_loader_dict, device, fl_config["num_classes"],
         logger, step=args.global_epoch, tag_prefix="eval",
@@ -304,6 +331,7 @@ def main():
         relearn_steps=merged_config.get("relearn_steps", 50),
         relearn_lr=merged_config.get("relearn_lr", 1e-3),
         nonmember_loader=remember_test_loader,
+        member_loader=forget_train_loader_dict,
         before_unlearning_acc=None,
     )
     logger.info(

@@ -1,10 +1,17 @@
 """
+ORPHANED / NOT A LIVE ENTRY POINT — DO NOT IMPORT OR RUN.
+
 Flower client used during the FUSED unlearning phase. Unlike the FL-phase
 client (src/fl/client.py), this client:
   - Never updates the frozen base model's parameters.
   - Only trains its share of the sparse adapter deltas (Eq. 14).
   - Is only ever instantiated for REMEMBER clients — forget clients are
     excluded entirely from this phase (Algorithm 1, lines 4-7).
+
+Only used by src/fu/fused_runner.py, which is itself orphaned (see that
+file's module docstring for the full explanation). Not imported by any
+script today. For any real Phase-2 FUSED run, use
+scripts/run_fu_cli_domain.py or scripts/run_fu_lora_domain.py instead.
 """
 from __future__ import annotations
 
@@ -17,7 +24,14 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-from src.fu.sparse_adapter import SparseAdapterSet
+# FIX (was a broken import — src/fu/sparse_adapter.py doesn't exist, only
+# sparse_adapter_generic.py does): this now imports without raising
+# ModuleNotFoundError, but the generic SparseAdapterSet's API
+# (`.deltas`/`.masks` dicts) does NOT match how this file uses it below
+# (`.adapters.values()`, per-adapter `.delta`) — see fused_runner.py's
+# module docstring for the full explanation. This file is dead/orphaned
+# code and still cannot actually run without a real port.
+from src.fu.sparse_adapter_generic import SparseAdapterSet
 
 
 def adapter_deltas_to_ndarrays(adapter_set: SparseAdapterSet) -> List[np.ndarray]:

@@ -1,4 +1,6 @@
 """
+ORPHANED / NOT A LIVE ENTRY POINT — DO NOT IMPORT OR RUN.
+
 Orchestrates the full FUSED unlearning phase (Algorithm 1 in the paper),
 end to end:
 
@@ -15,10 +17,19 @@ end to end:
      (saved separately so removal/reversibility is possible later without
      retraining).
 
-This module is invoked exclusively by scripts/run_fu.py. It NEVER mutates
-the source FL run's checkpoint or logs — see src/utils/checkpoint.py for the
-enforced "build fresh, load weights" pattern used to obtain every model
-instance here.
+This module was originally invoked exclusively by scripts/run_fu.py, which
+no longer exists in this repo (superseded by scripts/run_fu_cli_domain.py,
+the paper-faithful CLI+sparse-adapter pipeline). It is NOT imported by any
+script today and is kept only for reference. It also depends on
+src/fu/fused_client.py, whose SparseAdapterSet usage (`.adapters`, per-
+adapter `.delta`) matches the ORIGINAL (now-deleted) sparse_adapter.py API,
+not src/fu/sparse_adapter_generic.py's API (`.deltas`/`.masks` dicts) — the
+two are not drop-in compatible, so fixing the import below is NOT enough to
+make this module run; a real port to the generic adapter/critical-layer
+APIs (src/fu/critical_layers_generic.py, src/fu/sparse_adapter_generic.py)
+would be needed first. For any real Phase-2 FUSED run, use
+scripts/run_fu_cli_domain.py (this logic's live, generic-architecture
+successor) or scripts/run_fu_lora_domain.py (the LoRA variant) instead.
 """
 from __future__ import annotations
 
@@ -37,7 +48,15 @@ from src.data.partition import ClientPartition
 from src.fu.critical_layers import compute_layer_diffs, select_top_k_critical_layers
 from src.fu.fused_client import (FusedAdapterClient, adapter_deltas_to_ndarrays,
                                   ndarrays_to_adapter_deltas)
-from src.fu.sparse_adapter import SparseAdapterSet
+# FIX (was a broken import — src/fu/sparse_adapter.py doesn't exist, only
+# sparse_adapter_generic.py does): this now imports without raising
+# ModuleNotFoundError, but see the module docstring above — the generic
+# SparseAdapterSet's API (`.deltas`/`.masks`) is NOT a drop-in match for how
+# this file and fused_client.py use it (`.adapters`, per-adapter `.delta`,
+# `.num_total_elements()`, `.finalize_into()`, `.restore_modules()`, none of
+# which exist on the generic class). This module still cannot actually run
+# end-to-end without a real port; it's dead/orphaned code, not a live path.
+from src.fu.sparse_adapter_generic import SparseAdapterSet
 from src.utils.checkpoint import clone_model
 from src.utils.logger import ExperimentLogger
 

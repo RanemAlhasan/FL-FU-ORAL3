@@ -94,10 +94,13 @@ def get_named_layers(model: nn.Module) -> List[Tuple[str, nn.Module]]:
     for name, module in model.named_modules():
         if isinstance(module, (nn.Conv2d, nn.Linear, nn.BatchNorm1d,
                                 nn.BatchNorm2d, nn.BatchNorm3d, nn.LayerNorm)):
-            # Only count modules with learnable parameters of their own.
-            if any(p.requires_grad or True for p in module.parameters(recurse=False)):
-                if list(module.parameters(recurse=False)):
-                    layers.append((name, module))
+            # Only count modules with learnable (requires_grad) parameters of
+            # their own. FIX: this previously read `p.requires_grad or True`,
+            # which is always True regardless of requires_grad — a no-op that
+            # defeated the whole point of the check.
+            own_params = list(module.parameters(recurse=False))
+            if own_params and any(p.requires_grad for p in own_params):
+                layers.append((name, module))
     return layers
 
 

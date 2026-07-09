@@ -170,11 +170,26 @@ def run_unlearning_evaluation(
     relearn_steps: int = 50,
     relearn_lr: float = 1e-3,
     nonmember_loader: Optional[DataLoader] = None,
+    member_loader: Optional[DataLoader] = None,
     before_unlearning_acc: Optional[float] = None,
 ) -> Dict:
     """RA/FA/ReA/MIA + before/after accuracy, namespaced under
     eval/unlearning/*. Used by run_fu.py and run_retrain.py — NOT by run_fl.py
-    (plain FL training has no forget/remember notion)."""
+    (plain FL training has no forget/remember notion).
+
+    `forget_loader` (RA/FA/relearn/classification-report target) is always
+    the forget client's TEST split — that's the right set for accuracy-style
+    metrics. MIA membership inference is a different question ("does the
+    model's loss distribution reveal which samples it trained on?") and
+    needs its own `member_loader`: samples the model actually WAS trained
+    on (see compute_mia_accuracy's docstring). If `member_loader` is not
+    given, we fall back to `forget_loader` for backward compatibility, but
+    that fallback is only valid when the model was never trained on ANY of
+    the forget client's data (e.g. a from-scratch retrain baseline) —
+    callers whose model DID train on the forget client (e.g. a Phase-2
+    unlearning run forked from a Phase-1 checkpoint that included the
+    forget client) must pass the forget client's TRAIN loader explicitly
+    here, or MIA_acc measures nothing meaningful."""
     ra_fa = compute_ra_fa(model, remember_loader, forget_loader, device)
 
     logger.log_scalar("eval/unlearning/RA", ra_fa["RA"], step)
@@ -243,7 +258,8 @@ def run_unlearning_evaluation(
     }
 
     if nonmember_loader is not None:
-        mia_acc = compute_mia_accuracy(model, forget_loader, nonmember_loader, device)
+        mia_member_loader = member_loader if member_loader is not None else forget_loader
+        mia_acc = compute_mia_accuracy(model, mia_member_loader, nonmember_loader, device)
         logger.log_scalar("eval/unlearning/MIA_acc", mia_acc, step)
         logger.set_final_metric("eval/unlearning/MIA_acc", mia_acc)
         result["MIA_acc"] = mia_acc

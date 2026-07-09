@@ -198,6 +198,23 @@ def main():
     source_checkpoint_path = get_checkpoint_path(source_checkpoint_dir, "best")
 
     def model_builder():
+        # This LoRA pipeline hardcodes target_modules for resnet18's layer
+        # naming (see CIFAR10_TARGET_MODULES in src/models/resnet_lora.py:
+        # "layer4.0.conv2", "layer4.1.conv1", ...), so it can only ever be
+        # correct for a resnet18 source checkpoint. Fail loudly here rather
+        # than silently building a resnet18 for a run that actually trained
+        # a different architecture (fl_config["model"]) — use
+        # run_fu_cli_domain.py (architecture-generic) for non-resnet18 runs.
+        source_model_name = fl_config.get("model", "resnet18")
+        if source_model_name.lower() != "resnet18":
+            raise ValueError(
+                f"run_fu_lora_domain.py only supports resnet18 source checkpoints "
+                f"(LoRA target_modules are hardcoded to resnet18's layer names), "
+                f"but --source_run '{args.source_run}' was trained with "
+                f"model='{source_model_name}'. Use run_fu_cli_domain.py instead — "
+                f"it's architecture-generic (Critical Layer Identification + "
+                f"sparse adapters work over any backbone)."
+            )
         return build_resnet18_cifar10(num_classes=fl_config["num_classes"],
                                        pretrained=fl_config.get("pretrained", True))
 
@@ -344,10 +361,14 @@ def main():
                          extra={"forget_client": args.forget_client, "algorithm": args.algorithm,
                                 "history": retrain_result})
 
-    global_test_dataset = OralCancerDataset(
-        test_samples, transform=eval_transform, load_metadata=merged_config["load_metadata"],
-        hospital_to_idx=hospital_to_idx,
-    )
+    # FIX: previously built from `test_samples` — the RAW, pre-carve sample
+    # list indexed at the top of this function — which silently included
+    # the proxy_frac slice that carve_proxy_partitions() carved out
+    # specifically to stay isolated from the real run (shadow-MIA-only).
+    # Build from the post-carve `test_oral_datasets` instead, exactly like
+    # every other "real" evaluation set in this script, so the "final
+    # global test" metric never touches proxy data.
+    global_test_dataset = ConcatDataset(test_oral_datasets)
     global_test_loader = as_tensor_pair_loader(global_test_dataset, args.batch_size, shuffle=False)
     final_loss, final_acc = evaluate(unlearned_model, global_test_loader, device)
     logger.info(f"Final unlearned model: global test loss={final_loss:.4f}, acc={final_acc:.4f}")
@@ -369,6 +390,18 @@ def main():
     forget_test_loader = concat_as_dict_loader(
         [test_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
     )
+    # FIX: MIA's member set must be data the model was actually TRAINED on
+    # (see compute_mia_accuracy's docstring). forget_test_loader is the
+    # forget hospital's TEST split, which — like every test split — was
+    # never in any training set. The forget client's TRAIN split
+    # (train_oral_datasets, post-carve), on the other hand, WAS trained on
+    # during Phase 1 (source_model was forked from a Phase-1 FL run trained
+    # over all hospitals, forget client included), so it's the correct
+    # member set for asking "does the unlearned model still leak whether it
+    # saw this data?".
+    forget_train_loader_dict = concat_as_dict_loader(
+        [train_oral_datasets[forget_client_idx[0]]], args.batch_size, shuffle=False,
+    )
     run_standard_evaluation(
         unlearned_model, global_test_loader_dict, device, fl_config["num_classes"],
         logger, step=args.global_epoch, tag_prefix="eval",
@@ -379,6 +412,7 @@ def main():
         relearn_steps=merged_config.get("relearn_steps", 50),
         relearn_lr=merged_config.get("relearn_lr", 1e-3),
         nonmember_loader=remember_test_loader,
+        member_loader=forget_train_loader_dict,
         before_unlearning_acc=None,
     )
     logger.info(
