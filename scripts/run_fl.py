@@ -813,7 +813,16 @@ def main():
 
     fedbn_eval_results: Optional[Dict] = None
 
-    if config.get("domain_adaptation", False):
+    # Derived from the algorithm name, not a separate config key — see
+    # src/fl/simulation.py's `domain_adaptation` comment for why: this must
+    # always agree with which strategy/client behavior actually ran, or a
+    # run overridden via --set algorithm=FedBN without also flipping
+    # domain_adaptation would silently fall back to run_standard_evaluation
+    # (a single global model) and skip per-hospital checkpoints below, even
+    # though the run's logs/checkpoint names say "fedbn".
+    domain_adaptation = config["algorithm"].lower() == "fedbn"
+
+    if domain_adaptation:
         fedbn_eval_results = evaluate_fedbn_per_hospital(
             per_hospital_models=per_hospital_models,
             test_samples=test_samples,
@@ -850,7 +859,7 @@ def main():
 
     logger.info(f"Saved final global model checkpoint to {checkpoint_path}")
 
-    if config.get("domain_adaptation", False):
+    if domain_adaptation:
         per_hospital_dir = os.path.join(
             dirs["checkpoint_dir"],
             "per_hospital",

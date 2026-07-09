@@ -179,6 +179,14 @@ def main():
 
     # --- Step 6: MIA (optional) ------------------------------------------
     if args.run_mia:
+        # Attack classifier epochs: `mia_attack_epochs` if set via --set,
+        # else falls back to `global_epochs` (the original reuses
+        # args.global_epoch verbatim, with no dedicated attack-epoch
+        # hyperparameter upstream — this fallback preserves that faithful
+        # default while letting `--set mia_attack_epochs=N` actually shorten
+        # this expensive step, matching run_fu_cli_domain.py's
+        # `args.mia_attack_epochs or args.global_epoch` pattern).
+        mia_attack_epochs = config.get("mia_attack_epochs") or config["global_epochs"]
         logger.info(f"=== MIA (algorithm={args.algorithm}) ===")
 
         def fused_shadow_fn():
@@ -201,7 +209,7 @@ def main():
             fused_model, [attacked_client_loaders, data.test_loaders],
             [attacked_proxy_client_loaders, attacked_proxy_test_loaders],
             forget_client_idx, config["num_classes"], config["n_shadow"], fused_shadow_fn, device,
-            config["global_epochs"], config["test_batch_size"],
+            mia_attack_epochs, config["test_batch_size"],
         )
         logger.set_final_metric(f"eval/{args.algorithm}/FUSED_CLI/MIA_acc", fused_mia_acc)
 
@@ -219,7 +227,7 @@ def main():
             retrain_model, [attacked_client_loaders, data.test_loaders],
             [attacked_proxy_client_loaders, attacked_proxy_test_loaders],
             forget_client_idx, config["num_classes"], config["n_shadow"], retrain_shadow_fn, device,
-            config["global_epochs"], config["test_batch_size"],
+            mia_attack_epochs, config["test_batch_size"],
         )
         logger.set_final_metric(f"eval/{args.algorithm}/Retrain/MIA_acc", retrain_mia_acc)
 

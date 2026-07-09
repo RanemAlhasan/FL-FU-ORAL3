@@ -59,7 +59,20 @@ def run_federated_learning(
     local_epochs = config["local_epochs"]
     batch_size = config["batch_size"]
     learning_rate = config["learning_rate"]
-    domain_adaptation = config.get("domain_adaptation", False)
+    # Derived from algorithm_name, NOT read from a separate config key: FedBN
+    # is the only algorithm that keeps BatchNorm local, so this must always
+    # agree with which strategy build_strategy() below actually picks.
+    # Previously this read config.get("domain_adaptation", False) as an
+    # independent yaml key — if a run overrode --set algorithm=FedBN without
+    # also flipping domain_adaptation (e.g. starting from fl_fedavg.yaml,
+    # which ships domain_adaptation: false), the server-side strategy would
+    # correctly become FedBNTrackingFedAvg, but every client's
+    # self._domain_adaptation would stay False, so BatchNorm params/buffers
+    # would be federated normally and no bn_state_b64 would ever be sent —
+    # a silent downgrade to plain FedAvg for a run labeled "fedbn"
+    # everywhere in its logs/checkpoints. core_domain.py already derives
+    # this the same way; this brings the Flower path in line with it.
+    domain_adaptation = algorithm_name == "fedbn"
     handle_imbalance = config.get("handle_class_imbalance", True)
     pretrained = config.get("pretrained", True)
 

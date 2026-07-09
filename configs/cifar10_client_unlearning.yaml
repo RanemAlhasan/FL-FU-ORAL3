@@ -54,8 +54,12 @@ lora_dropout: 0.1
 # --- MIA (membership inference attack) ---
 run_mia: true
 n_shadow: 5                       # per main.py default
-mia_attack_epochs: 50             # the original reuses args.global_epoch for attack-model training;
-                                  # kept separately configurable here
+mia_attack_epochs: 50             # attack-classifier training epochs; the original reuses
+                                  # args.global_epoch for this (no dedicated hyperparameter
+                                  # upstream) — both CIFAR-10 scripts fall back to global_epochs
+                                  # if this key is unset/null, so leave it unset for exact
+                                  # paper-faithful behavior, or override via --set to shorten
+                                  # the (expensive) MIA step
 
 # --- Compute ---
 device: cuda
