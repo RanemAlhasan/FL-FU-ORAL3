@@ -1,0 +1,111 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Dataset path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3
+Fri Jul 10 15:54:32 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:D8:00.0 Off |                    0 |
+| N/A   31C    P0              26W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Cleaning old Ray state...
+
+=== Phase 1: FL training (FedBN, full scale) ===
+Applied --set overrides: {'dataset_path': '/export/home/ralhasan/fl-fu-oral3/dataset/oral3', 'global_epochs': 50, 'local_epochs': 3, 'batch_size': 16}
+[2026-07-10 15:54:58] === Run started: fl_fedbn_oral_344486 ===
+[2026-07-10 15:54:58] Config loaded from configs/fl_fedbn.yaml
+[2026-07-10 15:54:58] Run directories: {'log_dir': 'logs/fl/fl_fedbn_oral_344486', 'tb_dir': 'logs/fl/fl_fedbn_oral_344486/tb', 'checkpoint_dir': 'checkpoints/fl/fl_fedbn_oral_344486', 'output_dir': 'outputs/fl/fl_fedbn_oral_344486'}
+[2026-07-10 15:54:58] Indexing dataset...
+[2026-07-10 15:54:58] Indexed 2538 train samples, 637 test samples.
+[2026-07-10 15:54:58] Built 3 client partition(s) (client_split=hospital_based).
+[2026-07-10 15:54:58]   client_id=Spain_Dataset hospital=Spain_Dataset n_samples=398
+[2026-07-10 15:54:58]   client_id=Canada_Dataset hospital=Canada_Dataset n_samples=1635
+[2026-07-10 15:54:58]   client_id=India_Dataset hospital=India_Dataset n_samples=505
+[2026-07-10 15:54:58] Run hyperparameters:
+  algorithm: fedbn
+  model: resnet18
+  num_clients: 3
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: True
+[2026-07-10 15:54:59] Starting Flower simulation: algorithm=fedbn, clients=3, rounds=50
+[2026-07-10 15:57:55] [FL round 1] comm=134021412B comp=240.98s
+[2026-07-10 16:00:48] [FL round 2] comm=134021412B comp=247.01s
+[2026-07-10 16:03:38] [FL round 3] comm=134021412B comp=244.18s
+[2026-07-10 16:06:31] [FL round 4] comm=134021412B comp=246.53s
+[2026-07-10 16:09:23] [FL round 5] comm=134021412B comp=246.42s
+[2026-07-10 16:12:17] [FL round 6] comm=134021412B comp=249.53s
+[2026-07-10 16:15:12] [FL round 7] comm=134021412B comp=249.66s
+[2026-07-10 16:18:04] [FL round 8] comm=134021412B comp=246.57s
+[2026-07-10 16:20:58] [FL round 9] comm=134021412B comp=253.27s
+[2026-07-10 16:23:51] [FL round 10] comm=134021412B comp=249.38s
+[2026-07-10 16:26:40] [FL round 11] comm=134021412B comp=242.38s
+[2026-07-10 16:29:30] [FL round 12] comm=134021412B comp=242.49s
+[2026-07-10 16:32:19] [FL round 13] comm=134021412B comp=241.99s
+[2026-07-10 16:35:10] [FL round 14] comm=134021412B comp=244.41s
+[2026-07-10 16:38:02] [FL round 15] comm=134021412B comp=245.15s
+[2026-07-10 16:41:00] [FL round 16] comm=134021412B comp=252.41s
+[2026-07-10 16:43:56] [FL round 17] comm=134021412B comp=249.18s
+[2026-07-10 16:46:48] [FL round 18] comm=134021412B comp=247.03s
+[2026-07-10 16:49:43] [FL round 19] comm=134021412B comp=251.23s
+[2026-07-10 16:52:34] [FL round 20] comm=134021412B comp=245.28s
+[2026-07-10 16:55:23] [FL round 21] comm=134021412B comp=242.28s
+[2026-07-10 16:58:20] [FL round 22] comm=134021412B comp=251.13s
+[2026-07-10 17:01:14] [FL round 23] comm=134021412B comp=247.05s
+[2026-07-10 17:04:09] [FL round 24] comm=134021412B comp=248.48s
+[2026-07-10 17:06:58] [FL round 25] comm=134021412B comp=242.97s
+[2026-07-10 17:09:49] [FL round 26] comm=134021412B comp=248.59s
+[2026-07-10 17:12:43] [FL round 27] comm=134021412B comp=245.70s
+[2026-07-10 17:15:37] [FL round 28] comm=134021412B comp=246.42s
+[2026-07-10 17:18:33] [FL round 29] comm=134021412B comp=250.18s
+[2026-07-10 17:21:26] [FL round 30] comm=134021412B comp=246.12s
+[2026-07-10 17:24:18] [FL round 31] comm=134021412B comp=245.37s
+[2026-07-10 17:27:12] [FL round 32] comm=134021412B comp=246.50s
+[2026-07-10 17:29:59] [FL round 33] comm=134021412B comp=243.97s
+[2026-07-10 17:32:48] [FL round 34] comm=134021412B comp=244.24s
+[2026-07-10 17:35:38] [FL round 35] comm=134021412B comp=243.19s
+[2026-07-10 17:38:30] [FL round 36] comm=134021412B comp=246.56s
+[2026-07-10 17:41:22] [FL round 37] comm=134021412B comp=246.59s
+[2026-07-10 17:44:12] [FL round 38] comm=134021412B comp=244.13s
+[2026-07-10 17:47:08] [FL round 39] comm=134021412B comp=260.81s
+[2026-07-10 17:50:17] [FL round 40] comm=134021412B comp=273.55s
+[2026-07-10 17:53:07] [FL round 41] comm=134021412B comp=259.19s
+[2026-07-10 17:55:57] [FL round 42] comm=134021412B comp=236.37s
+[2026-07-10 17:58:48] [FL round 43] comm=134021412B comp=245.36s
+[2026-07-10 18:01:40] [FL round 44] comm=134021412B comp=244.93s
+[2026-07-10 18:04:34] [FL round 45] comm=134021412B comp=248.61s
+[2026-07-10 18:07:29] [FL round 46] comm=134021412B comp=248.87s
+[2026-07-10 18:10:24] [FL round 47] comm=134021412B comp=248.85s
+[2026-07-10 18:13:17] [FL round 48] comm=134021412B comp=247.05s
+[2026-07-10 18:16:11] [FL round 49] comm=134021412B comp=248.49s
+[2026-07-10 18:19:06] [FL round 50] comm=134021412B comp=249.36s
+[2026-07-10 18:19:21] FedBN checkpoint assembled: non-BN params from server aggregation, BN params taken from client 'Spain_Dataset' (representative).
+[2026-07-10 18:19:22] Running FedBN final evaluation with hospital-specific BN models.
+[2026-07-10 18:19:33] [eval/fedbn_per_hospital] hospital=Spain_Dataset acc=0.8679 loss=0.7620 n=106
+[2026-07-10 18:19:37] [eval/fedbn_per_hospital] hospital=Canada_Dataset acc=0.8647 loss=0.4782 n=399
+[2026-07-10 18:19:41] [eval/fedbn_per_hospital] hospital=India_Dataset acc=0.5758 loss=3.6048 n=132
+[2026-07-10 18:19:41] [eval/fedbn_weighted_overall] overall_acc=0.8053 overall_loss=1.1733 total_samples=637
+[2026-07-10 18:19:41] [eval/classification] accuracy=0.8053 macro_precision=0.7619 macro_recall=0.7864 macro_f1=0.7633 weighted_f1=0.8057
+[2026-07-10 18:19:41] Saved final global model checkpoint to checkpoints/fl/fl_fedbn_oral_344486/best.pt
+[2026-07-10 18:19:41] Saved 3 per-hospital BN-complete checkpoints to checkpoints/fl/fl_fedbn_oral_344486/per_hospital
+[2026-07-10 18:19:41] === Run finished: fl_fedbn_oral_344486 (elapsed 8683.3s) ===
+
+Done. run_id = fl_fedbn_oral_344486
+Use this run_id as --source_run for scripts/run_fu.py.
+
+Done. run_id = fl_fedbn_oral_344486

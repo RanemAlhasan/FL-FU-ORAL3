@@ -3,10 +3,10 @@
 #SBATCH -o output_fl_fedbn_%j.txt
 #SBATCH -e error_fl_fedbn_%j.txt
 #SBATCH -p gpu-all
-#SBATCH --gres=gpu:v100nv_32GB:1
+#SBATCH --gres gpu:1
 #SBATCH -c 16
 #SBATCH --mem=64G
-#SBATCH --time=72:00:00
+#SBATCH --time=12:00:00
 
 set -euo pipefail
 
