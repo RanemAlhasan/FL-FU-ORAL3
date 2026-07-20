@@ -1,0 +1,79 @@
+[2026-07-12 14:59:27] === Run started: fl_fedavg_local_cbce_oral_344934 ===
+[2026-07-12 14:59:27] Config loaded from configs/fl_fedavg.yaml
+[2026-07-12 14:59:27] Run directories: {'log_dir': 'logs/fl/fl_fedavg_local_cbce_oral_344934', 'tb_dir': 'logs/fl/fl_fedavg_local_cbce_oral_344934/tb', 'checkpoint_dir': 'checkpoints/fl/fl_fedavg_local_cbce_oral_344934', 'output_dir': 'outputs/fl/fl_fedavg_local_cbce_oral_344934'}
+[2026-07-12 14:59:27] Indexing dataset...
+[2026-07-12 14:59:28] Indexed 2538 train samples, 637 test samples.
+[2026-07-12 14:59:28] Built 3 client partition(s) (client_split=hospital_based).
+[2026-07-12 14:59:28]   client_id=Spain_Dataset hospital=Spain_Dataset n_samples=398
+[2026-07-12 14:59:28]   client_id=Canada_Dataset hospital=Canada_Dataset n_samples=1635
+[2026-07-12 14:59:28]   client_id=India_Dataset hospital=India_Dataset n_samples=505
+[2026-07-12 14:59:28] Run hyperparameters:
+  algorithm: fedavg
+  model: resnet18
+  num_clients: 3
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: False
+  imbalance_method: local_class_balanced_ce
+[2026-07-12 14:59:34] [class_imbalance] method=local_class_balanced_ce, global_train_counts=[1388, 772, 378], beta=0.999, weight_clip=5.0
+[2026-07-12 14:59:34] [class_imbalance/client] client_id=Spain_Dataset, hospital=Spain_Dataset, local_counts=[151, 161, 86], loss_weights=[0.823451695678041, 0.7760778107881295, 1.4004704935338292]
+[2026-07-12 14:59:34] [class_imbalance/client] client_id=Canada_Dataset, hospital=Canada_Dataset, local_counts=[1226, 272, 137], loss_weights=[0.3163341022723464, 0.9383373791717562, 1.7453285185558973]
+[2026-07-12 14:59:34] [class_imbalance/client] client_id=India_Dataset, hospital=India_Dataset, local_counts=[11, 339, 155], loss_weights=[2.692407407136096, 0.1024510071048469, 0.2051415857590568]
+[2026-07-12 14:59:34] Starting Flower simulation: algorithm=fedavg, clients=3, rounds=50
+[2026-07-12 15:03:00] [FL round 1] comm=134252292B comp=313.04s
+[2026-07-12 15:06:10] [FL round 2] comm=134252292B comp=237.92s
+[2026-07-12 15:08:59] [FL round 3] comm=134252292B comp=244.04s
+[2026-07-12 15:11:49] [FL round 4] comm=134252292B comp=245.81s
+[2026-07-12 15:14:37] [FL round 5] comm=134252292B comp=243.02s
+[2026-07-12 15:17:29] [FL round 6] comm=134252292B comp=245.64s
+[2026-07-12 15:20:16] [FL round 7] comm=134252292B comp=240.41s
+[2026-07-12 15:23:04] [FL round 8] comm=134252292B comp=239.64s
+[2026-07-12 15:25:54] [FL round 9] comm=134252292B comp=242.72s
+[2026-07-12 15:28:39] [FL round 10] comm=134252292B comp=238.37s
+[2026-07-12 15:31:26] [FL round 11] comm=134252292B comp=238.34s
+[2026-07-12 15:34:10] [FL round 12] comm=134252292B comp=240.14s
+[2026-07-12 15:36:57] [FL round 13] comm=134252292B comp=241.93s
+[2026-07-12 15:39:47] [FL round 14] comm=134252292B comp=244.80s
+[2026-07-12 15:42:34] [FL round 15] comm=134252292B comp=238.99s
+[2026-07-12 15:45:21] [FL round 16] comm=134252292B comp=242.33s
+[2026-07-12 15:48:08] [FL round 17] comm=134252292B comp=241.72s
+[2026-07-12 15:51:01] [FL round 18] comm=134252292B comp=247.42s
+[2026-07-12 15:53:48] [FL round 19] comm=134252292B comp=241.00s
+[2026-07-12 15:56:36] [FL round 20] comm=134252292B comp=243.43s
+[2026-07-12 15:59:27] [FL round 21] comm=134252292B comp=247.29s
+[2026-07-12 16:02:16] [FL round 22] comm=134252292B comp=243.49s
+[2026-07-12 16:05:09] [FL round 23] comm=134252292B comp=247.44s
+[2026-07-12 16:07:59] [FL round 24] comm=134252292B comp=247.15s
+[2026-07-12 16:10:49] [FL round 25] comm=134252292B comp=245.85s
+[2026-07-12 16:13:37] [FL round 26] comm=134252292B comp=243.63s
+[2026-07-12 16:16:25] [FL round 27] comm=134252292B comp=243.52s
+[2026-07-12 16:19:13] [FL round 28] comm=134252292B comp=245.01s
+[2026-07-12 16:22:05] [FL round 29] comm=134252292B comp=249.24s
+[2026-07-12 16:24:56] [FL round 30] comm=134252292B comp=246.92s
+[2026-07-12 16:27:44] [FL round 31] comm=134252292B comp=242.04s
+[2026-07-12 16:30:36] [FL round 32] comm=134252292B comp=247.92s
+[2026-07-12 16:33:26] [FL round 33] comm=134252292B comp=246.07s
+[2026-07-12 16:36:19] [FL round 34] comm=134252292B comp=247.22s
+[2026-07-12 16:39:12] [FL round 35] comm=134252292B comp=250.00s
+[2026-07-12 16:42:04] [FL round 36] comm=134252292B comp=248.06s
+[2026-07-12 16:44:51] [FL round 37] comm=134252292B comp=242.32s
+[2026-07-12 16:47:42] [FL round 38] comm=134252292B comp=246.01s
+[2026-07-12 16:50:31] [FL round 39] comm=134252292B comp=241.67s
+[2026-07-12 16:53:17] [FL round 40] comm=134252292B comp=241.33s
+[2026-07-12 16:56:07] [FL round 41] comm=134252292B comp=244.73s
+[2026-07-12 16:59:01] [FL round 42] comm=134252292B comp=248.01s
+[2026-07-12 17:01:53] [FL round 43] comm=134252292B comp=248.91s
+[2026-07-12 17:04:45] [FL round 44] comm=134252292B comp=245.67s
+[2026-07-12 17:07:39] [FL round 45] comm=134252292B comp=249.70s
+[2026-07-12 17:10:32] [FL round 46] comm=134252292B comp=247.49s
+[2026-07-12 17:13:27] [FL round 47] comm=134252292B comp=252.18s
+[2026-07-12 17:16:15] [FL round 48] comm=134252292B comp=246.48s
+[2026-07-12 17:19:03] [FL round 49] comm=134252292B comp=244.20s
+[2026-07-12 17:21:52] [FL round 50] comm=134252292B comp=244.90s
+[2026-07-12 17:22:07] Checkpoint assembled from fully-federated parameters (no domain adaptation).
+[2026-07-12 17:23:27] [eval/classification] accuracy=0.7017 macro_precision=0.6838 macro_recall=0.6441 macro_f1=0.6436 weighted_f1=0.6827
+[2026-07-12 17:23:27] [eval] overall_acc=0.7017 overall_loss=1.4200 | macro_precision=0.6838 macro_recall=0.6441 macro_f1=0.6436 weighted_f1=0.6827 | per_hospital={ Spain_Dataset: 0.7075, Canada_Dataset: 0.8471, India_Dataset: 0.2576 }
+[2026-07-12 17:23:27] Saved final global model checkpoint to checkpoints/fl/fl_fedavg_local_cbce_oral_344934/best.pt
+[2026-07-12 17:23:27] === Run finished: fl_fedavg_local_cbce_oral_344934 (elapsed 8640.2s) ===

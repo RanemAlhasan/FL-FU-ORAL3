@@ -68,6 +68,9 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         algorithm_config: Dict,
         local_epochs: int,
         learning_rate: float,
+        # New Addition
+        classification_class_weights: Optional[List[float]] = None,
+        imbalance_method: str = "standard_ce",
     ):
         self.client_id = client_id
         self.hospital = hospital
@@ -78,6 +81,22 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         self.algo = algorithm_config
         self.local_epochs = local_epochs
         self.learning_rate = learning_rate
+        
+        # New Addition
+        self.imbalance_method = imbalance_method
+
+        if classification_class_weights is None:
+            self.classification_criterion = nn.CrossEntropyLoss()
+        else:
+            class_weight_tensor = torch.tensor(
+                classification_class_weights,
+                dtype=torch.float32,
+                device=device,
+            )
+
+            self.classification_criterion = nn.CrossEntropyLoss(
+                weight=class_weight_tensor,
+            )
 
         self._prev_local_model: Optional[nn.Module] = None
         self._global_model_snapshot: Optional[nn.Module] = None
@@ -238,7 +257,9 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
                 optimizer.zero_grad()
 
                 logits, features = self._forward_with_features(self.model, images)
-                loss = F.cross_entropy(logits, labels)
+                
+                # New Modification
+                loss = self.classification_criterion(logits, labels)
 
                 if self.algo["name"] == "fedprox" and self._global_model_snapshot is not None:
                     loss = loss + self._fedprox_term()

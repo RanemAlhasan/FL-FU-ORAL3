@@ -7,8 +7,14 @@ trained global model checkpoint plus FL-phase metrics (fl/... and
 eval/... tags) for one algorithm/backbone/config combination.
 """
 from __future__ import annotations
-
 from typing import Dict, List
+
+from src.data.class_imbalance import (
+    build_class_weights,
+    combine_class_counts,
+    count_dataset_classes,
+    resolve_imbalance_method,
+)
 
 import flwr as fl
 from flwr.common import Context
@@ -65,7 +71,23 @@ def run_federated_learning(
     # everywhere in its logs/checkpoints. core_domain.py already derives
     # this the same way; this brings the Flower path in line with it.
     domain_adaptation = algorithm_name == "fedbn"
-    handle_imbalance = config.get("handle_class_imbalance", True)
+    
+    # New Addition
+    imbalance_method = resolve_imbalance_method(config)
+
+    use_weighted_sampler = (
+        imbalance_method == "weighted_sampler"
+    )
+
+    class_balance_beta = float(
+        config.get("class_balance_beta", 0.999)
+    )
+
+    class_weight_clip = config.get("class_weight_clip")
+
+    if class_weight_clip is not None:
+        class_weight_clip = float(class_weight_clip)
+    
     pretrained = config.get("pretrained", True)
 
     algorithm_config = {
@@ -80,7 +102,7 @@ def run_federated_learning(
         "algorithm": algorithm_name, "model": model_name, "num_clients": len(client_partitions),
         "global_epochs": global_rounds, "local_epochs": local_epochs,
         "batch_size": batch_size, "learning_rate": learning_rate,
-        "domain_adaptation": domain_adaptation,
+        "domain_adaptation": domain_adaptation,"imbalance_method": imbalance_method,
     })
 
     # Reference model: built once, used only to (a) seed initial federated
@@ -96,6 +118,53 @@ def run_federated_learning(
     # object: Ray runs client_fn in separate worker processes, so ordinary
     # closure mutation from inside client_fn is never visible back here).
     final_round_bn_states: Dict[str, Dict[str, "object"]] = {}
+    
+    # New Addition
+    global_class_counts = combine_class_counts(
+        train_datasets,
+        num_classes,
+    )
+
+    client_class_weights = []
+
+    logger.info(
+        f"[class_imbalance] method={imbalance_method}, "
+        f"global_train_counts={global_class_counts}, "
+        f"beta={class_balance_beta}, "
+        f"weight_clip={class_weight_clip}"
+    )
+
+    for idx, dataset in enumerate(train_datasets):
+        local_counts = count_dataset_classes(
+            dataset,
+            num_classes,
+        )
+
+        if imbalance_method == "global_weighted_ce":
+            criterion_counts = global_class_counts
+
+        elif imbalance_method == "local_class_balanced_ce":
+            criterion_counts = local_counts
+
+        else:
+            criterion_counts = None
+
+        weights = build_class_weights(
+            method=imbalance_method,
+            counts=criterion_counts,
+            beta=class_balance_beta,
+            max_weight=class_weight_clip,
+        )
+
+        client_class_weights.append(weights)
+
+        logger.info(
+            f"[class_imbalance/client] "
+            f"client_id={client_partitions[idx].client_id}, "
+            f"hospital={client_partitions[idx].hospital}, "
+            f"local_counts={local_counts}, "
+            f"loss_weights={weights}"
+        )
 
     def client_fn(context: Context) -> fl.client.Client:
         # Modern Flower (>=1.13) passes a Context instead of a raw cid string
@@ -106,7 +175,7 @@ def run_federated_learning(
         partition = client_partitions[idx]
         client_model = build_model(model_name, num_classes, pretrained=pretrained).to(device)
         train_loader = _build_loader(train_datasets[idx], batch_size, train=True,
-                                      handle_imbalance=handle_imbalance)
+                                      handle_imbalance=use_weighted_sampler)
         val_loader = _build_loader(val_datasets[idx], batch_size, train=False,
                                     handle_imbalance=False)
         numpy_client = OralCancerFlowerClient(
@@ -119,6 +188,9 @@ def run_federated_learning(
             algorithm_config=algorithm_config,
             local_epochs=local_epochs,
             learning_rate=learning_rate,
+            # New Addition
+            classification_class_weights=client_class_weights[idx],
+            imbalance_method=imbalance_method,
         )
         return numpy_client.to_client()
 
