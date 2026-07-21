@@ -1,0 +1,262 @@
+============================================================
+Working directory:  /export/home/ralhasan/fl-fu-oral3
+Python:             /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Job ID:             347956
+Source FL run:      fl_fedavg_oral_343638
+Algorithm:          fedavg
+Forgotten hospital: Spain_Dataset
+FedBN source mode:  global
+Run prefix:         fu_cli_spain_fedavg_wrs_oral
+============================================================
+Tue Jul 21 11:41:39 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:3B:00.0 Off |                    0 |
+| N/A   30C    P0              25W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+
+Starting FUSED-CLI unlearning...
+
+[2026-07-21 11:41:46] === Run started: fu_cli_spain_fedavg_wrs_oral_347956 ===
+[2026-07-21 11:41:46] Forking from source FL run: fl_fedavg_oral_343638
+[2026-07-21 11:41:46] Forgetting: Spain_Dataset
+[2026-07-21 11:41:46] Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm=fedavg
+[2026-07-21 11:41:46] Forgetting hospital: Spain_Dataset -> partition indices [0] of 3 total clients (client_split=hospital_based).
+[2026-07-21 11:41:46] Loaded source model from the normal global checkpoint: checkpoints/fl/fl_fedavg_oral_343638/best.pt
+[2026-07-21 11:41:46] [class_imbalance] source_method=weighted_sampler, use_weighted_sampler=True
+[2026-07-21 11:41:46] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[319, 1309, 405], handle_class_imbalance=True
+[2026-07-21 11:41:46] Built 3 proxy hospital train loaders (proxy_frac=0.2), sizes=[79, 326, 100].
+[2026-07-21 11:41:46] Running FUSED-CLI unlearning (algorithm=fedavg)...
+[2026-07-21 11:41:46] Running Critical Layer Identification (one federated round, ALL clients (paper Eq 11-13))...
+[2026-07-21 11:42:44] Selected 4 critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight', 'layer4.0.conv1.weight']
+[FUSED-CLI:fedavg] Round=0, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:43:55] [FUSED-CLI:fedavg] Round=0, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=1, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:45:06] [FUSED-CLI:fedavg] Round=1, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=2, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:46:16] [FUSED-CLI:fedavg] Round=2, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=3, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:47:25] [FUSED-CLI:fedavg] Round=3, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=4, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:48:36] [FUSED-CLI:fedavg] Round=4, avg_r_acc=0.6488, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=5, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:49:47] [FUSED-CLI:fedavg] Round=5, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=6, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:50:57] [FUSED-CLI:fedavg] Round=6, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=7, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:52:08] [FUSED-CLI:fedavg] Round=7, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=8, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:53:20] [FUSED-CLI:fedavg] Round=8, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=9, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:54:30] [FUSED-CLI:fedavg] Round=9, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=10, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:55:39] [FUSED-CLI:fedavg] Round=10, avg_r_acc=0.6510, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=11, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:56:50] [FUSED-CLI:fedavg] Round=11, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=12, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:58:00] [FUSED-CLI:fedavg] Round=12, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=13, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 11:59:11] [FUSED-CLI:fedavg] Round=13, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=14, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:00:23] [FUSED-CLI:fedavg] Round=14, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=15, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:01:34] [FUSED-CLI:fedavg] Round=15, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=16, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:02:46] [FUSED-CLI:fedavg] Round=16, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=17, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:03:57] [FUSED-CLI:fedavg] Round=17, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=18, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:05:09] [FUSED-CLI:fedavg] Round=18, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=19, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:06:20] [FUSED-CLI:fedavg] Round=19, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=20, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:07:30] [FUSED-CLI:fedavg] Round=20, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=21, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:08:42] [FUSED-CLI:fedavg] Round=21, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=22, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:09:53] [FUSED-CLI:fedavg] Round=22, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=23, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:11:04] [FUSED-CLI:fedavg] Round=23, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=24, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:12:15] [FUSED-CLI:fedavg] Round=24, avg_r_acc=0.6554, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=25, avg_r_acc=0.6547, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:13:27] [FUSED-CLI:fedavg] Round=25, avg_r_acc=0.6547, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=26, avg_r_acc=0.6547, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:14:38] [FUSED-CLI:fedavg] Round=26, avg_r_acc=0.6547, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=27, avg_r_acc=0.6540, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:15:50] [FUSED-CLI:fedavg] Round=27, avg_r_acc=0.6540, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=28, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:17:02] [FUSED-CLI:fedavg] Round=28, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=29, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:18:13] [FUSED-CLI:fedavg] Round=29, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=30, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:19:25] [FUSED-CLI:fedavg] Round=30, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=31, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:20:37] [FUSED-CLI:fedavg] Round=31, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=32, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:21:47] [FUSED-CLI:fedavg] Round=32, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=33, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:22:59] [FUSED-CLI:fedavg] Round=33, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=34, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:24:11] [FUSED-CLI:fedavg] Round=34, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=35, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:25:22] [FUSED-CLI:fedavg] Round=35, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=36, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:26:34] [FUSED-CLI:fedavg] Round=36, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=37, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:27:46] [FUSED-CLI:fedavg] Round=37, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=38, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:28:59] [FUSED-CLI:fedavg] Round=38, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=39, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:30:12] [FUSED-CLI:fedavg] Round=39, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=40, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:31:23] [FUSED-CLI:fedavg] Round=40, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=41, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:32:37] [FUSED-CLI:fedavg] Round=41, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=42, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:33:48] [FUSED-CLI:fedavg] Round=42, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=43, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:35:00] [FUSED-CLI:fedavg] Round=43, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=44, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:36:14] [FUSED-CLI:fedavg] Round=44, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=45, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:37:26] [FUSED-CLI:fedavg] Round=45, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=46, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[2026-07-21 12:38:38] [FUSED-CLI:fedavg] Round=46, avg_r_acc=0.6573, avg_f_acc=0.7150, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=47, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[2026-07-21 12:39:48] [FUSED-CLI:fedavg] Round=47, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=48, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[2026-07-21 12:40:59] [FUSED-CLI:fedavg] Round=48, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[FUSED-CLI:fedavg] Round=49, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[2026-07-21 12:42:10] [FUSED-CLI:fedavg] Round=49, avg_r_acc=0.6573, avg_f_acc=0.7257, adapter_density=413080/8257536
+[2026-07-21 12:42:10] FUSED-CLI unlearning complete. Critical layers: ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight', 'layer4.0.conv1.weight']
+[2026-07-21 12:42:10] Running relearn (ReA) probe for 50 rounds...
+[Relearn] Round=0, avg_f_acc=0.8056 (ReA), avg_r_acc=0.6106
+[2026-07-21 12:43:48] [Relearn] Round=0, avg_f_acc=0.8056 (ReA), avg_r_acc=0.6106
+[Relearn] Round=1, avg_f_acc=0.7985 (ReA), avg_r_acc=0.6131
+[2026-07-21 12:45:39] [Relearn] Round=1, avg_f_acc=0.7985 (ReA), avg_r_acc=0.6131
+[Relearn] Round=2, avg_f_acc=0.8377 (ReA), avg_r_acc=0.6209
+[2026-07-21 12:47:32] [Relearn] Round=2, avg_f_acc=0.8377 (ReA), avg_r_acc=0.6209
+[Relearn] Round=3, avg_f_acc=0.8318 (ReA), avg_r_acc=0.6515
+[2026-07-21 12:49:22] [Relearn] Round=3, avg_f_acc=0.8318 (ReA), avg_r_acc=0.6515
+[Relearn] Round=4, avg_f_acc=0.8485 (ReA), avg_r_acc=0.6648
+[2026-07-21 12:51:17] [Relearn] Round=4, avg_f_acc=0.8485 (ReA), avg_r_acc=0.6648
+[Relearn] Round=5, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6382
+[2026-07-21 12:53:06] [Relearn] Round=5, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6382
+[Relearn] Round=6, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6320
+[2026-07-21 12:55:03] [Relearn] Round=6, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6320
+[Relearn] Round=7, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6054
+[2026-07-21 12:56:52] [Relearn] Round=7, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6054
+[Relearn] Round=8, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6156
+[2026-07-21 12:58:47] [Relearn] Round=8, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6156
+[Relearn] Round=9, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6250
+[2026-07-21 13:00:39] [Relearn] Round=9, avg_f_acc=0.8425 (ReA), avg_r_acc=0.6250
+[Relearn] Round=10, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6169
+[2026-07-21 13:02:36] [Relearn] Round=10, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6169
+[Relearn] Round=11, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6139
+[2026-07-21 13:04:26] [Relearn] Round=11, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6139
+[Relearn] Round=12, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6141
+[2026-07-21 13:06:20] [Relearn] Round=12, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6141
+[Relearn] Round=13, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6165
+[2026-07-21 13:08:10] [Relearn] Round=13, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6165
+[Relearn] Round=14, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6165
+[2026-07-21 13:10:02] [Relearn] Round=14, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6165
+[Relearn] Round=15, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6390
+[2026-07-21 13:11:54] [Relearn] Round=15, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6390
+[Relearn] Round=16, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6389
+[2026-07-21 13:13:45] [Relearn] Round=16, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6389
+[Relearn] Round=17, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[2026-07-21 13:15:37] [Relearn] Round=17, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[Relearn] Round=18, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6438
+[2026-07-21 13:17:32] [Relearn] Round=18, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6438
+[Relearn] Round=19, avg_f_acc=0.8687 (ReA), avg_r_acc=0.6317
+[2026-07-21 13:19:26] [Relearn] Round=19, avg_f_acc=0.8687 (ReA), avg_r_acc=0.6317
+[Relearn] Round=20, avg_f_acc=0.8497 (ReA), avg_r_acc=0.6424
+[2026-07-21 13:21:22] [Relearn] Round=20, avg_f_acc=0.8497 (ReA), avg_r_acc=0.6424
+[Relearn] Round=21, avg_f_acc=0.8592 (ReA), avg_r_acc=0.5898
+[2026-07-21 13:23:16] [Relearn] Round=21, avg_f_acc=0.8592 (ReA), avg_r_acc=0.5898
+[Relearn] Round=22, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6197
+[2026-07-21 13:25:11] [Relearn] Round=22, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6197
+[Relearn] Round=23, avg_f_acc=0.8795 (ReA), avg_r_acc=0.6621
+[2026-07-21 13:27:08] [Relearn] Round=23, avg_f_acc=0.8795 (ReA), avg_r_acc=0.6621
+[Relearn] Round=24, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6017
+[2026-07-21 13:29:00] [Relearn] Round=24, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6017
+[Relearn] Round=25, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6454
+[2026-07-21 13:30:57] [Relearn] Round=25, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6454
+[Relearn] Round=26, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[2026-07-21 13:32:52] [Relearn] Round=26, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[Relearn] Round=27, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6174
+[2026-07-21 13:34:44] [Relearn] Round=27, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6174
+[Relearn] Round=28, avg_f_acc=0.8783 (ReA), avg_r_acc=0.6504
+[2026-07-21 13:36:40] [Relearn] Round=28, avg_f_acc=0.8783 (ReA), avg_r_acc=0.6504
+[Relearn] Round=29, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6462
+[2026-07-21 13:38:38] [Relearn] Round=29, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6462
+[Relearn] Round=30, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6525
+[2026-07-21 13:40:22] [Relearn] Round=30, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6525
+[Relearn] Round=31, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6527
+[2026-07-21 13:42:16] [Relearn] Round=31, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6527
+[Relearn] Round=32, avg_f_acc=0.8687 (ReA), avg_r_acc=0.6508
+[2026-07-21 13:44:14] [Relearn] Round=32, avg_f_acc=0.8687 (ReA), avg_r_acc=0.6508
+[Relearn] Round=33, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6478
+[2026-07-21 13:45:53] [Relearn] Round=33, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6478
+[Relearn] Round=34, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6483
+[2026-07-21 13:47:52] [Relearn] Round=34, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6483
+[Relearn] Round=35, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6493
+[2026-07-21 13:49:55] [Relearn] Round=35, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6493
+[Relearn] Round=36, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6425
+[2026-07-21 13:51:45] [Relearn] Round=36, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6425
+[Relearn] Round=37, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6431
+[2026-07-21 13:53:39] [Relearn] Round=37, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6431
+[Relearn] Round=38, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6481
+[2026-07-21 13:55:36] [Relearn] Round=38, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6481
+[Relearn] Round=39, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6404
+[2026-07-21 13:57:24] [Relearn] Round=39, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6404
+[Relearn] Round=40, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6248
+[2026-07-21 13:59:16] [Relearn] Round=40, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6248
+[Relearn] Round=41, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6398
+[2026-07-21 14:01:08] [Relearn] Round=41, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6398
+[Relearn] Round=42, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6158
+[2026-07-21 14:03:01] [Relearn] Round=42, avg_f_acc=0.8700 (ReA), avg_r_acc=0.6158
+[Relearn] Round=43, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6372
+[2026-07-21 14:04:51] [Relearn] Round=43, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6372
+[Relearn] Round=44, avg_f_acc=0.8604 (ReA), avg_r_acc=0.6439
+[2026-07-21 14:06:47] [Relearn] Round=44, avg_f_acc=0.8604 (ReA), avg_r_acc=0.6439
+[Relearn] Round=45, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[2026-07-21 14:08:38] [Relearn] Round=45, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6419
+[Relearn] Round=46, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6471
+[2026-07-21 14:10:29] [Relearn] Round=46, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6471
+[Relearn] Round=47, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6490
+[2026-07-21 14:12:18] [Relearn] Round=47, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6490
+[Relearn] Round=48, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6418
+[2026-07-21 14:14:10] [Relearn] Round=48, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6418
+[Relearn] Round=49, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6293
+[2026-07-21 14:15:58] [Relearn] Round=49, avg_f_acc=0.8592 (ReA), avg_r_acc=0.6293
+[2026-07-21 14:15:58] ReA = 0.8592
+[2026-07-21 14:16:12] Final unlearned model: global test loss=1.0926, acc=0.7704
+[2026-07-21 14:17:05] [eval/classification] accuracy=0.7704 macro_precision=0.7412 macro_recall=0.7201 macro_f1=0.7269 weighted_f1=0.7651
+[2026-07-21 14:17:05] [eval] overall_acc=0.7704 overall_loss=1.0926 | macro_precision=0.7412 macro_recall=0.7201 macro_f1=0.7269 weighted_f1=0.7651 | per_hospital={ Spain_Dataset: 0.7442, Canada_Dataset: 0.8879, India_Dataset: 0.4393 }
+[2026-07-21 14:17:24] [eval/unlearning/remember_classification] accuracy=0.7757 macro_precision=0.7236 macro_recall=0.7199 macro_f1=0.7182 weighted_f1=0.7722
+[2026-07-21 14:17:33] [eval/unlearning/forget_classification] accuracy=0.7442 macro_precision=0.8220 macro_recall=0.7257 macro_f1=0.7482 weighted_f1=0.7433
+[2026-07-21 14:19:33] [eval/unlearning] RA=0.7757 FA=0.7442 ReA=0.9651 remember_macro_f1=0.7182 forget_macro_f1=0.7482 MIA_acc=0.7044
+[2026-07-21 14:19:33] [symmetric eval] RA=0.7757 FA=0.7442 ReA=0.9651 MIA_acc=0.7044
+[2026-07-21 14:19:34] Saved unlearned model to checkpoints/fu_cli_domain/fu_cli_spain_fedavg_wrs_oral_347956/unlearned_model.pt
+[2026-07-21 14:19:34] === Run finished: fu_cli_spain_fedavg_wrs_oral_347956 (elapsed 9468.0s) ===
+
+Done. run_id = fu_cli_spain_fedavg_wrs_oral_347956 (source_run = fl_fedavg_oral_343638, algorithm = fedavg, forgot Spain_Dataset, critical_layers = ['layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.1.conv2.weight', 'layer4.0.conv1.weight'])
+
+Done.
+Run ID: fu_cli_spain_fedavg_wrs_oral_347956

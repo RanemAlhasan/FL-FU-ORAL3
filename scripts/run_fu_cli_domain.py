@@ -41,10 +41,23 @@ from src.fu import relearn as relearn_mod
 from src.fu.fused_cli_training import run_fused_cli_unlearning
 from src.fu.retrain_domain import fl_retrain_domain
 from src.models.backbone import build_model
-from src.utils.checkpoint import get_checkpoint_path, load_checkpoint_into_new_model, save_checkpoint
+from src.utils.checkpoint import save_checkpoint
 from src.utils.config import load_source_run_config, make_run_id, resolve_run_dirs, save_config_snapshot
 from src.utils.logger import build_logger
 
+from src.data.class_imbalance import resolve_imbalance_method
+
+from src.eval.fedbn_retrain import (
+    build_hospital_model_map,
+    run_fedbn_retrain_evaluation,
+)
+
+from src.models.fedbn import build_retained_bn_reference_model
+
+from src.utils.fu_source import (
+    build_personalized_fu_models,
+    load_fu_source_model,
+)
 
 class TensorPairDataset(Dataset):
     def __init__(self, oral_dataset: OralCancerDataset):
@@ -125,6 +138,23 @@ def parse_args():
                               "existing lightweight loss-threshold MIA_acc. On by default.")
     parser.add_argument("--no_shadow_mia", dest="run_shadow_mia", action="store_false",
                          help="Skip the (expensive) shadow-model MIA step.")
+    
+    # New Addition 
+    parser.add_argument(
+        "--fedbn_source_mode",
+        choices=[
+            "global",
+            "retained_bn_average",
+        ],
+        default="global",
+        help=(
+            "How to construct the FedBN source model. "
+            "'global' preserves the old best.pt behavior. "
+            "'retained_bn_average' loads only retained hospital BN "
+            "checkpoints and excludes the forgotten hospital BN state."
+        ),
+    )
+    
     return parser.parse_args()
 
 
@@ -158,29 +188,25 @@ def main():
         "num_unlearning_layers": args.num_unlearning_layers, "adapter_sparsity": args.adapter_sparsity,
         "global_epoch": args.global_epoch, "local_epoch": args.local_epoch, "batch_size": args.batch_size,
         "source_run": args.source_run, "method": "FUSED-CLI (Algorithm 1, real paper method)",
+        "fedbn_source_mode": args.fedbn_source_mode,
     })
     save_config_snapshot(merged_config, os.path.join(dirs["log_dir"], "config.snapshot.yaml"))
 
-    source_checkpoint_dir = os.path.join(fl_config["checkpoints_root"], args.source_run)
-    source_checkpoint_path = get_checkpoint_path(source_checkpoint_dir, "best")
+    source_checkpoint_dir = os.path.join(
+    fl_config["checkpoints_root"],
+    args.source_run,
+    )
 
     def model_builder():
-        # FIX: was hardcoded to build_resnet18_cifar10 regardless of what
-        # architecture the source run actually trained (fl_config["model"]).
-        # Harmless while every config defaults to resnet18, but would
-        # silently build the WRONG architecture (and then fail/garbage-load
-        # weights) for a resnet50/densenet121/efficientnet/vit source run.
-        # Unlike run_fu_lora_domain.py, this CLI+sparse-adapter pipeline has
-        # no LoRA target_modules hardcoded to resnet18's layer names (Critical
-        # Layer Identification and sparse adapters both operate generically
-        # over get_named_layers()), so it's safe to just build whatever
-        # architecture the source run used.
-        return build_model(fl_config.get("model", "resnet18"), num_classes=fl_config["num_classes"],
-                            pretrained=fl_config.get("pretrained", True))
+        return build_model(
+            fl_config.get("model", "resnet18"),
+            num_classes=fl_config["num_classes"],
+            pretrained=fl_config.get("pretrained", True),
+        )
 
-    source_model = load_checkpoint_into_new_model(model_builder, source_checkpoint_path, device=device)
-    logger.info(f"Loaded source checkpoint (read-only) from {source_checkpoint_path}")
-
+    source_model = None
+    retained_source_models = {}
+    
     train_samples = index_dataset(merged_config["dataset_path"], "Train", hospitals)
     test_samples = index_dataset(merged_config["dataset_path"], "Test", hospitals)
     hospital_to_idx = {h: i for i, h in enumerate(hospitals)}
@@ -192,6 +218,11 @@ def main():
         train_samples, hospitals, merged_config["client_split"],
         merged_config.get("clients_per_hospital", 1), merged_config["seed"],
     )
+    
+    # Keep the full original training partitions for source-checkpoint
+    # matching and retained-client weighting.
+    source_train_partitions = list(train_partitions)
+    
     test_partitions = build_client_partitions(
         test_samples, hospitals, merged_config["client_split"],
         merged_config.get("clients_per_hospital", 1), merged_config["seed"],
@@ -221,13 +252,46 @@ def main():
     logger.info(f"Forgetting hospital: {args.forget_client} -> partition indices {forget_client_idx} "
                 f"of {len(train_partitions)} total clients (client_split={merged_config['client_split']}).")
 
+    # New Addition
+    source_algorithm = str(
+        fl_config.get("algorithm", args.algorithm)
+    ).strip().lower()
+
+    if source_algorithm != args.algorithm:
+        raise ValueError(
+            "The requested Phase-2 algorithm does not match the source "
+            f"FL run: source_algorithm={source_algorithm}, "
+            f"requested_algorithm={args.algorithm}. "
+            "Use the same algorithm as the selected source run."
+        )
+
+    source_model, retained_source_models = load_fu_source_model(
+        source_checkpoint_dir=source_checkpoint_dir,
+        source_algorithm=source_algorithm,
+        forget_client=args.forget_client,
+        client_partitions=source_train_partitions,
+        model_builder=model_builder,
+        device=device,
+        fedbn_source_mode=args.fedbn_source_mode,
+        logger=logger,
+    )
+
     train_oral_datasets = partitions_to_datasets(train_partitions, train_transform, merged_config["load_metadata"], hospital_to_idx)
     test_oral_datasets = partitions_to_datasets(test_partitions, eval_transform, merged_config["load_metadata"], hospital_to_idx)
 
     # Class-balanced sampling for TRAIN loaders only, toggled by the
     # `handle_class_imbalance` config key — see run_fu_lora_domain.py's
     # identical fix / src/data/sampler.py for the full rationale.
-    handle_imbalance = merged_config.get("handle_class_imbalance", True)
+    imbalance_method = resolve_imbalance_method(merged_config)
+
+    handle_imbalance = (
+        imbalance_method == "weighted_sampler"
+    )
+
+    logger.info(
+        f"[class_imbalance] source_method={imbalance_method}, "
+        f"use_weighted_sampler={handle_imbalance}"
+    )
     all_clean_client_loaders = [
         as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True, handle_imbalance=handle_imbalance)
         for ds in train_oral_datasets
@@ -355,24 +419,94 @@ def main():
     forget_train_loader_dict = concat_as_dict_loader(
         [train_oral_datasets[i] for i in forget_client_idx], args.batch_size, shuffle=False,
     )
-    run_standard_evaluation(
-        unlearned_model, global_test_loader_dict, device, fl_config["num_classes"],
-        logger, step=args.global_epoch, tag_prefix="eval",
+    
+    # New Addition
+    personalized_fu_models = {}
+    fedbn_fallback_model = None
+
+    use_personalized_fedbn_evaluation = (
+        args.algorithm == "fedbn"
+        and args.fedbn_source_mode == "retained_bn_average"
+        and bool(retained_source_models)
     )
-    unlearning_eval = run_unlearning_evaluation(
-        unlearned_model, remember_test_loader, forget_test_loader, device, logger,
-        step=args.global_epoch,
-        relearn_steps=merged_config.get("relearn_steps", 50),
-        relearn_lr=merged_config.get("relearn_lr", 1e-3),
-        # BUG FIX: was `nonmember_loader=remember_test_loader` — a different
-        # hospital's (domain's) test data, which a loss-threshold attacker
-        # can separate from the member set via domain shift alone. Use the
-        # forget hospital's OWN held-out test split instead — see
-        # run_fu_lora_domain.py's identical fix for the full rationale.
-        nonmember_loader=forget_test_loader,
-        member_loader=forget_train_loader_dict,
-        before_unlearning_acc=None,
-    )
+
+    if use_personalized_fedbn_evaluation:
+        personalized_fu_models = build_personalized_fu_models(
+            unlearned_model=unlearned_model,
+            retained_source_models=retained_source_models,
+            critical_layers=critical_layers,
+        )
+
+        retained_source_partitions = [
+            partition
+            for partition in source_train_partitions
+            if partition.hospital != args.forget_client
+        ]
+
+        retained_client_weights = {
+            partition.client_id: float(len(partition.samples))
+            for partition in retained_source_partitions
+        }
+
+        fedbn_fallback_model = build_retained_bn_reference_model(
+            global_model=unlearned_model,
+            client_models=personalized_fu_models,
+            client_weights=retained_client_weights,
+        ).to(device)
+
+        retained_hospital_models = build_hospital_model_map(
+            per_client_models=personalized_fu_models,
+            client_partitions=retained_source_partitions,
+            logger=logger,
+        )
+
+        logger.info(
+            "Running matched FedBN evaluation: retained hospitals use "
+            "personalized BN models; the forgotten hospital uses the "
+            "retained-only averaged BN fallback."
+        )
+
+        unlearning_eval = run_fedbn_retrain_evaluation(
+            hospital_models=retained_hospital_models,
+            fallback_model=fedbn_fallback_model,
+            global_test_loader=global_test_loader_dict,
+            remember_test_loader=remember_test_loader,
+            forget_test_loader=forget_test_loader,
+            device=device,
+            num_classes=fl_config["num_classes"],
+            logger=logger,
+            step=args.global_epoch,
+            relearn_steps=merged_config.get("relearn_steps", 50),
+            relearn_lr=merged_config.get("relearn_lr", 1e-3),
+            member_loader=forget_train_loader_dict,
+            nonmember_loader=forget_test_loader,
+        )
+
+    else:
+        run_standard_evaluation(
+            unlearned_model,
+            global_test_loader_dict,
+            device,
+            fl_config["num_classes"],
+            logger,
+            step=args.global_epoch,
+            tag_prefix="eval",
+        )
+
+        unlearning_eval = run_unlearning_evaluation(
+            unlearned_model,
+            remember_test_loader,
+            forget_test_loader,
+            device,
+            logger,
+            step=args.global_epoch,
+            relearn_steps=merged_config.get("relearn_steps", 50),
+            relearn_lr=merged_config.get("relearn_lr", 1e-3),
+            nonmember_loader=forget_test_loader,
+            member_loader=forget_train_loader_dict,
+            before_unlearning_acc=None,
+        )
+        
     logger.info(
         f"[symmetric eval] RA={unlearning_eval['RA']:.4f} FA={unlearning_eval['FA']:.4f} "
         f"ReA={unlearning_eval['ReA']:.4f}"
@@ -436,6 +570,51 @@ def main():
             "mia_shadow_acc": mia_shadow_acc, "mia_shadow_per_client": mia_shadow_per_client,
         },
     )
+    
+    # New Addition
+    
+    if personalized_fu_models:
+        per_hospital_output_dir = os.path.join(
+            dirs["checkpoint_dir"],
+            "per_hospital",
+        )
+
+        os.makedirs(
+            per_hospital_output_dir,
+            exist_ok=True,
+        )
+
+        personalized_extra = {
+            "config": merged_config,
+            "run_id": run_id,
+            "source_run": args.source_run,
+            "algorithm": args.algorithm,
+            "forget_client": args.forget_client,
+            "critical_layers": critical_layers,
+            "fedbn_source_mode": args.fedbn_source_mode,
+        }
+
+        for client_id, client_model in personalized_fu_models.items():
+            save_checkpoint(
+                client_model,
+                per_hospital_output_dir,
+                client_id,
+                extra=personalized_extra,
+            )
+
+        save_checkpoint(
+            fedbn_fallback_model,
+            dirs["checkpoint_dir"],
+            "unlearned_fallback_model",
+            extra=personalized_extra,
+        )
+
+        logger.info(
+            "Saved matched FedBN FU outputs: "
+            f"{len(personalized_fu_models)} retained personalized models "
+            "and one retained-BN fallback model."
+        )
+    
     logger.info(f"Saved unlearned model to {dirs['checkpoint_dir']}/unlearned_model.pt")
 
     logger.close()
