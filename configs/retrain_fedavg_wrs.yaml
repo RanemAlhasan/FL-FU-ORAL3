@@ -1,0 +1,14 @@
+defaults: retrain_baseline.yaml
+
+# Experiment: matched retraining for the selected FedAvg backbone
+source_run: fl_fedavg_oral_343638
+source_logs_root: logs/fl
+
+algorithm: FedAvg
+domain_adaptation: false
+
+# Selected FedAvg imbalance treatment
+handle_class_imbalance: true
+imbalance_method: weighted_sampler
+
+experiment_tag: fedavg_wrs

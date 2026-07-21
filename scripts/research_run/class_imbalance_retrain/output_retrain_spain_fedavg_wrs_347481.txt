@@ -1,0 +1,114 @@
+Working dir: /export/home/ralhasan/fl-fu-oral3
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Dataset path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3
+Source FL run: fl_fedavg_oral_343638
+Forget client: Spain_Dataset
+Mon Jul 20 13:48:08 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A16                     Off | 00000000:40:00.0 Off |                    0 |
+|  0%   46C    P8              15W /  62W |      4MiB / 15356MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Cleaning old Ray state...
+
+=== Exact retraining: FedAvg + WRS, forget Spain ===
+Copied training settings from source run: fl_fedavg_oral_343638
+Applied --set overrides: {'dataset_path': '/export/home/ralhasan/fl-fu-oral3/dataset/oral3', 'handle_class_imbalance': True, 'imbalance_method': 'weighted_sampler'}
+[2026-07-20 13:48:30] === Run started: retrain_spain_fedavg_wrs_oral_347481 ===
+[2026-07-20 13:48:30] Config loaded from configs/retrain_fedavg_wrs.yaml
+[2026-07-20 13:48:30] Matched Phase-1 source run: fl_fedavg_oral_343638
+[2026-07-20 13:48:30] The source checkpoint is NOT loaded. Retraining starts from a fresh model.
+[2026-07-20 13:48:30] Retrain experiment: algorithm=FedAvg, imbalance_method=weighted_sampler, handle_class_imbalance=True, forget_client=Spain_Dataset
+[2026-07-20 13:48:30] Retrain baseline: this is an INDEPENDENT FL run with the forget client/scope excluded from round 0. No source checkpoint is loaded.
+[2026-07-20 13:48:32] Unlearning scope: client. Forgetting hospital/client 'Spain_Dataset' (1 partition(s)); remembering 2 partition(s).
+[2026-07-20 13:48:32] Retraining FL model using ONLY remember partitions (forget data excluded from round 0).
+[2026-07-20 13:48:32] Run hyperparameters:
+  algorithm: fedavg
+  model: resnet18
+  num_clients: 2
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: False
+  imbalance_method: weighted_sampler
+[2026-07-20 13:48:32] [class_imbalance] method=weighted_sampler, global_train_counts=[1237, 611, 292], beta=0.999, weight_clip=None
+[2026-07-20 13:48:32] [class_imbalance/client] client_id=Canada_Dataset, hospital=Canada_Dataset, local_counts=[1226, 272, 137], loss_weights=None
+[2026-07-20 13:48:32] [class_imbalance/client] client_id=India_Dataset, hospital=India_Dataset, local_counts=[11, 339, 155], loss_weights=None
+[2026-07-20 13:48:32] Starting Flower simulation: algorithm=fedavg, clients=2, rounds=50
+[2026-07-20 13:49:59] [FL round 1] comm=89501528B comp=129.26s
+[2026-07-20 13:51:12] [FL round 2] comm=89501528B comp=113.47s
+[2026-07-20 13:52:22] [FL round 3] comm=89501528B comp=109.95s
+[2026-07-20 13:53:30] [FL round 4] comm=89501528B comp=112.48s
+[2026-07-20 13:54:40] [FL round 5] comm=89501528B comp=114.88s
+[2026-07-20 13:55:49] [FL round 6] comm=89501528B comp=112.08s
+[2026-07-20 13:56:58] [FL round 7] comm=89501528B comp=111.59s
+[2026-07-20 13:58:08] [FL round 8] comm=89501528B comp=107.62s
+[2026-07-20 13:59:18] [FL round 9] comm=89501528B comp=110.12s
+[2026-07-20 14:00:27] [FL round 10] comm=89501528B comp=111.47s
+[2026-07-20 14:01:36] [FL round 11] comm=89501528B comp=110.91s
+[2026-07-20 14:02:45] [FL round 12] comm=89501528B comp=112.22s
+[2026-07-20 14:03:54] [FL round 13] comm=89501528B comp=113.28s
+[2026-07-20 14:05:03] [FL round 14] comm=89501528B comp=109.30s
+[2026-07-20 14:06:12] [FL round 15] comm=89501528B comp=108.27s
+[2026-07-20 14:07:21] [FL round 16] comm=89501528B comp=114.50s
+[2026-07-20 14:08:30] [FL round 17] comm=89501528B comp=111.62s
+[2026-07-20 14:09:39] [FL round 18] comm=89501528B comp=112.29s
+[2026-07-20 14:10:48] [FL round 19] comm=89501528B comp=108.64s
+[2026-07-20 14:11:57] [FL round 20] comm=89501528B comp=113.90s
+[2026-07-20 14:13:06] [FL round 21] comm=89501528B comp=108.41s
+[2026-07-20 14:14:15] [FL round 22] comm=89501528B comp=110.00s
+[2026-07-20 14:15:25] [FL round 23] comm=89501528B comp=108.35s
+[2026-07-20 14:16:33] [FL round 24] comm=89501528B comp=110.61s
+[2026-07-20 14:17:44] [FL round 25] comm=89501528B comp=113.46s
+[2026-07-20 14:18:53] [FL round 26] comm=89501528B comp=109.20s
+[2026-07-20 14:20:02] [FL round 27] comm=89501528B comp=112.45s
+[2026-07-20 14:21:12] [FL round 28] comm=89501528B comp=113.45s
+[2026-07-20 14:22:22] [FL round 29] comm=89501528B comp=115.49s
+[2026-07-20 14:23:31] [FL round 30] comm=89501528B comp=109.50s
+[2026-07-20 14:24:40] [FL round 31] comm=89501528B comp=113.91s
+[2026-07-20 14:25:50] [FL round 32] comm=89501528B comp=109.87s
+[2026-07-20 14:26:59] [FL round 33] comm=89501528B comp=109.57s
+[2026-07-20 14:28:09] [FL round 34] comm=89501528B comp=113.58s
+[2026-07-20 14:29:18] [FL round 35] comm=89501528B comp=109.09s
+[2026-07-20 14:30:26] [FL round 36] comm=89501528B comp=110.02s
+[2026-07-20 14:31:36] [FL round 37] comm=89501528B comp=112.45s
+[2026-07-20 14:32:45] [FL round 38] comm=89501528B comp=111.07s
+[2026-07-20 14:33:53] [FL round 39] comm=89501528B comp=110.07s
+[2026-07-20 14:35:02] [FL round 40] comm=89501528B comp=113.45s
+[2026-07-20 14:36:11] [FL round 41] comm=89501528B comp=108.11s
+[2026-07-20 14:37:20] [FL round 42] comm=89501528B comp=110.90s
+[2026-07-20 14:38:30] [FL round 43] comm=89501528B comp=109.77s
+[2026-07-20 14:39:39] [FL round 44] comm=89501528B comp=111.52s
+[2026-07-20 14:40:48] [FL round 45] comm=89501528B comp=111.22s
+[2026-07-20 14:41:58] [FL round 46] comm=89501528B comp=111.88s
+[2026-07-20 14:43:08] [FL round 47] comm=89501528B comp=110.34s
+[2026-07-20 14:44:18] [FL round 48] comm=89501528B comp=110.46s
+[2026-07-20 14:45:27] [FL round 49] comm=89501528B comp=111.50s
+[2026-07-20 14:46:36] [FL round 50] comm=89501528B comp=110.58s
+[2026-07-20 14:46:43] Checkpoint assembled from fully-federated parameters (no domain adaptation).
+[2026-07-20 14:48:28] [eval/classification] accuracy=0.7567 macro_precision=0.7519 macro_recall=0.7076 macro_f1=0.7183 weighted_f1=0.7468
+[2026-07-20 14:48:28] [eval] overall_acc=0.7567 overall_loss=1.4235 | macro_precision=0.7519 macro_recall=0.7076 macro_f1=0.7183 weighted_f1=0.7468 | per_hospital={ Spain_Dataset: 0.6132, Canada_Dataset: 0.8997, India_Dataset: 0.4394 }
+[2026-07-20 14:49:06] [eval/unlearning/remember_classification] accuracy=0.7853 macro_precision=0.7617 macro_recall=0.7268 macro_f1=0.7375 weighted_f1=0.7782
+[2026-07-20 14:49:23] [eval/unlearning/forget_classification] accuracy=0.6132 macro_precision=0.6884 macro_recall=0.6156 macro_f1=0.6021 weighted_f1=0.5881
+[2026-07-20 14:52:20] [eval/unlearning] RA=0.7853 FA=0.6132 ReA=0.9151 remember_macro_f1=0.7375 forget_macro_f1=0.6021 MIA_acc=0.2320
+[2026-07-20 14:52:20] Saved retrained baseline checkpoint to checkpoints/retrain/retrain_spain_fedavg_wrs_oral_347481
+[2026-07-20 14:52:20] === Run finished: retrain_spain_fedavg_wrs_oral_347481 (elapsed 3830.0s) ===
+
+Done. run_id = retrain_spain_fedavg_wrs_oral_347481
+
+Done. run_id = retrain_spain_fedavg_wrs_oral_347481

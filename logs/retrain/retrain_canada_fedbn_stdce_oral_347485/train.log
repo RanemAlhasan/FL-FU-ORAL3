@@ -1,0 +1,84 @@
+[2026-07-20 13:48:47] === Run started: retrain_canada_fedbn_stdce_oral_347485 ===
+[2026-07-20 13:48:47] Config loaded from configs/retrain_fedbn_stdce.yaml
+[2026-07-20 13:48:47] Matched Phase-1 source run: fl_fedbn_oral_344913
+[2026-07-20 13:48:47] The source checkpoint is NOT loaded. Retraining starts from a fresh model.
+[2026-07-20 13:48:47] Retrain experiment: algorithm=FedBN, imbalance_method=standard_ce, handle_class_imbalance=False, forget_client=Canada_Dataset
+[2026-07-20 13:48:47] Retrain baseline: this is an INDEPENDENT FL run with the forget client/scope excluded from round 0. No source checkpoint is loaded.
+[2026-07-20 13:48:47] Unlearning scope: client. Forgetting hospital/client 'Canada_Dataset' (1 partition(s)); remembering 2 partition(s).
+[2026-07-20 13:48:47] Retraining FL model using ONLY remember partitions (forget data excluded from round 0).
+[2026-07-20 13:48:47] Run hyperparameters:
+  algorithm: fedbn
+  model: resnet18
+  num_clients: 2
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: True
+  imbalance_method: standard_ce
+[2026-07-20 13:48:48] [class_imbalance] method=standard_ce, global_train_counts=[162, 500, 241], beta=0.999, weight_clip=None
+[2026-07-20 13:48:48] [class_imbalance/client] client_id=Spain_Dataset, hospital=Spain_Dataset, local_counts=[151, 161, 86], loss_weights=None
+[2026-07-20 13:48:48] [class_imbalance/client] client_id=India_Dataset, hospital=India_Dataset, local_counts=[11, 339, 155], loss_weights=None
+[2026-07-20 13:48:48] Starting Flower simulation: algorithm=fedbn, clients=2, rounds=50
+[2026-07-20 13:52:33] [FL round 1] comm=89347608B comp=249.60s
+[2026-07-20 13:55:33] [FL round 2] comm=89347608B comp=191.55s
+[2026-07-20 13:58:17] [FL round 3] comm=89347608B comp=189.20s
+[2026-07-20 14:01:03] [FL round 4] comm=89347608B comp=191.39s
+[2026-07-20 14:03:47] [FL round 5] comm=89347608B comp=188.67s
+[2026-07-20 14:06:34] [FL round 6] comm=89347608B comp=193.80s
+[2026-07-20 14:09:19] [FL round 7] comm=89347608B comp=190.35s
+[2026-07-20 14:12:05] [FL round 8] comm=89347608B comp=192.39s
+[2026-07-20 14:14:51] [FL round 9] comm=89347608B comp=190.99s
+[2026-07-20 14:17:40] [FL round 10] comm=89347608B comp=195.54s
+[2026-07-20 14:20:28] [FL round 11] comm=89347608B comp=193.39s
+[2026-07-20 14:23:14] [FL round 12] comm=89347608B comp=191.68s
+[2026-07-20 14:26:02] [FL round 13] comm=89347608B comp=193.22s
+[2026-07-20 14:28:47] [FL round 14] comm=89347608B comp=192.07s
+[2026-07-20 14:31:35] [FL round 15] comm=89347608B comp=193.45s
+[2026-07-20 14:34:22] [FL round 16] comm=89347608B comp=192.24s
+[2026-07-20 14:37:05] [FL round 17] comm=89347608B comp=189.66s
+[2026-07-20 14:39:52] [FL round 18] comm=89347608B comp=192.50s
+[2026-07-20 14:42:37] [FL round 19] comm=89347608B comp=191.17s
+[2026-07-20 14:45:17] [FL round 20] comm=89347608B comp=185.42s
+[2026-07-20 14:48:01] [FL round 21] comm=89347608B comp=186.44s
+[2026-07-20 14:50:40] [FL round 22] comm=89347608B comp=186.06s
+[2026-07-20 14:53:21] [FL round 23] comm=89347608B comp=186.36s
+[2026-07-20 14:56:01] [FL round 24] comm=89347608B comp=185.70s
+[2026-07-20 14:58:42] [FL round 25] comm=89347608B comp=188.09s
+[2026-07-20 15:01:23] [FL round 26] comm=89347608B comp=186.28s
+[2026-07-20 15:04:06] [FL round 27] comm=89347608B comp=186.75s
+[2026-07-20 15:06:51] [FL round 28] comm=89347608B comp=191.88s
+[2026-07-20 15:09:32] [FL round 29] comm=89347608B comp=188.26s
+[2026-07-20 15:12:17] [FL round 30] comm=89347608B comp=190.39s
+[2026-07-20 15:15:09] [FL round 31] comm=89347608B comp=198.10s
+[2026-07-20 15:17:59] [FL round 32] comm=89347608B comp=196.58s
+[2026-07-20 15:20:50] [FL round 33] comm=89347608B comp=198.90s
+[2026-07-20 15:23:40] [FL round 34] comm=89347608B comp=198.29s
+[2026-07-20 15:26:32] [FL round 35] comm=89347608B comp=199.10s
+[2026-07-20 15:29:19] [FL round 36] comm=89347608B comp=195.17s
+[2026-07-20 15:32:06] [FL round 37] comm=89347608B comp=193.63s
+[2026-07-20 15:34:54] [FL round 38] comm=89347608B comp=195.83s
+[2026-07-20 15:37:43] [FL round 39] comm=89347608B comp=195.53s
+[2026-07-20 15:40:32] [FL round 40] comm=89347608B comp=195.83s
+[2026-07-20 15:43:19] [FL round 41] comm=89347608B comp=193.39s
+[2026-07-20 15:46:06] [FL round 42] comm=89347608B comp=195.00s
+[2026-07-20 15:48:56] [FL round 43] comm=89347608B comp=196.42s
+[2026-07-20 15:51:46] [FL round 44] comm=89347608B comp=195.66s
+[2026-07-20 15:56:03] [FL round 45] comm=89347608B comp=284.29s
+[2026-07-20 15:59:07] [FL round 46] comm=89347608B comp=212.14s
+[2026-07-20 16:02:06] [FL round 47] comm=89347608B comp=214.34s
+[2026-07-20 16:04:56] [FL round 48] comm=89347608B comp=193.54s
+[2026-07-20 16:07:44] [FL round 49] comm=89347608B comp=194.17s
+[2026-07-20 16:10:36] [FL round 50] comm=89347608B comp=200.88s
+[2026-07-20 16:10:50] FedBN checkpoint assembled: non-BN params from server aggregation, BN params taken from client 'Spain_Dataset' (representative).
+[2026-07-20 16:10:51] [fedbn/retrain] hospital=Spain_Dataset, selected_client_id=Spain_Dataset, available_client_ids=['Spain_Dataset']
+[2026-07-20 16:10:51] [fedbn/retrain] hospital=India_Dataset, selected_client_id=India_Dataset, available_client_ids=['India_Dataset']
+[2026-07-20 16:10:51] [fedbn/retrain] Retained hospitals use personalized BN models. The forgotten hospital uses the retained-BN average model.
+[2026-07-20 16:11:08] [eval/classification] accuracy=0.4631 macro_precision=0.5524 macro_recall=0.5833 macro_f1=0.4568 weighted_f1=0.4084
+[2026-07-20 16:11:08] [eval/fedbn_retrain] overall_acc=0.4631 overall_loss=2.8665 macro_f1=0.4568 weighted_f1=0.4084 per_hospital={ Spain_Dataset: 0.8679, Canada_Dataset: 0.2356, India_Dataset: 0.8258 }
+[2026-07-20 16:11:30] [eval/unlearning/remember_classification] accuracy=0.8445 macro_precision=0.8361 macro_recall=0.8211 macro_f1=0.8282 weighted_f1=0.8438
+[2026-07-20 16:11:30] [eval/unlearning/forget_classification] accuracy=0.2356 macro_precision=0.4138 macro_recall=0.4870 macro_f1=0.2497 weighted_f1=0.1792
+[2026-07-20 16:12:04] [eval/unlearning/fedbn_retrain] RA=0.8445 FA=0.2356 ReA=0.7494 MIA_acc=0.3166
+[2026-07-20 16:12:05] Saved 2 retained FedBN personalized checkpoints to checkpoints/retrain/retrain_canada_fedbn_stdce_oral_347485/per_hospital
+[2026-07-20 16:12:05] Saved retrained baseline checkpoint to checkpoints/retrain/retrain_canada_fedbn_stdce_oral_347485
+[2026-07-20 16:12:05] === Run finished: retrain_canada_fedbn_stdce_oral_347485 (elapsed 8598.0s) ===

@@ -18,7 +18,8 @@ plain FedAvg/FedProx/FedMOON do).
 """
 from __future__ import annotations
 
-from typing import Dict, List
+import copy
+from typing import Dict, List, Optional
 
 import torch
 import torch.nn as nn
@@ -89,3 +90,114 @@ def merge_local_bn_into_global(
     current_state = model.state_dict()
     current_state.update(global_federated_state)
     model.load_state_dict(current_state, strict=True)
+    
+    # New Addition 
+def build_retained_bn_reference_model(
+    global_model: nn.Module,
+    client_models: Dict[str, nn.Module],
+    client_weights: Optional[Dict[str, float]] = None,
+) -> nn.Module:
+    """
+    Build one FedBN fallback model using only retained-client BN states.
+
+    The model keeps the final global non-BN parameters and uses a weighted
+    average of retained clients' BatchNorm parameters and running statistics.
+
+    This is used for evaluating a forgotten hospital because exact FedBN
+    retraining has no personalized BN state for that hospital.
+
+    Backward compatible:
+    - Existing FedBN functions are unchanged.
+    - This helper is only used when explicitly called.
+    """
+    if not client_models:
+        raise ValueError(
+            "Cannot build retained BN reference model: "
+            "client_models is empty."
+        )
+
+    reference_model = copy.deepcopy(global_model)
+    reference_state = reference_model.state_dict()
+
+    local_bn_keys = split_federated_and_local_params(
+        reference_model,
+        domain_adaptation=True,
+    )["local"]
+
+    available_client_ids = sorted(client_models.keys())
+
+    if client_weights is None:
+        normalized_weights = {
+            client_id: 1.0 / len(available_client_ids)
+            for client_id in available_client_ids
+        }
+    else:
+        raw_weights = {
+            client_id: float(client_weights.get(client_id, 0.0))
+            for client_id in available_client_ids
+        }
+
+        total_weight = sum(raw_weights.values())
+
+        if total_weight <= 0:
+            normalized_weights = {
+                client_id: 1.0 / len(available_client_ids)
+                for client_id in available_client_ids
+            }
+        else:
+            normalized_weights = {
+                client_id: weight / total_weight
+                for client_id, weight in raw_weights.items()
+            }
+
+    client_states = {
+        client_id: model.state_dict()
+        for client_id, model in client_models.items()
+    }
+
+    for key in local_bn_keys:
+        tensors = [
+            client_states[client_id][key].detach()
+            for client_id in available_client_ids
+        ]
+
+        reference_tensor = reference_state[key]
+
+        if torch.is_floating_point(reference_tensor):
+            averaged_tensor = torch.zeros_like(
+                reference_tensor,
+                dtype=torch.float64,
+            )
+
+            for client_id, tensor in zip(
+                available_client_ids,
+                tensors,
+            ):
+                averaged_tensor += (
+                    tensor.to(
+                        device=averaged_tensor.device,
+                        dtype=torch.float64,
+                    )
+                    * normalized_weights[client_id]
+                )
+
+            reference_state[key] = averaged_tensor.to(
+                dtype=reference_tensor.dtype,
+            )
+        else:
+            # BatchNorm num_batches_tracked is an integer tensor.
+            # Use the largest retained value rather than averaging integers.
+            stacked = torch.stack(
+                [
+                    tensor.to(reference_tensor.device)
+                    for tensor in tensors
+                ],
+                dim=0,
+            )
+
+            reference_state[key] = stacked.max(dim=0).values.to(
+                dtype=reference_tensor.dtype,
+            )
+
+    reference_model.load_state_dict(reference_state, strict=True)
+    return reference_model

@@ -37,12 +37,31 @@ from torch.utils.data import ConcatDataset, DataLoader
 from src.data.dataset import index_dataset, OralCancerDataset
 from src.data.partition import build_client_partitions, partitions_to_datasets
 from src.data.transforms import build_transforms
-from src.eval.evaluator import run_standard_evaluation, run_unlearning_evaluation
+
+from src.eval.evaluator import (
+    run_standard_evaluation,
+    run_unlearning_evaluation,
+)
+from src.eval.fedbn_retrain import (
+    build_hospital_model_map,
+    run_fedbn_retrain_evaluation,
+)
+from src.models.fedbn import build_retained_bn_reference_model
+
 from src.fl.simulation import run_federated_learning
 from src.fu.scope import build_forget_remember_split
 from src.utils.checkpoint import save_checkpoint
-from src.utils.config import (apply_overrides, load_config, make_run_id,
-                               parse_set_overrides, resolve_run_dirs, save_config_snapshot)
+
+from src.utils.config import (
+    apply_overrides,
+    load_config,
+    load_source_run_config,
+    make_run_id,
+    parse_set_overrides,
+    resolve_run_dirs,
+    save_config_snapshot,
+)
+
 from src.utils.logger import build_logger
 
 
@@ -66,19 +85,117 @@ Examples:
         "--set", dest="set_overrides", action="append", default=None, metavar="KEY=VALUE",
         help="Override a config value, e.g. --set global_epochs=20. Repeatable.",
     )
+    
+    # New Addition
+    parser.add_argument(
+    "--source_run",
+    default=None,
+    help=(
+        "Optional Phase-1 run ID. Only its training settings are copied. "
+        "Its model checkpoint is never loaded."
+    ),
+    )
+
+    parser.add_argument(
+        "--source_logs_root",
+        default=None,
+        help=(
+            "Folder containing Phase-1 run logs. "
+            "Defaults to logs/fl."
+        ),
+    )
+    
     return parser.parse_args()
 
+# New Addition
+
+SOURCE_TRAINING_KEYS = (
+    "algorithm",
+    "model",
+    "num_classes",
+    "pretrained",
+    "dataset_path",
+    "hospitals",
+    "client_split",
+    "clients_per_hospital",
+    "load_metadata",
+    "image_size",
+    "augmentation",
+    "seed",
+    "global_epochs",
+    "local_epochs",
+    "batch_size",
+    "learning_rate",
+    "handle_class_imbalance",
+    "imbalance_method",
+    "class_balance_beta",
+    "class_weight_clip",
+    "fedprox_mu",
+    "fedmoon_mu",
+    "fedmoon_temperature",
+)
+
+def apply_source_training_settings(
+    retrain_config,
+    source_config,
+):
+    """
+    Copy only training settings from the selected Phase-1 run.
+
+    Retrain output folders, unlearning settings, and forget-client
+    settings remain controlled by the retrain config.
+    """
+    merged = dict(retrain_config)
+
+    for key in SOURCE_TRAINING_KEYS:
+        if key in source_config:
+            merged[key] = source_config[key]
+
+    return merged
 
 def main():
     args = parse_args()
+    
     config = load_config(args.config)
+
+    source_run = (
+        args.source_run
+        or config.get("source_run")
+    )
+
+    source_logs_root = (
+        args.source_logs_root
+        or config.get("source_logs_root", "logs/fl")
+    )
+
+    if source_run:
+        source_config = load_source_run_config(
+            source_run_id=source_run,
+            logs_root=source_logs_root,
+        )
+
+        config = apply_source_training_settings(
+            retrain_config=config,
+            source_config=source_config,
+        )
+
+        config["source_run"] = source_run
+        config["source_logs_root"] = source_logs_root
+
+        print(
+            f"Copied training settings from source run: "
+            f"{source_run}"
+        )
+
     overrides = parse_set_overrides(args.set_overrides)
     config = apply_overrides(config, overrides)
+
     if overrides:
         print(f"Applied --set overrides: {overrides}")
+
     if args.forget_client:
         config["forget_client"] = args.forget_client
-
+    
     dataset_tag = "oralcancer"
     algorithm_tag = f"retrain-{config['unlearning_scope']}"
     run_id = args.run_id or make_run_id(
@@ -89,6 +206,25 @@ def main():
 
     logger = build_logger(run_id, dirs["log_dir"], dirs["tb_dir"])
     logger.info(f"Config loaded from {args.config}")
+    
+    if source_run:
+        logger.info(
+            f"Matched Phase-1 source run: {source_run}"
+        )
+        logger.info(
+            "The source checkpoint is NOT loaded. "
+            "Retraining starts from a fresh model."
+        )
+
+    logger.info(
+        f"Retrain experiment: "
+        f"algorithm={config['algorithm']}, "
+        f"imbalance_method={config.get('imbalance_method')}, "
+        f"handle_class_imbalance="
+        f"{config.get('handle_class_imbalance')}, "
+        f"forget_client={config.get('forget_client')}"
+    )
+    
     logger.info(f"Retrain baseline: this is an INDEPENDENT FL run with the forget "
                 f"client/scope excluded from round 0. No source checkpoint is loaded.")
 
@@ -159,7 +295,7 @@ def main():
     )
 
     # --- Retrain FL from scratch on remember-only data (Phase 3's actual work)
-    retrained_model, _ = run_federated_learning(
+    retrained_model, per_hospital_models = run_federated_learning(
         config=config,
         client_partitions=train_split.remember_partitions,
         train_datasets=remember_train_datasets,
@@ -169,22 +305,121 @@ def main():
     )
 
     # --- Evaluation: standard + unlearning-style RA/FA/ReA/MIA --------------
-    run_standard_evaluation(
-        retrained_model, global_test_loader, device, config["num_classes"],
-        logger, step=config["global_epochs"], tag_prefix="eval",
-    )
-    run_unlearning_evaluation(
-        retrained_model, remember_test_loader, forget_test_loader, device, logger,
-        step=config["global_epochs"],
-        relearn_steps=config.get("relearn_steps", 50),
-        relearn_lr=config.get("relearn_lr", 1e-3),
-        nonmember_loader=remember_test_loader,
-        before_unlearning_acc=None,  # retrain has no "before" state — it never saw forget data
-    )
+    is_fedbn = config["algorithm"].lower() == "fedbn"
+
+    fedbn_fallback_model = None
+
+    if is_fedbn:
+        retained_client_weights = {
+            partition.client_id: len(partition.samples)
+            for partition in train_split.remember_partitions
+        }
+
+        fedbn_fallback_model = build_retained_bn_reference_model(
+            global_model=retrained_model,
+            client_models=per_hospital_models,
+            client_weights=retained_client_weights,
+        ).to(device)
+
+        retained_hospital_models = build_hospital_model_map(
+            per_client_models=per_hospital_models,
+            client_partitions=train_split.remember_partitions,
+            logger=logger,
+        )
+
+        run_fedbn_retrain_evaluation(
+            hospital_models=retained_hospital_models,
+            fallback_model=fedbn_fallback_model,
+            global_test_loader=global_test_loader,
+            remember_test_loader=remember_test_loader,
+            forget_test_loader=forget_test_loader,
+            device=device,
+            num_classes=config["num_classes"],
+            logger=logger,
+            step=config["global_epochs"],
+            relearn_steps=config.get("relearn_steps", 50),
+            relearn_lr=config.get("relearn_lr", 1e-3),
+            nonmember_loader=remember_test_loader,
+        )
+
+    else:
+        run_standard_evaluation(
+            retrained_model,
+            global_test_loader,
+            device,
+            config["num_classes"],
+            logger,
+            step=config["global_epochs"],
+            tag_prefix="eval",
+        )
+
+        run_unlearning_evaluation(
+            retrained_model,
+            remember_test_loader,
+            forget_test_loader,
+            device,
+            logger,
+            step=config["global_epochs"],
+            relearn_steps=config.get("relearn_steps", 50),
+            relearn_lr=config.get("relearn_lr", 1e-3),
+            nonmember_loader=remember_test_loader,
+            before_unlearning_acc=None,
+        )
 
     # --- Save ---------------------------------------------------------------
-    save_checkpoint(retrained_model, dirs["checkpoint_dir"], "retrained_model",
-                     extra={"config": config, "run_id": run_id})
+    checkpoint_extra = {
+        "config": config,
+        "run_id": run_id,
+        "source_run": source_run,
+        "forget_client": config.get("forget_client"),
+        "algorithm": config.get("algorithm"),
+        "imbalance_method": config.get("imbalance_method"),
+    }
+
+    if is_fedbn:
+        # Main deployable reference:
+        # global non-BN parameters + retained-only averaged BN state.
+        save_checkpoint(
+            fedbn_fallback_model,
+            dirs["checkpoint_dir"],
+            "retrained_model",
+            extra=checkpoint_extra,
+        )
+
+        # Keep the raw server/global model separately.
+        save_checkpoint(
+            retrained_model,
+            dirs["checkpoint_dir"],
+            "retrained_global_model",
+            extra=checkpoint_extra,
+        )
+
+        per_hospital_dir = os.path.join(
+            dirs["checkpoint_dir"],
+            "per_hospital",
+        )
+        os.makedirs(per_hospital_dir, exist_ok=True)
+
+        for client_id, model in per_hospital_models.items():
+            save_checkpoint(
+                model,
+                per_hospital_dir,
+                client_id,
+                extra=checkpoint_extra,
+            )
+
+        logger.info(
+            f"Saved {len(per_hospital_models)} retained FedBN "
+            f"personalized checkpoints to {per_hospital_dir}"
+        )
+
+    else:
+        save_checkpoint(
+            retrained_model,
+            dirs["checkpoint_dir"],
+            "retrained_model",
+            extra=checkpoint_extra,
+        )
     logger.info(f"Saved retrained baseline checkpoint to {dirs['checkpoint_dir']}")
 
     logger.close()

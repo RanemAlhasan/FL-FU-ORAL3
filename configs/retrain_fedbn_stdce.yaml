@@ -1,0 +1,18 @@
+defaults: retrain_baseline.yaml
+
+# Experiment: matched retraining for the selected FedBN backbone
+source_run: fl_fedbn_oral_344913
+source_logs_root: logs/fl
+
+algorithm: FedBN
+domain_adaptation: true
+
+# Selected FedBN imbalance treatment
+handle_class_imbalance: false
+imbalance_method: standard_ce
+
+# Forgotten hospital has no personalized BN state after exact retraining.
+fedbn_forget_eval: retained_bn_average
+save_per_hospital_checkpoints: true
+
+experiment_tag: fedbn_stdce
