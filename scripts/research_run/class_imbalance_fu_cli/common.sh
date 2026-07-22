@@ -90,6 +90,8 @@ python3 scripts/run_fu_cli_domain.py \
   --adapter_sparsity 0.05 \
   --relearn_rounds 50 \
   --no_shadow_mia \
+  --expected_train_samples 2538 \
+  --expected_test_samples 637 \
   --run_id "${RUN_PREFIX}_${SLURM_JOB_ID}"
 
 echo ""

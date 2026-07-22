@@ -155,6 +155,27 @@ def parse_args():
         ),
     )
     
+    # New Fix
+    parser.add_argument(
+        "--expected_train_samples",
+        type=int,
+        default=None,
+        help=(
+            "Optional safety check for the number of real training samples. "
+            "The run fails immediately if the count does not match."
+        ),
+    )
+
+    parser.add_argument(
+        "--expected_test_samples",
+        type=int,
+        default=None,
+        help=(
+            "Optional safety check for the number of real test samples. "
+            "The run fails immediately if the count does not match."
+        ),
+    )
+    
     return parser.parse_args()
 
 
@@ -182,13 +203,23 @@ def main():
     torch.manual_seed(fl_config["seed"])
 
     merged_config = dict(fl_config)
+    # New Fix
     merged_config.update({
-        "forget_client": args.forget_client, "phase2_algorithm": args.algorithm,
-        "phase2_fedprox_mu": args.fedprox_mu, "phase2_fedmoon_mu": args.fedmoon_mu,
-        "num_unlearning_layers": args.num_unlearning_layers, "adapter_sparsity": args.adapter_sparsity,
-        "global_epoch": args.global_epoch, "local_epoch": args.local_epoch, "batch_size": args.batch_size,
-        "source_run": args.source_run, "method": "FUSED-CLI (Algorithm 1, real paper method)",
+        "forget_client": args.forget_client,
+        "phase2_algorithm": args.algorithm,
+        "phase2_fedprox_mu": args.fedprox_mu,
+        "phase2_fedmoon_mu": args.fedmoon_mu,
+        "num_unlearning_layers": args.num_unlearning_layers,
+        "adapter_sparsity": args.adapter_sparsity,
+        "global_epoch": args.global_epoch,
+        "local_epoch": args.local_epoch,
+        "batch_size": args.batch_size,
+        "source_run": args.source_run,
+        "method": "FUSED-CLI (Algorithm 1, real paper method)",
         "fedbn_source_mode": args.fedbn_source_mode,
+        "run_shadow_mia": args.run_shadow_mia,
+        "expected_train_samples": args.expected_train_samples,
+        "expected_test_samples": args.expected_test_samples,
     })
     save_config_snapshot(merged_config, os.path.join(dirs["log_dir"], "config.snapshot.yaml"))
 
@@ -228,17 +259,114 @@ def main():
         merged_config.get("clients_per_hospital", 1), merged_config["seed"],
     )
 
-    # Carve out a held-out proxy pool per hospital, structurally identical
-    # to the real train/test split, used ONLY for shadow-model MIA training
-    # below. `train_partitions`/`test_partitions` are reassigned to the
-    # "main" (post-carve) partitions, so every downstream use of them in
-    # this script — real training, real evaluation — never touches proxy
-    # data, keeping the shadow models' membership ground truth clean.
-    train_partitions, proxy_train_partitions = carve_proxy_partitions(
-        train_partitions, args.proxy_frac, merged_config["seed"],
+    # Proxy data is needed only for the expensive shadow-model MIA.
+    #
+    # When shadow MIA is disabled, keep the complete original training
+    # and test partitions. This ensures that the real FUSED experiment
+    # uses all 2,538 training samples and is evaluated on all 637 test
+    # samples.
+    #
+    # Backward compatibility:
+    # - Shadow-MIA runs keep the previous proxy-carving behavior.
+    # - Runs using --no_shadow_mia now correctly skip proxy carving.
+    if args.run_shadow_mia:
+        train_partitions, proxy_train_partitions = carve_proxy_partitions(
+            train_partitions,
+            args.proxy_frac,
+            merged_config["seed"],
+        )
+
+        test_partitions, proxy_test_partitions = carve_proxy_partitions(
+            test_partitions,
+            args.proxy_frac,
+            merged_config["seed"],
+        )
+
+        logger.info(
+            "[proxy] Shadow MIA enabled. "
+            f"Carved proxy partitions using proxy_frac={args.proxy_frac}."
+        )
+    else:
+        proxy_train_partitions = []
+        proxy_test_partitions = []
+
+        logger.info(
+            "[proxy] Shadow MIA disabled. "
+            "Proxy carving was skipped; the complete train and test "
+            "partitions will be used."
+        )
+
+
+    real_train_samples = sum(
+        len(partition.samples)
+        for partition in train_partitions
     )
-    test_partitions, proxy_test_partitions = carve_proxy_partitions(
-        test_partitions, args.proxy_frac, merged_config["seed"],
+
+    real_test_samples = sum(
+        len(partition.samples)
+        for partition in test_partitions
+    )
+
+    train_counts_by_hospital = {
+        hospital: sum(
+            len(partition.samples)
+            for partition in train_partitions
+            if partition.hospital == hospital
+        )
+        for hospital in hospitals
+    }
+
+    test_counts_by_hospital = {
+        hospital: sum(
+            len(partition.samples)
+            for partition in test_partitions
+            if partition.hospital == hospital
+        )
+        for hospital in hospitals
+    }
+
+    logger.info(
+        f"[data] real_train_samples={real_train_samples}, "
+        f"per_hospital={train_counts_by_hospital}"
+    )
+
+    logger.info(
+        f"[data] real_test_samples={real_test_samples}, "
+        f"per_hospital={test_counts_by_hospital}"
+    )
+
+    if (
+        args.expected_train_samples is not None
+        and real_train_samples != args.expected_train_samples
+    ):
+        raise RuntimeError(
+            "Unexpected real training-set size: "
+            f"expected={args.expected_train_samples}, "
+            f"actual={real_train_samples}."
+        )
+
+    if (
+        args.expected_test_samples is not None
+        and real_test_samples != args.expected_test_samples
+    ):
+        raise RuntimeError(
+            "Unexpected real test-set size: "
+            f"expected={args.expected_test_samples}, "
+            f"actual={real_test_samples}."
+        )
+
+    merged_config["real_train_samples"] = real_train_samples
+    merged_config["real_test_samples"] = real_test_samples
+    merged_config["train_counts_by_hospital"] = train_counts_by_hospital
+    merged_config["test_counts_by_hospital"] = test_counts_by_hospital
+
+    # Rewrite the snapshot so it also contains the verified data counts.
+    save_config_snapshot(
+        merged_config,
+        os.path.join(
+            dirs["log_dir"],
+            "config.snapshot.yaml",
+        ),
     )
 
     # BUG FIX: forget_client_idx used to be `[hospitals.index(args.forget_client)]`
@@ -302,28 +430,61 @@ def main():
     logger.info(f"Built {len(all_clean_client_loaders)} hospital train loaders in order {hospitals}, "
                 f"sizes={client_data_sizes}, handle_class_imbalance={handle_imbalance}")
 
-    # Proxy loaders — held-out data for shadow-model MIA training only (see
-    # carve_proxy_partitions above). Same loader format (tuple-yielding) as
-    # the real loaders above, since they feed the same run_fused_cli_unlearning
-    # call inside the shadow_fn closure below.
-    proxy_train_oral_datasets = partitions_to_datasets(
-        proxy_train_partitions, train_transform, merged_config["load_metadata"], hospital_to_idx,
-    )
-    proxy_test_oral_datasets = partitions_to_datasets(
-        proxy_test_partitions, eval_transform, merged_config["load_metadata"], hospital_to_idx,
-    )
-    proxy_train_loaders = [
-        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True, handle_imbalance=handle_imbalance)
-        for ds in proxy_train_oral_datasets
-    ]
-    proxy_test_loaders = [
-        as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=False)
-        for ds in proxy_test_oral_datasets
-    ]
-    proxy_client_data_sizes = [len(ds) for ds in proxy_train_oral_datasets]
-    logger.info(f"Built {len(proxy_train_loaders)} proxy hospital train loaders "
-                f"(proxy_frac={args.proxy_frac}), sizes={proxy_client_data_sizes}.")
+    # New Fix
+    proxy_train_loaders = []
+    proxy_test_loaders = []
+    proxy_client_data_sizes = []
 
+    if args.run_shadow_mia:
+        proxy_train_oral_datasets = partitions_to_datasets(
+            proxy_train_partitions,
+            train_transform,
+            merged_config["load_metadata"],
+            hospital_to_idx,
+        )
+
+        proxy_test_oral_datasets = partitions_to_datasets(
+            proxy_test_partitions,
+            eval_transform,
+            merged_config["load_metadata"],
+            hospital_to_idx,
+        )
+
+        proxy_train_loaders = [
+            as_tensor_pair_loader(
+                dataset,
+                merged_config["batch_size"],
+                shuffle=True,
+                handle_imbalance=handle_imbalance,
+            )
+            for dataset in proxy_train_oral_datasets
+        ]
+
+        proxy_test_loaders = [
+            as_tensor_pair_loader(
+                dataset,
+                merged_config["batch_size"],
+                shuffle=False,
+            )
+            for dataset in proxy_test_oral_datasets
+        ]
+
+        proxy_client_data_sizes = [
+            len(dataset)
+            for dataset in proxy_train_oral_datasets
+        ]
+
+        logger.info(
+            f"Built {len(proxy_train_loaders)} proxy hospital train "
+            f"loaders (proxy_frac={args.proxy_frac}), "
+            f"sizes={proxy_client_data_sizes}."
+        )
+    else:
+        logger.info(
+            "[proxy] Proxy loaders were not created because "
+            "shadow MIA is disabled."
+        )
+    
     logger.info(f"Running FUSED-CLI unlearning (algorithm={args.algorithm})...")
     unlearned_model, fu_history, critical_layers = run_fused_cli_unlearning(
         source_model=source_model,
