@@ -1,0 +1,65 @@
+================================================================================
+FEDBN DOMAIN-SENSITIVITY ARRAY JOB
+================================================================================
+Array job ID:       354081
+Array task ID:      0
+SLURM job ID:       354082
+Source run:         fl_fedbn_oral_344913
+Forgotten hospital: Canada_Dataset
+Pooling method:     equal_hospital
+Metric:             sym_kl
+Top K:              15
+Device:             cpu
+Output root:        outputs/domain_sensitivity/equal_hospital
+Node:               crirdcmgpu002
+Python:             /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Started:            2026-07-22T15:28:10+03:00
+================================================================================
+
+==========================================================================================
+FEDBN DOMAIN-SENSITIVITY ANALYSIS
+==========================================================================================
+Source run:       fl_fedbn_oral_344913
+Forgot hospital:  Canada_Dataset
+Metric:           sym_kl
+Pooling:          equal_hospital
+Checkpoints:      checkpoints/fl/fl_fedbn_oral_344913/per_hospital
+
+Loaded Spain_Dataset                       hospital=Spain_Dataset        samples=  398 bn_layers= 20
+Loaded Canada_Dataset                      hospital=Canada_Dataset       samples= 1635 bn_layers= 20
+Loaded India_Dataset                       hospital=India_Dataset        samples=  505 bn_layers= 20
+
+========================================================================================================================
+Rank  BN layer                         Associated parameter                          Score   Normalized
+------------------------------------------------------------------------------------------------------------------------
+   1  layer1.0.bn1                     layer1.0.conv1.weight                      0.208842     1.000000
+   2  layer1.1.bn1                     layer1.1.conv1.weight                      0.180256     0.843325
+   3  layer1.1.bn2                     layer1.1.conv2.weight                      0.150664     0.681135
+   4  layer4.0.downsample.1            layer4.0.downsample.0.weight               0.140892     0.627576
+   5  layer1.0.bn2                     layer1.0.conv2.weight                      0.118700     0.505947
+   6  layer2.0.downsample.1            layer2.0.downsample.0.weight               0.108440     0.449711
+   7  layer3.1.bn1                     layer3.1.conv1.weight                      0.105814     0.435319
+   8  layer4.0.bn2                     layer4.0.conv2.weight                      0.102514     0.417231
+   9  layer2.0.bn1                     layer2.0.conv1.weight                      0.096727     0.385516
+  10  layer2.1.bn1                     layer2.1.conv1.weight                      0.089032     0.343339
+  11  layer3.1.bn2                     layer3.1.conv2.weight                      0.087678     0.335918
+  12  bn1                              conv1.weight                               0.080575     0.296990
+  13  layer4.0.bn1                     layer4.0.conv1.weight                      0.079896     0.293270
+  14  layer3.0.bn2                     layer3.0.conv2.weight                      0.058921     0.178308
+  15  layer3.0.bn1                     layer3.0.conv1.weight                      0.057845     0.172411
+========================================================================================================================
+
+CSV saved to:  outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/Canada/domain_sensitivity.csv
+JSON saved to: outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/Canada/domain_sensitivity.json
+
+================================================================================
+DOMAIN-SENSITIVITY JOB COMPLETED
+================================================================================
+Forgotten hospital: Canada_Dataset
+Pooling method:     equal_hospital
+Finished:           2026-07-22T15:28:23+03:00
+
+Results:
+  outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/Canada/domain_sensitivity.csv
+  outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/Canada/domain_sensitivity.json
+================================================================================

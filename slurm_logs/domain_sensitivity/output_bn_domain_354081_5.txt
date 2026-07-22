@@ -1,0 +1,65 @@
+================================================================================
+FEDBN DOMAIN-SENSITIVITY ARRAY JOB
+================================================================================
+Array job ID:       354081
+Array task ID:      5
+SLURM job ID:       354081
+Source run:         fl_fedbn_oral_344913
+Forgotten hospital: Spain_Dataset
+Pooling method:     sample_weighted
+Metric:             sym_kl
+Top K:              15
+Device:             cpu
+Output root:        outputs/domain_sensitivity/sample_weighted
+Node:               crimv3mgpu023
+Python:             /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Started:            2026-07-22T15:28:10+03:00
+================================================================================
+
+==========================================================================================
+FEDBN DOMAIN-SENSITIVITY ANALYSIS
+==========================================================================================
+Source run:       fl_fedbn_oral_344913
+Forgot hospital:  Spain_Dataset
+Metric:           sym_kl
+Pooling:          sample_weighted
+Checkpoints:      checkpoints/fl/fl_fedbn_oral_344913/per_hospital
+
+Loaded Spain_Dataset                       hospital=Spain_Dataset        samples=  398 bn_layers= 20
+Loaded Canada_Dataset                      hospital=Canada_Dataset       samples= 1635 bn_layers= 20
+Loaded India_Dataset                       hospital=India_Dataset        samples=  505 bn_layers= 20
+
+========================================================================================================================
+Rank  BN layer                         Associated parameter                          Score   Normalized
+------------------------------------------------------------------------------------------------------------------------
+   1  layer1.0.bn1                     layer1.0.conv1.weight                      0.202175     1.000000
+   2  layer1.1.bn1                     layer1.1.conv1.weight                      0.178019     0.863268
+   3  layer1.1.bn2                     layer1.1.conv2.weight                      0.166118     0.795900
+   4  layer1.0.bn2                     layer1.0.conv2.weight                      0.131436     0.599581
+   5  layer4.0.downsample.1            layer4.0.downsample.0.weight               0.120645     0.538501
+   6  layer2.0.downsample.1            layer2.0.downsample.0.weight               0.104476     0.446975
+   7  layer3.1.bn1                     layer3.1.conv1.weight                      0.098433     0.412768
+   8  layer2.1.bn1                     layer2.1.conv1.weight                      0.094730     0.391809
+   9  layer3.0.bn1                     layer3.0.conv1.weight                      0.084674     0.334887
+  10  layer2.0.bn1                     layer2.0.conv1.weight                      0.082902     0.324857
+  11  layer3.1.bn2                     layer3.1.conv2.weight                      0.082221     0.320998
+  12  layer3.0.downsample.1            layer3.0.downsample.0.weight               0.072690     0.267047
+  13  layer3.0.bn2                     layer3.0.conv2.weight                      0.071816     0.262102
+  14  layer4.0.bn2                     layer4.0.conv2.weight                      0.070542     0.254890
+  15  layer4.0.bn1                     layer4.0.conv1.weight                      0.070071     0.252222
+========================================================================================================================
+
+CSV saved to:  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/Spain/domain_sensitivity.csv
+JSON saved to: outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/Spain/domain_sensitivity.json
+
+================================================================================
+DOMAIN-SENSITIVITY JOB COMPLETED
+================================================================================
+Forgotten hospital: Spain_Dataset
+Pooling method:     sample_weighted
+Finished:           2026-07-22T15:28:26+03:00
+
+Results:
+  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/Spain/domain_sensitivity.csv
+  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/Spain/domain_sensitivity.json
+================================================================================

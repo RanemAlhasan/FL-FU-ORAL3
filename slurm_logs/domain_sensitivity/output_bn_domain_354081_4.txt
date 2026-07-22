@@ -1,0 +1,65 @@
+================================================================================
+FEDBN DOMAIN-SENSITIVITY ARRAY JOB
+================================================================================
+Array job ID:       354081
+Array task ID:      4
+SLURM job ID:       354086
+Source run:         fl_fedbn_oral_344913
+Forgotten hospital: India_Dataset
+Pooling method:     sample_weighted
+Metric:             sym_kl
+Top K:              15
+Device:             cpu
+Output root:        outputs/domain_sensitivity/sample_weighted
+Node:               crimv3mgpu023
+Python:             /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+Started:            2026-07-22T15:28:10+03:00
+================================================================================
+
+==========================================================================================
+FEDBN DOMAIN-SENSITIVITY ANALYSIS
+==========================================================================================
+Source run:       fl_fedbn_oral_344913
+Forgot hospital:  India_Dataset
+Metric:           sym_kl
+Pooling:          sample_weighted
+Checkpoints:      checkpoints/fl/fl_fedbn_oral_344913/per_hospital
+
+Loaded Spain_Dataset                       hospital=Spain_Dataset        samples=  398 bn_layers= 20
+Loaded Canada_Dataset                      hospital=Canada_Dataset       samples= 1635 bn_layers= 20
+Loaded India_Dataset                       hospital=India_Dataset        samples=  505 bn_layers= 20
+
+========================================================================================================================
+Rank  BN layer                         Associated parameter                          Score   Normalized
+------------------------------------------------------------------------------------------------------------------------
+   1  layer4.0.downsample.1            layer4.0.downsample.0.weight               0.141057     1.000000
+   2  layer1.0.bn1                     layer1.0.conv1.weight                      0.132273     0.931650
+   3  layer3.1.bn2                     layer3.1.conv2.weight                      0.117134     0.813842
+   4  layer1.0.bn2                     layer1.0.conv2.weight                      0.098665     0.670120
+   5  layer4.0.bn2                     layer4.0.conv2.weight                      0.095650     0.646660
+   6  layer1.1.bn2                     layer1.1.conv2.weight                      0.090372     0.605591
+   7  layer3.1.bn1                     layer3.1.conv1.weight                      0.088328     0.589683
+   8  layer1.1.bn1                     layer1.1.conv1.weight                      0.087786     0.585466
+   9  bn1                              conv1.weight                               0.085095     0.564527
+  10  layer2.0.downsample.1            layer2.0.downsample.0.weight               0.084446     0.559476
+  11  layer2.0.bn1                     layer2.0.conv1.weight                      0.081030     0.532894
+  12  layer3.0.bn1                     layer3.0.conv1.weight                      0.080964     0.532374
+  13  layer3.0.downsample.1            layer3.0.downsample.0.weight               0.078038     0.509608
+  14  layer4.0.bn1                     layer4.0.conv1.weight                      0.076924     0.500938
+  15  layer2.1.bn1                     layer2.1.conv1.weight                      0.066328     0.418484
+========================================================================================================================
+
+CSV saved to:  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/India/domain_sensitivity.csv
+JSON saved to: outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/India/domain_sensitivity.json
+
+================================================================================
+DOMAIN-SENSITIVITY JOB COMPLETED
+================================================================================
+Forgotten hospital: India_Dataset
+Pooling method:     sample_weighted
+Finished:           2026-07-22T15:28:26+03:00
+
+Results:
+  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/India/domain_sensitivity.csv
+  outputs/domain_sensitivity/sample_weighted/fl_fedbn_oral_344913/India/domain_sensitivity.json
+================================================================================
