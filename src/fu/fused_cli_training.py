@@ -48,6 +48,8 @@ LoRA pipeline in core_domain.py):
 from __future__ import annotations
 
 import copy
+import json
+import os
 from typing import Dict, List, Optional, Tuple
 
 import torch
@@ -59,7 +61,12 @@ from torch.utils.data import DataLoader
 from src.eval.client_forget_eval import test_client_forget
 from src.fl.client import _find_classifier_module
 from src.fl.core import SGD_MOMENTUM, SGD_WEIGHT_DECAY
-from src.fu.critical_layers_generic import run_critical_layer_identification, select_top_k_critical_layers
+from src.fu.critical_layers_generic import (
+    VALID_CLI_SCORE_MODES,
+    build_critical_layer_scores,
+    run_critical_layer_identification,
+    select_top_k_critical_layers,
+)
 from src.fu.sparse_adapter_generic import SparseAdapterSet, average_adapter_deltas
 from src.models.backbone import get_batchnorm_layer_names
 
@@ -72,6 +79,70 @@ def _check_algorithm(algorithm: str) -> str:
         raise ValueError(f"Unknown algorithm '{algorithm}'. Use one of {VALID_ALGORITHMS}.")
     return algorithm
 
+def _normalized_cli_candidate_names(
+    model: nn.Module,
+) -> set[str]:
+    """
+    Return convolution-style weight tensors eligible for normalized
+    and domain-aware critical-layer selection.
+
+    Excludes:
+      - bias tensors;
+      - one-dimensional BatchNorm affine parameters;
+      - the final classification head.
+
+    Includes:
+      - ordinary convolution weights;
+      - residual downsample convolution weights.
+    """
+    candidates: set[str] = set()
+
+    for name, parameter in model.named_parameters():
+        if not name.endswith(".weight"):
+            continue
+
+        # BN affine weights are one-dimensional. Convolution weights
+        # have at least two dimensions.
+        if parameter.ndim < 2:
+            continue
+
+        # The classifier contains class-discriminative information and
+        # is not a hospital-domain feature extractor.
+        if name.startswith("fc.") or ".fc." in name:
+            continue
+
+        candidates.add(name)
+
+    if not candidates:
+        raise RuntimeError(
+            "No eligible convolutional parameters were found for "
+            "normalized/domain-aware CLI selection."
+        )
+
+    return candidates
+
+def _save_selection_scores(
+    path: str,
+    payload: dict,
+) -> None:
+    parent = os.path.dirname(path)
+
+    if parent:
+        os.makedirs(
+            parent,
+            exist_ok=True,
+        )
+
+    with open(
+        path,
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            payload,
+            file,
+            indent=2,
+        )
 
 def _forward_with_features(
     model: nn.Module, images: torch.Tensor, overrides: Optional[Dict[str, torch.Tensor]] = None,
@@ -175,6 +246,16 @@ def run_fused_cli_unlearning(
     fedmoon_temperature: float = 0.5,
     cli_local_epochs: int = 1,
     cli_use_all_clients: bool = True,
+    cli_score_mode: str = "raw_sum",
+    domain_scores: Optional[
+        Dict[str, float]
+    ] = None,
+    domain_lambda: float = 0.5,
+    selection_scores_output_path: Optional[
+        str
+    ] = None,
+    selection_only: bool = False,
+    selection_log_top_k: int = 10,
     seed: int = 42,
     logger=None,
 ) -> Tuple[nn.Module, dict, List[str]]:
@@ -202,8 +283,38 @@ def run_fused_cli_unlearning(
     for this one measurement pass — you'll deviate from Eq 11-13, but
     stay strictly compliant.
     """
-    algorithm = _check_algorithm(algorithm)
-    num_clients = len(all_clean_client_loaders)
+    algorithm = _check_algorithm(
+        algorithm
+    )
+
+    cli_score_mode = (
+        cli_score_mode.lower()
+    )
+
+    if (
+        cli_score_mode
+        not in VALID_CLI_SCORE_MODES
+    ):
+        raise ValueError(
+            f"Unknown cli_score_mode "
+            f"{cli_score_mode!r}; expected one of "
+            f"{VALID_CLI_SCORE_MODES}."
+        )
+
+    if domain_lambda < 0.0:
+        raise ValueError(
+            "domain_lambda must be non-negative."
+        )
+
+    if selection_log_top_k < 0:
+        raise ValueError(
+            "selection_log_top_k must be "
+            "non-negative."
+        )
+
+    num_clients = len(
+        all_clean_client_loaders
+    )
     remember_idx = [i for i in range(num_clients) if i not in forget_client_idx]
     remember_loaders = [all_clean_client_loaders[i] for i in remember_idx]
     remember_data_sizes = [client_data_sizes[i] for i in remember_idx]
@@ -217,20 +328,164 @@ def run_fused_cli_unlearning(
     if logger is not None:
         scope = "ALL clients (paper Eq 11-13)" if cli_use_all_clients else "remember clients only (compliance mode)"
         logger.info(f"Running Critical Layer Identification (one federated round, {scope})...")
-    diffs = run_critical_layer_identification(
-        source_model, cli_loaders, cli_data_sizes, device,
-        local_epochs=cli_local_epochs, learning_rate=learning_rate,
+        diff_reduction = (
+        "sum"
+        if cli_score_mode == "raw_sum"
+        else "mean"
     )
-    critical_layers = select_top_k_critical_layers(diffs, num_unlearning_layers)
-    if logger is not None:
-        logger.info(f"Selected {len(critical_layers)} critical layers: {critical_layers}")
+
+    diffs = run_critical_layer_identification(
+        source_model,
+        cli_loaders,
+        cli_data_sizes,
+        device,
+        local_epochs=cli_local_epochs,
+        learning_rate=learning_rate,
+        diff_reduction=diff_reduction,
+    )
+
+    # Preserve the original paper-style candidate space for raw_sum.
+    # For mean_abs and domain_aware, compare only convolutional feature
+    # weights so small bias and BN affine tensors cannot dominate.
+    if cli_score_mode == "raw_sum":
+        candidate_diffs = diffs
     else:
-        print(f"[CLI] Selected critical layers: {critical_layers}")
+        eligible_names = _normalized_cli_candidate_names(
+            source_model
+        )
 
-    bn_critical_layers = _identify_bn_critical_layers(source_model, critical_layers) if algorithm == "fedbn" else set()
-    if algorithm == "fedbn" and logger is not None:
-        logger.info(f"FedBN-local (never-aggregated) critical layers among selection: {bn_critical_layers or 'none'}")
+        candidate_diffs = {
+            name: score
+            for name, score in diffs.items()
+            if name in eligible_names
+        }
 
+        if logger is not None:
+            logger.info(
+                "Restricted normalized/domain-aware CLI selection to "
+                f"{len(candidate_diffs)} convolutional weight tensors "
+                f"from {len(diffs)} total learnable parameters."
+            )
+
+    (
+        selection_scores,
+        selection_rows,
+    ) = build_critical_layer_scores(
+        candidate_diffs,
+        cli_score_mode=cli_score_mode,
+        domain_scores=domain_scores,
+        domain_lambda=domain_lambda,
+    )
+
+    critical_layers = (
+        select_top_k_critical_layers(
+            selection_scores,
+            num_unlearning_layers,
+        )
+    )
+
+    selected_set = set(
+        critical_layers
+    )
+
+    for row in selection_rows:
+        row["selected"] = (
+            row["parameter"]
+            in selected_set
+        )
+
+    selection_payload = {
+        "cli_score_mode": cli_score_mode,
+        "diff_reduction": diff_reduction,
+        "domain_lambda": (
+            domain_lambda
+            if cli_score_mode
+            == "domain_aware"
+            else 0.0
+        ),
+        "num_unlearning_layers": (
+            num_unlearning_layers
+        ),
+        "critical_layers": (
+            critical_layers
+        ),
+        "candidates": selection_rows,
+    }
+
+    if (
+        selection_scores_output_path
+        is not None
+    ):
+        _save_selection_scores(
+            selection_scores_output_path,
+            selection_payload,
+        )
+
+    selection_message = (
+        f"Selected {len(critical_layers)} "
+        "critical layers using "
+        f"cli_score_mode={cli_score_mode}: "
+        f"{critical_layers}"
+    )
+
+    if logger is not None:
+        logger.info(
+            selection_message
+        )
+
+        for row in selection_rows[
+            :selection_log_top_k
+        ]:
+            logger.info(
+                "[CLI score] "
+                f"rank={row['rank']} "
+                f"selected={row['selected']} "
+                f"parameter={row['parameter']} "
+                f"cli={row['cli_score']:.8g} "
+                "cli_norm="
+                f"{row['normalized_cli_score']:.6f} "
+                f"domain={row['domain_score']:.6f} "
+                f"final={row['selection_score']:.6f}"
+            )
+    else:
+        print(
+            f"[CLI] {selection_message}"
+        )
+
+    bn_critical_layers = (
+        _identify_bn_critical_layers(
+            source_model,
+            critical_layers,
+        )
+        if algorithm == "fedbn"
+        else set()
+    )
+
+    if (
+        algorithm == "fedbn"
+        and logger is not None
+    ):
+        logger.info(
+            "FedBN-local (never-aggregated) "
+            "critical layers among selection: "
+            f"{bn_critical_layers or 'none'}"
+        )
+
+    if selection_only:
+        history = {
+            "round": [],
+            "avg_f_acc": [],
+            "avg_r_acc": [],
+            "critical_layer_selection": (
+                selection_payload
+            ),
+        }
+
+        return (
+            copy.deepcopy(source_model),
+            history,
+            critical_layers,
+        )
     # --- Step 2-4: sparse adapter construction + FUSED federation ------
     # BUG FIX: this used to reassign `source_model = source_model.to(device)`
     # and then freeze `.requires_grad` on those SAME parameter objects —
@@ -252,7 +507,14 @@ def run_fused_cli_unlearning(
 
     global_adapter = SparseAdapterSet.build(source_model, critical_layers, adapter_sparsity, seed=seed).to(device)
 
-    history = {"round": [], "avg_f_acc": [], "avg_r_acc": []}
+    history = {
+        "round": [],
+        "avg_f_acc": [],
+        "avg_r_acc": [],
+        "critical_layer_selection": (
+            selection_payload
+        ),
+    }
     client_prev_merged_models: Dict[int, nn.Module] = {}
     client_local_bn_deltas: Dict[int, Dict[str, torch.Tensor]] = {}
 

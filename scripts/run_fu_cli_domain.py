@@ -59,6 +59,11 @@ from src.utils.fu_source import (
     load_fu_source_model,
 )
 
+from src.fu.domain_sensitivity import (
+    build_domain_scores_path,
+    load_domain_scores,
+)
+
 class TensorPairDataset(Dataset):
     def __init__(self, oral_dataset: OralCancerDataset):
         self.oral_dataset = oral_dataset
@@ -96,6 +101,60 @@ def concat_as_dict_loader(oral_datasets, batch_size: int, shuffle: bool) -> Data
     combined = oral_datasets[0] if len(oral_datasets) == 1 else ConcatDataset(oral_datasets)
     return DataLoader(combined, batch_size=batch_size, shuffle=shuffle, num_workers=2)
 
+def resolve_fused_cli_namespace(
+    cli_score_mode: str,
+) -> dict:
+    """
+    Return distinct names and artifact roots for each FUSED-CLI
+    implementation.
+
+    Existing historical outputs under outputs/fu_cli_domain are not
+    modified or overwritten.
+    """
+    namespaces = {
+        "raw_sum": {
+            "implementation_name": (
+                "FUSED-CLI Original"
+            ),
+            "implementation_slug": (
+                "fu_cli_original"
+            ),
+            "run_prefix": (
+                "fu_cli_original"
+            ),
+        },
+        "mean_abs": {
+            "implementation_name": (
+                "FUSED-CLI Normalized"
+            ),
+            "implementation_slug": (
+                "fu_cli_normalized"
+            ),
+            "run_prefix": (
+                "fu_cli_normalized"
+            ),
+        },
+        "domain_aware": {
+            "implementation_name": (
+                "Domain-Aware FUSED-CLI"
+            ),
+            "implementation_slug": (
+                "fu_cli_domain_aware"
+            ),
+            "run_prefix": (
+                "fu_cli_domain_aware"
+            ),
+        },
+    }
+
+    try:
+        return namespaces[cli_score_mode]
+    except KeyError as exc:
+        raise ValueError(
+            "Unsupported CLI score mode "
+            f"{cli_score_mode!r}. Expected one of "
+            f"{tuple(namespaces)}."
+        ) from exc
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Phase 2 (real CLI+sparse-adapter method): FUSED unlearning.")
@@ -107,6 +166,83 @@ def parse_args():
     parser.add_argument("--fedmoon_temperature", type=float, default=0.5)
     parser.add_argument("--num_unlearning_layers", type=int, default=4)
     parser.add_argument("--adapter_sparsity", type=float, default=0.05)
+    parser.add_argument(
+        "--cli_score_mode",
+        choices=[
+            "raw_sum",
+            "mean_abs",
+            "domain_aware",
+        ],
+        default="raw_sum",
+        help=(
+            "Critical-layer scoring method. "
+            "raw_sum reproduces the original CLI; "
+            "mean_abs removes tensor-size bias; "
+            "domain_aware adds the FedBN domain score."
+        ),
+    )
+
+    parser.add_argument(
+        "--domain_lambda",
+        type=float,
+        default=0.5,
+        help=(
+            "Weight of normalized domain sensitivity in "
+            "domain-aware selection."
+        ),
+    )
+
+    parser.add_argument(
+        "--domain_pooling",
+        choices=[
+            "equal_hospital",
+            "sample_weighted",
+        ],
+        default="equal_hospital",
+        help=(
+            "Pooling method used when locating the saved "
+            "domain-sensitivity JSON."
+        ),
+    )
+
+    parser.add_argument(
+        "--domain_source_run",
+        default=None,
+        help=(
+            "FedBN run used to produce domain scores. "
+            "Defaults to --source_run. This can later differ "
+            "when testing a FedAvg/FedProx source with a "
+            "FedBN-derived domain reference."
+        ),
+    )
+
+    parser.add_argument(
+        "--domain_scores_path",
+        default=None,
+        help=(
+            "Explicit domain_sensitivity.json path. "
+            "When omitted, the path is constructed from "
+            "--domain_source_run and --domain_pooling."
+        ),
+    )
+
+    parser.add_argument(
+        "--cli_selection_only",
+        action="store_true",
+        help=(
+            "Run critical-layer identification, save scores, "
+            "and exit before adapter training and evaluation."
+        ),
+    )
+
+    parser.add_argument(
+        "--selection_log_top_k",
+        type=int,
+        default=10,
+        help=(
+            "Number of ranked candidate parameters to print."
+        ),
+    )
     parser.add_argument("--cli_use_all_clients", dest="cli_use_all_clients", action="store_true", default=True,
                          help="Critical Layer Identification measures diffs across ALL clients "
                               "(paper Eq 11-13), including the forget client — its data is used only "
@@ -121,6 +257,21 @@ def parse_args():
     parser.add_argument("--relearn_rounds", type=int, default=None)
     parser.add_argument("--run_id", default=None)
     parser.add_argument("--learning_rate", type=float, default=0.005)
+    parser.add_argument(
+        "--phase2_imbalance_method",
+        choices=[
+            "source",
+            "standard_ce",
+            "weighted_sampler",
+        ],
+        default="source",
+        help=(
+            "Class-imbalance method used by the Phase-2 FU loaders. "
+            "'source' preserves the source-run configuration; "
+            "'standard_ce' means natural sampling with ordinary CE; "
+            "'weighted_sampler' enables WeightedRandomSampler."
+        ),
+    )
     parser.add_argument("--proxy_frac", type=float, default=0.2,
                          help="Fraction of each hospital's train/test samples held out as a "
                               "proxy pool for shadow-model MIA training (never used by the real "
@@ -189,15 +340,128 @@ def main():
     # NOTE: forget_client_idx is computed further below, once train_partitions
     # is built — see the comment there for why `hospitals.index(...)` is
     # wrong under client_split="simulated".
-
-    run_id = args.run_id or make_run_id(
-        f"fu_cli_{args.algorithm}_{args.forget_client.replace('_Dataset', '').lower()}_oral"
+    implementation = resolve_fused_cli_namespace(
+    args.cli_score_mode
     )
-    dirs = resolve_run_dirs(run_id, "logs/fu_cli_domain", "checkpoints/fu_cli_domain", "outputs/fu_cli_domain")
+
+    implementation_name = implementation[
+        "implementation_name"
+    ]
+
+    implementation_slug = implementation[
+        "implementation_slug"
+    ]
+
+    hospital_slug = (
+        args.forget_client
+        .replace("_Dataset", "")
+        .lower()
+    )
+
+    default_run_prefix = (
+        f"{implementation['run_prefix']}_"
+        f"{args.algorithm}_"
+        f"{hospital_slug}_oral"
+    )
+
+    run_id = (
+        args.run_id
+        or make_run_id(default_run_prefix)
+    )
+
+    dirs = resolve_run_dirs(
+        run_id=run_id,
+        logs_root=os.path.join(
+            "logs",
+            implementation_slug,
+        ),
+        checkpoints_root=os.path.join(
+            "checkpoints",
+            implementation_slug,
+        ),
+        outputs_root=os.path.join(
+            "outputs",
+            implementation_slug,
+        ),
+    )
     logger = build_logger(run_id, dirs["log_dir"], dirs["tb_dir"])
     logger.info(f"Forking from source FL run: {args.source_run}")
     logger.info(f"Forgetting: {args.forget_client}")
-    logger.info(f"Phase-2 mechanism: FUSED-CLI (Algorithm 1), algorithm={args.algorithm}")
+    logger.info(
+        "Phase-2 mechanism: "
+        f"{implementation_name}, "
+        f"cli_score_mode={args.cli_score_mode}, "
+        f"algorithm={args.algorithm}"
+    )
+
+    logger.info(
+        "Artifact namespace: "
+        f"{implementation_slug}"
+    )
+
+    logger.info(
+        "Run directories: "
+        f"logs={dirs['log_dir']}, "
+        f"checkpoints={dirs['checkpoint_dir']}, "
+        f"outputs={dirs['output_dir']}"
+    )
+
+    if args.domain_lambda < 0.0:
+        raise ValueError(
+            "--domain_lambda must be non-negative."
+        )
+
+    domain_source_run = (
+        args.domain_source_run
+        or args.source_run
+    )
+
+    domain_scores_path = None
+    domain_scores = {}
+
+    if (
+        args.cli_score_mode
+        == "domain_aware"
+    ):
+        domain_scores_path = (
+            args.domain_scores_path
+            or build_domain_scores_path(
+                source_run=domain_source_run,
+                forget_client=(
+                    args.forget_client
+                ),
+                pooling=(
+                    args.domain_pooling
+                ),
+            )
+        )
+
+        domain_scores = (
+            load_domain_scores(
+                domain_scores_path,
+                expected_source_run=(
+                    domain_source_run
+                ),
+                expected_forget_client=(
+                    args.forget_client
+                ),
+            )
+        )
+
+        logger.info(
+            "Loaded domain-aware layer scores: "
+            f"path={domain_scores_path}, "
+            f"mapped_parameters="
+            f"{len(domain_scores)}, "
+            f"lambda={args.domain_lambda}"
+        )
+
+    elif args.domain_scores_path:
+        logger.info(
+            "--domain_scores_path was supplied but "
+            f"cli_score_mode={args.cli_score_mode}; "
+            "the domain scores will not be used."
+        )
 
     device = fl_config["device"] if torch.cuda.is_available() and fl_config["device"] == "cuda" else "cpu"
     torch.manual_seed(fl_config["seed"])
@@ -215,12 +479,67 @@ def main():
         "local_epoch": args.local_epoch,
         "batch_size": args.batch_size,
         "source_run": args.source_run,
-        "method": "FUSED-CLI (Algorithm 1, real paper method)",
+        "method": implementation_name,
         "fedbn_source_mode": args.fedbn_source_mode,
         "run_shadow_mia": args.run_shadow_mia,
         "expected_train_samples": args.expected_train_samples,
         "expected_test_samples": args.expected_test_samples,
+        "cli_score_mode": (
+            args.cli_score_mode
+        ),
+        "domain_lambda": (
+            args.domain_lambda
+        ),
+        "domain_pooling": (
+            args.domain_pooling
+        ),
+        "domain_source_run": (
+            domain_source_run
+        ),
+        "domain_scores_path": (
+            domain_scores_path
+        ),
+        "cli_selection_only": (
+            args.cli_selection_only
+        ),
+        "selection_log_top_k": (
+            args.selection_log_top_k
+        ),
+        "fused_cli_implementation": (
+        implementation_name
+        ),
+        "fused_cli_implementation_slug": (
+            implementation_slug
+        ),
+        "artifact_log_dir": (
+            dirs["log_dir"]
+        ),
+        "artifact_checkpoint_dir": (
+            dirs["checkpoint_dir"]
+        ),
+        "artifact_output_dir": (
+            dirs["output_dir"]
+        ),
     })
+    
+    # Explicit Phase-2 class-imbalance override.
+    #
+    # This avoids ambiguous backward-compatible inference from older
+    # Phase-1 snapshots that may not contain `imbalance_method`.
+    if args.phase2_imbalance_method != "source":
+        merged_config["imbalance_method"] = (
+            args.phase2_imbalance_method
+        )
+
+        merged_config["handle_class_imbalance"] = (
+            args.phase2_imbalance_method
+            == "weighted_sampler"
+        )
+
+    merged_config["phase2_imbalance_method"] = (
+        args.phase2_imbalance_method
+    )
+    
     save_config_snapshot(merged_config, os.path.join(dirs["log_dir"], "config.snapshot.yaml"))
 
     source_checkpoint_dir = os.path.join(
@@ -410,16 +729,47 @@ def main():
     # Class-balanced sampling for TRAIN loaders only, toggled by the
     # `handle_class_imbalance` config key — see run_fu_lora_domain.py's
     # identical fix / src/data/sampler.py for the full rationale.
-    imbalance_method = resolve_imbalance_method(merged_config)
+    imbalance_method = resolve_imbalance_method(
+        merged_config
+    )
+
+    supported_fu_imbalance_methods = {
+        "standard_ce",
+        "weighted_sampler",
+    }
+
+    if (
+        imbalance_method
+        not in supported_fu_imbalance_methods
+    ):
+        raise ValueError(
+            "run_fu_cli_domain.py currently supports "
+            "only natural sampling with standard CE "
+            "or WeightedRandomSampler during Phase 2. "
+            f"Resolved method: {imbalance_method!r}."
+        )
 
     handle_imbalance = (
-        imbalance_method == "weighted_sampler"
+        imbalance_method
+        == "weighted_sampler"
+    )
+
+    sampling_name = (
+        "weighted_sampler"
+        if handle_imbalance
+        else "natural"
     )
 
     logger.info(
-        f"[class_imbalance] source_method={imbalance_method}, "
-        f"use_weighted_sampler={handle_imbalance}"
+        "[class_imbalance] "
+        f"phase2_override="
+        f"{args.phase2_imbalance_method}, "
+        f"resolved_method={imbalance_method}, "
+        f"sampling={sampling_name}, "
+        f"use_weighted_sampler="
+        f"{handle_imbalance}"
     )
+    
     all_clean_client_loaders = [
         as_tensor_pair_loader(ds, merged_config["batch_size"], shuffle=True, handle_imbalance=handle_imbalance)
         for ds in train_oral_datasets
@@ -486,6 +836,12 @@ def main():
         )
     
     logger.info(f"Running FUSED-CLI unlearning (algorithm={args.algorithm})...")
+    
+    critical_layer_scores_path = os.path.join(
+        dirs["output_dir"],
+        "critical_layer_scores.json",
+    )
+    
     unlearned_model, fu_history, critical_layers = run_fused_cli_unlearning(
         source_model=source_model,
         all_clean_client_loaders=all_clean_client_loaders,
@@ -501,9 +857,50 @@ def main():
         algorithm=args.algorithm, fedprox_mu=args.fedprox_mu,
         fedmoon_mu=args.fedmoon_mu, fedmoon_temperature=args.fedmoon_temperature,
         cli_use_all_clients=args.cli_use_all_clients,
+        cli_score_mode=(
+            args.cli_score_mode
+        ),
+        domain_scores=(
+            domain_scores
+        ),
+        domain_lambda=(
+            args.domain_lambda
+        ),
+        selection_scores_output_path=(
+            critical_layer_scores_path
+        ),
+        selection_only=(
+            args.cli_selection_only
+        ),
+        selection_log_top_k=(
+            args.selection_log_top_k
+        ),
         seed=fl_config["seed"], logger=logger,
     )
     logger.info(f"FUSED-CLI unlearning complete. Critical layers: {critical_layers}")
+    
+    if args.cli_selection_only:
+        logger.info(
+            "CLI selection-only mode completed. "
+            "Skipping adapter training, relearning, "
+            "evaluation and MIA."
+        )
+
+        logger.info(
+            "Critical-layer scores saved to: "
+            f"{critical_layer_scores_path}"
+        )
+
+        logger.close()
+
+        print(
+            "\nDone: CLI selection only. "
+            f"run_id={run_id}, "
+            f"mode={args.cli_score_mode}, "
+            f"critical_layers={critical_layers}"
+        )
+
+        return
 
     relearn_rounds = args.relearn_rounds or args.global_epoch
     logger.info(f"Running relearn (ReA) probe for {relearn_rounds} rounds...")
@@ -705,6 +1102,18 @@ def main():
                 algorithm=args.algorithm, fedprox_mu=args.fedprox_mu,
                 fedmoon_mu=args.fedmoon_mu, fedmoon_temperature=args.fedmoon_temperature,
                 cli_use_all_clients=args.cli_use_all_clients,
+                cli_score_mode=(
+                    args.cli_score_mode
+                ),
+                domain_scores=(
+                    domain_scores
+                ),
+                domain_lambda=(
+                    args.domain_lambda
+                ),
+                selection_scores_output_path=None,
+                selection_only=False,
+                selection_log_top_k=0,
                 seed=fl_config["seed"],
             )
             return shadow_model
@@ -723,6 +1132,18 @@ def main():
     save_checkpoint(
         unlearned_model, dirs["checkpoint_dir"], "unlearned_model",
         extra={
+            "fused_cli_implementation": (
+                implementation_name
+            ),
+            "fused_cli_implementation_slug": (
+                implementation_slug
+            ),
+            "cli_score_mode": (
+                args.cli_score_mode
+            ),
+            "artifact_output_dir": (
+                dirs["output_dir"]
+            ),
             "config": merged_config, "run_id": run_id, "source_run": args.source_run,
             "algorithm": args.algorithm, "forget_client": args.forget_client,
             "forget_client_idx": forget_client_idx, "critical_layers": critical_layers,
@@ -753,6 +1174,38 @@ def main():
             "forget_client": args.forget_client,
             "critical_layers": critical_layers,
             "fedbn_source_mode": args.fedbn_source_mode,
+                        "cli_score_mode": (
+                args.cli_score_mode
+            ),
+            "domain_lambda": (
+                args.domain_lambda
+            ),
+            "domain_pooling": (
+                args.domain_pooling
+            ),
+            "domain_source_run": (
+                domain_source_run
+            ),
+            "domain_scores_path": (
+                domain_scores_path
+            ),
+            "critical_layer_selection": (
+                fu_history.get(
+                    "critical_layer_selection"
+                )
+            ),
+            "fused_cli_implementation": (
+            implementation_name
+            ),
+            "fused_cli_implementation_slug": (
+                implementation_slug
+            ),
+            "cli_score_mode": (
+                args.cli_score_mode
+            ),
+            "artifact_output_dir": (
+                dirs["output_dir"]
+            ),
         }
 
         for client_id, client_model in personalized_fu_models.items():
@@ -779,9 +1232,19 @@ def main():
     logger.info(f"Saved unlearned model to {dirs['checkpoint_dir']}/unlearned_model.pt")
 
     logger.close()
-    print(f"\nDone. run_id = {run_id} (source_run = {args.source_run}, algorithm = {args.algorithm}, "
-          f"forgot {args.forget_client}, critical_layers = {critical_layers})")
-
+    print(
+        "\nDone."
+        f"\nImplementation: {implementation_name}"
+        f"\nCLI score mode: {args.cli_score_mode}"
+        f"\nRun ID: {run_id}"
+        f"\nSource run: {args.source_run}"
+        f"\nAlgorithm: {args.algorithm}"
+        f"\nForgotten hospital: {args.forget_client}"
+        f"\nCritical layers: {critical_layers}"
+        f"\nLogs: {dirs['log_dir']}"
+        f"\nCheckpoints: {dirs['checkpoint_dir']}"
+        f"\nOutputs: {dirs['output_dir']}"
+    )
 
 if __name__ == "__main__":
     main()

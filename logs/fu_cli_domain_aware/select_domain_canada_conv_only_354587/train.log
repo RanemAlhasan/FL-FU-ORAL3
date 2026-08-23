@@ -1,0 +1,39 @@
+[2026-07-23 12:34:01] === Run started: select_domain_canada_conv_only_354587 ===
+[2026-07-23 12:34:01] Forking from source FL run: fl_fedbn_oral_344913
+[2026-07-23 12:34:01] Forgetting: Canada_Dataset
+[2026-07-23 12:34:01] Phase-2 mechanism: Domain-Aware FUSED-CLI, cli_score_mode=domain_aware, algorithm=fedbn
+[2026-07-23 12:34:01] Artifact namespace: fu_cli_domain_aware
+[2026-07-23 12:34:01] Run directories: logs=logs/fu_cli_domain_aware/select_domain_canada_conv_only_354587, checkpoints=checkpoints/fu_cli_domain_aware/select_domain_canada_conv_only_354587, outputs=outputs/fu_cli_domain_aware/select_domain_canada_conv_only_354587
+[2026-07-23 12:34:01] Loaded domain-aware layer scores: path=outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/Canada/domain_sensitivity.json, mapped_parameters=20, lambda=0.5
+[2026-07-23 12:34:02] [proxy] Shadow MIA disabled. Proxy carving was skipped; the complete train and test partitions will be used.
+[2026-07-23 12:34:02] [data] real_train_samples=2538, per_hospital={'Spain_Dataset': 398, 'Canada_Dataset': 1635, 'India_Dataset': 505}
+[2026-07-23 12:34:02] [data] real_test_samples=637, per_hospital={'Spain_Dataset': 106, 'Canada_Dataset': 399, 'India_Dataset': 132}
+[2026-07-23 12:34:02] Forgetting hospital: Canada_Dataset -> partition indices [1] of 3 total clients (client_split=hospital_based).
+[2026-07-23 12:34:07] Loaded matched FedBN source model using retained-only BN states. forget_client=Canada_Dataset, retained_clients=['India_Dataset', 'Spain_Dataset']
+[2026-07-23 12:34:07] [class_imbalance] phase2_override=standard_ce, resolved_method=standard_ce, sampling=natural, use_weighted_sampler=False
+[2026-07-23 12:34:07] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505], handle_class_imbalance=False
+[2026-07-23 12:34:07] [proxy] Proxy loaders were not created because shadow MIA is disabled.
+[2026-07-23 12:34:07] Running FUSED-CLI unlearning (algorithm=fedbn)...
+[2026-07-23 12:34:07] Running Critical Layer Identification (one federated round, ALL clients (paper Eq 11-13))...
+[2026-07-23 12:35:34] Restricted normalized/domain-aware CLI selection to 20 convolutional weight tensors from 62 total learnable parameters.
+[2026-07-23 12:35:34] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+[2026-07-23 12:35:34] [CLI score] rank=1 selected=True parameter=conv1.weight cli=0.0025191226 cli_norm=1.000000 domain=0.296990 final=1.148495
+[2026-07-23 12:35:34] [CLI score] rank=2 selected=True parameter=layer2.0.downsample.0.weight cli=0.0016187029 cli_norm=0.624657 domain=0.449711 final=0.849513
+[2026-07-23 12:35:34] [CLI score] rank=3 selected=True parameter=layer1.1.conv1.weight cli=0.00074600766 cli_norm=0.260872 domain=0.843325 final=0.682534
+[2026-07-23 12:35:34] [CLI score] rank=4 selected=True parameter=layer1.0.conv1.weight cli=0.00053538998 cli_norm=0.173075 domain=1.000000 final=0.673075
+[2026-07-23 12:35:34] [CLI score] rank=5 selected=False parameter=layer1.1.conv2.weight cli=0.00058727173 cli_norm=0.194702 domain=0.681135 final=0.535270
+[2026-07-23 12:35:34] [CLI score] rank=6 selected=False parameter=layer1.0.conv2.weight cli=0.00060931179 cli_norm=0.203890 domain=0.505947 final=0.456863
+[2026-07-23 12:35:34] [CLI score] rank=7 selected=False parameter=layer2.0.conv1.weight cli=0.00051708374 cli_norm=0.165444 domain=0.385516 final=0.358202
+[2026-07-23 12:35:34] [CLI score] rank=8 selected=False parameter=layer4.0.downsample.0.weight cli=0.00022637468 cli_norm=0.044261 domain=0.627576 final=0.358049
+[2026-07-23 12:35:34] [CLI score] rank=9 selected=False parameter=layer2.1.conv1.weight cli=0.00035148036 cli_norm=0.096412 domain=0.343339 final=0.268082
+[2026-07-23 12:35:34] [CLI score] rank=10 selected=False parameter=layer3.1.conv1.weight cli=0.00013227101 cli_norm=0.005034 domain=0.435319 final=0.222693
+[2026-07-23 12:35:34] [CLI score] rank=11 selected=False parameter=layer4.0.conv2.weight cli=0.00012476559 cli_norm=0.001905 domain=0.417231 final=0.210520
+[2026-07-23 12:35:34] [CLI score] rank=12 selected=False parameter=layer3.0.downsample.0.weight cli=0.00042053703 cli_norm=0.125198 domain=0.121171 final=0.185784
+[2026-07-23 12:35:34] [CLI score] rank=13 selected=False parameter=layer2.0.conv2.weight cli=0.00039910099 cli_norm=0.116263 domain=0.131640 final=0.182082
+[2026-07-23 12:35:34] [CLI score] rank=14 selected=False parameter=layer3.1.conv2.weight cli=0.00013705752 cli_norm=0.007029 domain=0.335918 final=0.174988
+[2026-07-23 12:35:34] [CLI score] rank=15 selected=False parameter=layer3.0.conv1.weight cli=0.00032336409 cli_norm=0.084691 domain=0.172411 final=0.170897
+[2026-07-23 12:35:34] FedBN-local (never-aggregated) critical layers among selection: none
+[2026-07-23 12:35:34] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+[2026-07-23 12:35:34] CLI selection-only mode completed. Skipping adapter training, relearning, evaluation and MIA.
+[2026-07-23 12:35:34] Critical-layer scores saved to: outputs/fu_cli_domain_aware/select_domain_canada_conv_only_354587/critical_layer_scores.json
+[2026-07-23 12:35:34] === Run finished: select_domain_canada_conv_only_354587 (elapsed 92.7s) ===
