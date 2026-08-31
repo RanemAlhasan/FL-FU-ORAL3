@@ -1,0 +1,152 @@
+[2026-08-28 11:56:47] === Run started: fu_cli_domain_aware_fedbn_india_natural_l10_383638 ===
+[2026-08-28 11:56:47] Forking from source FL run: fl_fedbn_oral_344913
+[2026-08-28 11:56:47] Forgetting: India_Dataset
+[2026-08-28 11:56:47] Phase-2 mechanism: Domain-Aware FUSED-CLI, cli_score_mode=domain_aware, algorithm=fedbn
+[2026-08-28 11:56:47] Artifact namespace: fu_cli_domain_aware
+[2026-08-28 11:56:47] Run directories: logs=logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l10_383638, checkpoints=checkpoints/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l10_383638, outputs=outputs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l10_383638
+[2026-08-28 11:56:47] Loaded domain-aware layer scores: path=outputs/domain_sensitivity/equal_hospital/fl_fedbn_oral_344913/India/domain_sensitivity.json, mapped_parameters=20, lambda=1.0
+[2026-08-28 11:56:48] [proxy] Shadow MIA disabled. Proxy carving was skipped; the complete train and test partitions will be used.
+[2026-08-28 11:56:48] [data] real_train_samples=2538, per_hospital={'Spain_Dataset': 398, 'Canada_Dataset': 1635, 'India_Dataset': 505}
+[2026-08-28 11:56:48] [data] real_test_samples=637, per_hospital={'Spain_Dataset': 106, 'Canada_Dataset': 399, 'India_Dataset': 132}
+[2026-08-28 11:56:48] Forgetting hospital: India_Dataset -> partition indices [2] of 3 total clients (client_split=hospital_based).
+[2026-08-28 11:56:59] Loaded matched FedBN source model using retained-only BN states. forget_client=India_Dataset, retained_clients=['Canada_Dataset', 'Spain_Dataset']
+[2026-08-28 11:56:59] [class_imbalance] phase2_override=standard_ce, resolved_method=standard_ce, sampling=natural, use_weighted_sampler=False
+[2026-08-28 11:56:59] Built 3 hospital train loaders in order ['Spain_Dataset', 'Canada_Dataset', 'India_Dataset'], sizes=[398, 1635, 505], handle_class_imbalance=False
+[2026-08-28 11:56:59] [proxy] Proxy loaders were not created because shadow MIA is disabled.
+[2026-08-28 11:56:59] Running FUSED-CLI unlearning (algorithm=fedbn)...
+[2026-08-28 11:56:59] Running Critical Layer Identification (one federated round, ALL clients (paper Eq 11-13))...
+[2026-08-28 11:59:49] Restricted normalized/domain-aware CLI selection to 20 convolutional weight tensors from 62 total learnable parameters.
+[2026-08-28 11:59:49] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer4.0.downsample.0.weight']
+[2026-08-28 11:59:49] [CLI score] rank=1 selected=True parameter=conv1.weight cli=0.0025627389 cli_norm=1.000000 domain=0.633266 final=1.633266
+[2026-08-28 11:59:49] [CLI score] rank=2 selected=True parameter=layer2.0.downsample.0.weight cli=0.0013952909 cli_norm=0.521942 domain=0.557648 final=1.079590
+[2026-08-28 11:59:49] [CLI score] rank=3 selected=True parameter=layer1.0.conv1.weight cli=0.00046906104 cli_norm=0.142660 domain=0.907994 final=1.050654
+[2026-08-28 11:59:49] [CLI score] rank=4 selected=True parameter=layer4.0.downsample.0.weight cli=0.0002073949 cli_norm=0.035510 domain=1.000000 final=1.035510
+[2026-08-28 11:59:49] [CLI score] rank=5 selected=False parameter=layer1.0.conv2.weight cli=0.00048581574 cli_norm=0.149520 domain=0.829423 final=0.978943
+[2026-08-28 11:59:49] [CLI score] rank=6 selected=False parameter=layer3.1.conv2.weight cli=0.00013058945 cli_norm=0.004059 domain=0.930000 final=0.934059
+[2026-08-28 11:59:49] [CLI score] rank=7 selected=False parameter=layer3.0.downsample.0.weight cli=0.00042791849 cli_norm=0.125812 domain=0.802033 final=0.927845
+[2026-08-28 11:59:49] [CLI score] rank=8 selected=False parameter=layer3.0.conv1.weight cli=0.00031765758 cli_norm=0.080661 domain=0.811441 final=0.892102
+[2026-08-28 11:59:49] [CLI score] rank=9 selected=False parameter=layer2.0.conv1.weight cli=0.00047552222 cli_norm=0.145305 domain=0.501394 final=0.646700
+[2026-08-28 11:59:49] [CLI score] rank=10 selected=False parameter=layer3.0.conv2.weight cli=0.00020997546 cli_norm=0.036567 domain=0.595633 final=0.632199
+[2026-08-28 11:59:49] [CLI score] rank=11 selected=False parameter=layer1.1.conv2.weight cli=0.00050701825 cli_norm=0.158203 domain=0.465645 final=0.623848
+[2026-08-28 11:59:49] [CLI score] rank=12 selected=False parameter=layer1.1.conv1.weight cli=0.00055616939 cli_norm=0.178330 domain=0.436708 final=0.615037
+[2026-08-28 11:59:49] [CLI score] rank=13 selected=False parameter=layer4.0.conv2.weight cli=0.00012422687 cli_norm=0.001453 domain=0.553877 final=0.555331
+[2026-08-28 11:59:49] [CLI score] rank=14 selected=False parameter=layer3.1.conv1.weight cli=0.00012861371 cli_norm=0.003250 domain=0.532745 final=0.535995
+[2026-08-28 11:59:49] [CLI score] rank=15 selected=False parameter=layer4.0.conv1.weight cli=0.0001398511 cli_norm=0.007851 domain=0.516318 final=0.524169
+[2026-08-28 11:59:49] FedBN-local (never-aggregated) critical layers among selection: none
+[2026-08-28 12:03:56] [FUSED-CLI:fedbn] Round=0, avg_r_acc=0.7359, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 12:07:38] [FUSED-CLI:fedbn] Round=1, avg_r_acc=0.7491, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 12:11:06] [FUSED-CLI:fedbn] Round=2, avg_r_acc=0.7507, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 12:14:48] [FUSED-CLI:fedbn] Round=3, avg_r_acc=0.7474, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 12:18:56] [FUSED-CLI:fedbn] Round=4, avg_r_acc=0.7462, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 12:22:43] [FUSED-CLI:fedbn] Round=5, avg_r_acc=0.7504, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 12:26:11] [FUSED-CLI:fedbn] Round=6, avg_r_acc=0.7548, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 12:29:39] [FUSED-CLI:fedbn] Round=7, avg_r_acc=0.7565, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 12:33:13] [FUSED-CLI:fedbn] Round=8, avg_r_acc=0.7653, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 12:37:04] [FUSED-CLI:fedbn] Round=9, avg_r_acc=0.7691, avg_f_acc=0.3938, adapter_density=9022/185536
+[2026-08-28 12:40:19] [FUSED-CLI:fedbn] Round=10, avg_r_acc=0.7626, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 12:43:56] [FUSED-CLI:fedbn] Round=11, avg_r_acc=0.7584, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 12:47:45] [FUSED-CLI:fedbn] Round=12, avg_r_acc=0.7600, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 12:51:44] [FUSED-CLI:fedbn] Round=13, avg_r_acc=0.7611, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 12:55:14] [FUSED-CLI:fedbn] Round=14, avg_r_acc=0.7678, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 12:58:50] [FUSED-CLI:fedbn] Round=15, avg_r_acc=0.7678, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 13:02:29] [FUSED-CLI:fedbn] Round=16, avg_r_acc=0.7678, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 13:06:15] [FUSED-CLI:fedbn] Round=17, avg_r_acc=0.7683, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:09:47] [FUSED-CLI:fedbn] Round=18, avg_r_acc=0.7683, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:13:20] [FUSED-CLI:fedbn] Round=19, avg_r_acc=0.7683, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:17:03] [FUSED-CLI:fedbn] Round=20, avg_r_acc=0.7639, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:20:47] [FUSED-CLI:fedbn] Round=21, avg_r_acc=0.7611, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:24:29] [FUSED-CLI:fedbn] Round=22, avg_r_acc=0.7611, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:28:02] [FUSED-CLI:fedbn] Round=23, avg_r_acc=0.7661, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:31:33] [FUSED-CLI:fedbn] Round=24, avg_r_acc=0.7613, avg_f_acc=0.3795, adapter_density=9022/185536
+[2026-08-28 13:35:18] [FUSED-CLI:fedbn] Round=25, avg_r_acc=0.7640, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:38:53] [FUSED-CLI:fedbn] Round=26, avg_r_acc=0.7613, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:42:26] [FUSED-CLI:fedbn] Round=27, avg_r_acc=0.7613, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:45:57] [FUSED-CLI:fedbn] Round=28, avg_r_acc=0.7590, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 13:49:51] [FUSED-CLI:fedbn] Round=29, avg_r_acc=0.7613, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 13:53:27] [FUSED-CLI:fedbn] Round=30, avg_r_acc=0.7590, avg_f_acc=0.3795, adapter_density=9022/185536
+[2026-08-28 13:56:56] [FUSED-CLI:fedbn] Round=31, avg_r_acc=0.7640, avg_f_acc=0.3902, adapter_density=9022/185536
+[2026-08-28 14:00:33] [FUSED-CLI:fedbn] Round=32, avg_r_acc=0.7548, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 14:04:23] [FUSED-CLI:fedbn] Round=33, avg_r_acc=0.7613, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 14:08:14] [FUSED-CLI:fedbn] Round=34, avg_r_acc=0.7657, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:11:49] [FUSED-CLI:fedbn] Round=35, avg_r_acc=0.7590, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:15:23] [FUSED-CLI:fedbn] Round=36, avg_r_acc=0.7657, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:19:09] [FUSED-CLI:fedbn] Round=37, avg_r_acc=0.7657, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:22:47] [FUSED-CLI:fedbn] Round=38, avg_r_acc=0.7631, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:26:24] [FUSED-CLI:fedbn] Round=39, avg_r_acc=0.7590, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:29:57] [FUSED-CLI:fedbn] Round=40, avg_r_acc=0.7657, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 14:33:51] [FUSED-CLI:fedbn] Round=41, avg_r_acc=0.7634, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 14:37:30] [FUSED-CLI:fedbn] Round=42, avg_r_acc=0.7634, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 14:41:00] [FUSED-CLI:fedbn] Round=43, avg_r_acc=0.7634, avg_f_acc=0.3795, adapter_density=9022/185536
+[2026-08-28 14:44:36] [FUSED-CLI:fedbn] Round=44, avg_r_acc=0.7634, avg_f_acc=0.3866, adapter_density=9022/185536
+[2026-08-28 14:48:00] [FUSED-CLI:fedbn] Round=45, avg_r_acc=0.7634, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 14:51:39] [FUSED-CLI:fedbn] Round=46, avg_r_acc=0.7655, avg_f_acc=0.3831, adapter_density=9022/185536
+[2026-08-28 14:55:10] [FUSED-CLI:fedbn] Round=47, avg_r_acc=0.7661, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 14:58:36] [FUSED-CLI:fedbn] Round=48, avg_r_acc=0.7701, avg_f_acc=0.3759, adapter_density=9022/185536
+[2026-08-28 15:02:24] [FUSED-CLI:fedbn] Round=49, avg_r_acc=0.7629, avg_f_acc=0.3795, adapter_density=9022/185536
+[2026-08-28 15:02:24] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer4.0.downsample.0.weight']
+[2026-08-28 15:02:24] Running relearn (ReA) probe for 50 rounds...
+[2026-08-28 15:03:26] [Relearn] Round=0, avg_f_acc=0.5233 (ReA), avg_r_acc=0.6035
+[2026-08-28 15:04:31] [Relearn] Round=1, avg_f_acc=0.5412 (ReA), avg_r_acc=0.5878
+[2026-08-28 15:05:39] [Relearn] Round=2, avg_f_acc=0.5125 (ReA), avg_r_acc=0.6002
+[2026-08-28 15:06:44] [Relearn] Round=3, avg_f_acc=0.5685 (ReA), avg_r_acc=0.6311
+[2026-08-28 15:07:45] [Relearn] Round=4, avg_f_acc=0.5376 (ReA), avg_r_acc=0.6308
+[2026-08-28 15:08:48] [Relearn] Round=5, avg_f_acc=0.5591 (ReA), avg_r_acc=0.6103
+[2026-08-28 15:09:55] [Relearn] Round=6, avg_f_acc=0.5233 (ReA), avg_r_acc=0.6166
+[2026-08-28 15:10:56] [Relearn] Round=7, avg_f_acc=0.5233 (ReA), avg_r_acc=0.6135
+[2026-08-28 15:11:58] [Relearn] Round=8, avg_f_acc=0.5305 (ReA), avg_r_acc=0.6353
+[2026-08-28 15:13:03] [Relearn] Round=9, avg_f_acc=0.5685 (ReA), avg_r_acc=0.6285
+[2026-08-28 15:14:05] [Relearn] Round=10, avg_f_acc=0.5054 (ReA), avg_r_acc=0.6048
+[2026-08-28 15:15:05] [Relearn] Round=11, avg_f_acc=0.5233 (ReA), avg_r_acc=0.6094
+[2026-08-28 15:16:09] [Relearn] Round=12, avg_f_acc=0.5090 (ReA), avg_r_acc=0.5975
+[2026-08-28 15:17:15] [Relearn] Round=13, avg_f_acc=0.5341 (ReA), avg_r_acc=0.6067
+[2026-08-28 15:18:21] [Relearn] Round=14, avg_f_acc=0.5448 (ReA), avg_r_acc=0.5996
+[2026-08-28 15:19:22] [Relearn] Round=15, avg_f_acc=0.5448 (ReA), avg_r_acc=0.5918
+[2026-08-28 15:20:26] [Relearn] Round=16, avg_f_acc=0.5341 (ReA), avg_r_acc=0.5927
+[2026-08-28 15:21:25] [Relearn] Round=17, avg_f_acc=0.5520 (ReA), avg_r_acc=0.5852
+[2026-08-28 15:22:30] [Relearn] Round=18, avg_f_acc=0.5305 (ReA), avg_r_acc=0.5998
+[2026-08-28 15:23:31] [Relearn] Round=19, avg_f_acc=0.5233 (ReA), avg_r_acc=0.5775
+[2026-08-28 15:24:35] [Relearn] Round=20, avg_f_acc=0.5448 (ReA), avg_r_acc=0.5850
+[2026-08-28 15:25:33] [Relearn] Round=21, avg_f_acc=0.5448 (ReA), avg_r_acc=0.6095
+[2026-08-28 15:26:37] [Relearn] Round=22, avg_f_acc=0.5627 (ReA), avg_r_acc=0.5867
+[2026-08-28 15:27:41] [Relearn] Round=23, avg_f_acc=0.6008 (ReA), avg_r_acc=0.6042
+[2026-08-28 15:28:43] [Relearn] Round=24, avg_f_acc=0.5614 (ReA), avg_r_acc=0.5945
+[2026-08-28 15:29:48] [Relearn] Round=25, avg_f_acc=0.5793 (ReA), avg_r_acc=0.5939
+[2026-08-28 15:30:55] [Relearn] Round=26, avg_f_acc=0.5865 (ReA), avg_r_acc=0.5762
+[2026-08-28 15:31:54] [Relearn] Round=27, avg_f_acc=0.5650 (ReA), avg_r_acc=0.5889
+[2026-08-28 15:33:00] [Relearn] Round=28, avg_f_acc=0.5829 (ReA), avg_r_acc=0.5845
+[2026-08-28 15:34:11] [Relearn] Round=29, avg_f_acc=0.5484 (ReA), avg_r_acc=0.5906
+[2026-08-28 15:35:22] [Relearn] Round=30, avg_f_acc=0.5448 (ReA), avg_r_acc=0.5925
+[2026-08-28 15:36:21] [Relearn] Round=31, avg_f_acc=0.5627 (ReA), avg_r_acc=0.5929
+[2026-08-28 15:37:28] [Relearn] Round=32, avg_f_acc=0.5484 (ReA), avg_r_acc=0.5929
+[2026-08-28 15:38:29] [Relearn] Round=33, avg_f_acc=0.5721 (ReA), avg_r_acc=0.5979
+[2026-08-28 15:39:32] [Relearn] Round=34, avg_f_acc=0.5376 (ReA), avg_r_acc=0.5713
+[2026-08-28 15:40:33] [Relearn] Round=35, avg_f_acc=0.5972 (ReA), avg_r_acc=0.5923
+[2026-08-28 15:41:34] [Relearn] Round=36, avg_f_acc=0.5556 (ReA), avg_r_acc=0.5894
+[2026-08-28 15:42:33] [Relearn] Round=37, avg_f_acc=0.5412 (ReA), avg_r_acc=0.5934
+[2026-08-28 15:43:42] [Relearn] Round=38, avg_f_acc=0.5412 (ReA), avg_r_acc=0.5962
+[2026-08-28 15:44:46] [Relearn] Round=39, avg_f_acc=0.5556 (ReA), avg_r_acc=0.5912
+[2026-08-28 15:45:47] [Relearn] Round=40, avg_f_acc=0.5757 (ReA), avg_r_acc=0.5851
+[2026-08-28 15:46:46] [Relearn] Round=41, avg_f_acc=0.5757 (ReA), avg_r_acc=0.5956
+[2026-08-28 15:47:59] [Relearn] Round=42, avg_f_acc=0.5865 (ReA), avg_r_acc=0.5864
+[2026-08-28 15:49:09] [Relearn] Round=43, avg_f_acc=0.5448 (ReA), avg_r_acc=0.5885
+[2026-08-28 15:50:17] [Relearn] Round=44, avg_f_acc=0.5721 (ReA), avg_r_acc=0.5932
+[2026-08-28 15:51:19] [Relearn] Round=45, avg_f_acc=0.5233 (ReA), avg_r_acc=0.5915
+[2026-08-28 15:52:22] [Relearn] Round=46, avg_f_acc=0.5341 (ReA), avg_r_acc=0.5919
+[2026-08-28 15:53:19] [Relearn] Round=47, avg_f_acc=0.5376 (ReA), avg_r_acc=0.5868
+[2026-08-28 15:54:17] [Relearn] Round=48, avg_f_acc=0.5161 (ReA), avg_r_acc=0.5860
+[2026-08-28 15:55:14] [Relearn] Round=49, avg_f_acc=0.5305 (ReA), avg_r_acc=0.5784
+[2026-08-28 15:55:14] ReA = 0.5305
+[2026-08-28 15:55:34] Final unlearned model: global test loss=1.2696, acc=0.7473
+[2026-08-28 15:55:34] [fedbn/retrain] hospital=Spain_Dataset, selected_client_id=Spain_Dataset, available_client_ids=['Spain_Dataset']
+[2026-08-28 15:55:34] [fedbn/retrain] hospital=Canada_Dataset, selected_client_id=Canada_Dataset, available_client_ids=['Canada_Dataset']
+[2026-08-28 15:55:34] Running matched FedBN evaluation: retained hospitals use personalized BN models; the forgotten hospital uses the retained-only averaged BN fallback.
+[2026-08-28 15:55:34] [fedbn/retrain] Retained hospitals use personalized BN models. The forgotten hospital uses the retained-BN average model.
+[2026-08-28 15:55:55] [eval/classification] accuracy=0.7645 macro_precision=0.7434 macro_recall=0.7294 macro_f1=0.7324 weighted_f1=0.7585
+[2026-08-28 15:55:55] [eval/fedbn_retrain] overall_acc=0.7645 overall_loss=1.2303 macro_f1=0.7324 weighted_f1=0.7585 per_hospital={ Spain_Dataset: 0.7736, Canada_Dataset: 0.8997, India_Dataset: 0.3485 }
+[2026-08-28 15:56:15] [eval/unlearning/remember_classification] accuracy=0.8733 macro_precision=0.8404 macro_recall=0.8594 macro_f1=0.8492 weighted_f1=0.8746
+[2026-08-28 15:56:15] [eval/unlearning/forget_classification] accuracy=0.3485 macro_precision=0.3906 macro_recall=0.3795 macro_f1=0.3186 weighted_f1=0.4117
+[2026-08-28 15:57:00] [eval/unlearning/fedbn_retrain] RA=0.8733 FA=0.3485 ReA=0.9470 MIA_acc=0.6082
+[2026-08-28 15:57:00] [symmetric eval] RA=0.8733 FA=0.3485 ReA=0.9470 MIA_acc=0.6082
+[2026-08-28 15:57:00] Saved matched FedBN FU outputs: 2 retained personalized models and one retained-BN fallback model.
+[2026-08-28 15:57:00] Saved unlearned model to checkpoints/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l10_383638/unlearned_model.pt
+[2026-08-28 15:57:00] === Run finished: fu_cli_domain_aware_fedbn_india_natural_l10_383638 (elapsed 14413.5s) ===

@@ -1,0 +1,36 @@
+
+================ logs/fu_cli_domain/fu_cli_spain_fedbn_stdce_oral_348219/train.log ================
+[2026-07-21 16:35:46] Selected 4 critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[2026-07-21 17:53:57] FUSED-CLI unlearning complete. Critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+
+================ logs/fu_cli_domain/fu_cli_canada_fedbn_stdce_oral_348220/train.log ================
+[2026-07-21 16:35:44] Selected 4 critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[2026-07-21 18:50:32] FUSED-CLI unlearning complete. Critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+
+================ logs/fu_cli_domain/fu_cli_india_fedbn_stdce_oral_348221/train.log ================
+[2026-07-21 16:35:44] Selected 4 critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+[2026-07-21 19:18:43] FUSED-CLI unlearning complete. Critical layers: ['layer4.1.conv2.weight', 'layer4.0.conv2.weight', 'layer4.1.conv1.weight', 'layer4.0.conv1.weight']
+
+================ logs/fu_cli_normalized/fu_cli_normalized_fedbn_spain_natural_380497/train.log ================
+[2026-08-22 18:45:28] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+[2026-08-22 20:28:08] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+
+================ logs/fu_cli_normalized/fu_cli_normalized_fedbn_canada_natural_380391/train.log ================
+[2026-08-22 14:12:01] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv2.weight']
+[2026-08-22 17:03:42] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv2.weight']
+
+================ logs/fu_cli_normalized/fu_cli_normalized_fedbn_india_natural_380496/train.log ================
+[2026-08-22 18:45:23] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+[2026-08-22 21:50:29] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+
+================ logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_spain_natural_l05_380492/train.log ================
+[2026-08-22 18:37:02] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.1.conv1.weight']
+[2026-08-22 20:19:33] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.1.conv1.weight']
+
+================ logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_canada_natural_l05_354605/train.log ================
+[2026-07-23 13:02:39] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+[2026-07-23 15:54:40] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+
+================ logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l05_380491/train.log ================
+[2026-08-22 18:37:05] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.0.conv2.weight']
+[2026-08-22 21:41:01] FUSED-CLI unlearning complete. Critical layers: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.0.conv2.weight']
