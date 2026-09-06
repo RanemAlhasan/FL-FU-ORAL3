@@ -24,6 +24,8 @@ import argparse
 import copy
 import os
 import sys
+import random
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -63,6 +65,23 @@ from src.fu.domain_sensitivity import (
     build_domain_scores_path,
     load_domain_scores,
 )
+
+# New Additions
+def _set_reproducible_seed(seed: int) -> None:
+    seed = int(seed)
+
+    random.seed(seed)
+    np.random.seed(seed % (2**32 - 1))
+
+    torch.manual_seed(seed)
+
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+    if torch.backends.cudnn.is_available():
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
+
 
 class TensorPairDataset(Dataset):
     def __init__(self, oral_dataset: OralCancerDataset):
@@ -464,7 +483,17 @@ def main():
         )
 
     device = fl_config["device"] if torch.cuda.is_available() and fl_config["device"] == "cuda" else "cpu"
-    torch.manual_seed(fl_config["seed"])
+    
+    # New Modification
+    experiment_seed = int(fl_config["seed"])
+    _set_reproducible_seed(experiment_seed)
+
+    logger.info(
+        "[reproducibility] "
+        f"Initialized RNGs with seed={experiment_seed}; "
+        "cudnn.deterministic=True, cudnn.benchmark=False"
+    )
+    
 
     merged_config = dict(fl_config)
     # New Fix
@@ -903,6 +932,16 @@ def main():
         return
 
     relearn_rounds = args.relearn_rounds or args.global_epoch
+    
+    # New Modification
+    relearn_seed = int(fl_config["seed"])
+    _set_reproducible_seed(relearn_seed)
+
+    logger.info(
+        "[reproducibility] "
+        f"Reset RNGs before ReA with seed={relearn_seed}"
+    )
+    
     logger.info(f"Running relearn (ReA) probe for {relearn_rounds} rounds...")
     _, relearn_result = relearn_mod.relearn_unlearning_knowledge(
         unlearned_model=unlearned_model,

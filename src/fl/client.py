@@ -9,6 +9,7 @@ from __future__ import annotations
 import base64
 import copy
 import io
+import random
 import time
 from typing import Dict, List, Optional, Tuple
 
@@ -71,6 +72,7 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         # New Addition
         classification_class_weights: Optional[List[float]] = None,
         imbalance_method: str = "standard_ce",
+        base_seed: int = 42,
     ):
         self.client_id = client_id
         self.hospital = hospital
@@ -81,6 +83,7 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         self.algo = algorithm_config
         self.local_epochs = local_epochs
         self.learning_rate = learning_rate
+        self.base_seed = int(base_seed)
         
         # New Addition
         self.imbalance_method = imbalance_method
@@ -153,6 +156,16 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         full_state = self.model.state_dict()
         return {k: full_state[k].detach().cpu() for k in local_keys}
 
+    def _seed_for_round(self, server_round: int) -> int:
+        """Deterministic client RNG stream that changes across FL rounds."""
+        round_seed = self.base_seed + int(server_round)
+        random.seed(round_seed)
+        np.random.seed(round_seed % (2**32 - 1))
+        torch.manual_seed(round_seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(round_seed)
+        return round_seed
+
     # ------------------------------------------------------------------
     # Flower NumPyClient interface
     # ------------------------------------------------------------------
@@ -165,6 +178,12 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
         return state_dict_to_ndarrays(fed_state)
 
     def fit(self, parameters: List[np.ndarray], config) -> Tuple[List[np.ndarray], int, Dict]:
+        # Re-seed at the start of every fit call. Flower/Ray may recreate
+        # clients between rounds, so the seed must not depend on Python object
+        # persistence. The server supplies server_round through fit config.
+        server_round = int((config or {}).get("server_round", 0))
+        round_seed = self._seed_for_round(server_round)
+
         # 1. Restore this client's own BN state from the previous round.
         #    This is only active for FedBN/domain_adaptation=True.
         self._restore_local_bn_from_config(config)
@@ -211,6 +230,7 @@ class OralCancerFlowerClient(fl.client.NumPyClient):
             "train_loss": train_loss,
             "comp_time_sec": comp_time,
             "comm_bytes": comm_bytes,
+            "round_seed": round_seed,
         }
 
         if self._domain_adaptation:

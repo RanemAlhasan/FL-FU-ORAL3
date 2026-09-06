@@ -1,0 +1,121 @@
+============================================================
+Learning-curve FL run
+Run ID:       lc_s42_fedbn_stdce_p80_seed42_job385026
+Setting:      fedbn_stdce
+Train data:   p80
+Dataset path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3_learning_curve_seed42/p80
+Train seed:   42
+Config:       configs/learning_curve_fedbn_stdce.yaml
+SLURM job:    385030
+============================================================
+Mon Aug 31 17:05:54 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla P100-PCIE-16GB           Off | 00000000:D8:00.0 Off |                    0 |
+| N/A   29C    P0              26W / 250W |      0MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Applied --set overrides: {'dataset_path': '/export/home/ralhasan/fl-fu-oral3/dataset/oral3_learning_curve_seed42/p80', 'seed': 42}
+[2026-08-31 17:06:57] === Run started: lc_s42_fedbn_stdce_p80_seed42_job385026 ===
+[2026-08-31 17:06:57] Config loaded from configs/learning_curve_fedbn_stdce.yaml
+[2026-08-31 17:06:57] Run directories: {'log_dir': 'logs/fl/lc_s42_fedbn_stdce_p80_seed42_job385026', 'tb_dir': 'logs/fl/lc_s42_fedbn_stdce_p80_seed42_job385026/tb', 'checkpoint_dir': 'checkpoints/fl/lc_s42_fedbn_stdce_p80_seed42_job385026', 'output_dir': 'outputs/fl/lc_s42_fedbn_stdce_p80_seed42_job385026'}
+[2026-08-31 17:06:57] Indexing dataset...
+[2026-08-31 17:07:00] Indexed 2032 train samples, 637 test samples.
+[2026-08-31 17:07:00] Built 3 client partition(s) (client_split=hospital_based).
+[2026-08-31 17:07:00]   client_id=Spain_Dataset hospital=Spain_Dataset n_samples=319
+[2026-08-31 17:07:00]   client_id=Canada_Dataset hospital=Canada_Dataset n_samples=1309
+[2026-08-31 17:07:00]   client_id=India_Dataset hospital=India_Dataset n_samples=404
+[2026-08-31 17:07:00] Run hyperparameters:
+  algorithm: fedbn
+  model: resnet18
+  num_clients: 3
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: True
+  imbalance_method: standard_ce
+[2026-08-31 17:07:01] [class_imbalance] method=standard_ce, global_train_counts=[1111, 618, 303], beta=0.999, weight_clip=None
+[2026-08-31 17:07:01] [class_imbalance/client] client_id=Spain_Dataset, hospital=Spain_Dataset, local_counts=[121, 129, 69], loss_weights=None
+[2026-08-31 17:07:01] [class_imbalance/client] client_id=Canada_Dataset, hospital=Canada_Dataset, local_counts=[981, 218, 110], loss_weights=None
+[2026-08-31 17:07:01] [class_imbalance/client] client_id=India_Dataset, hospital=India_Dataset, local_counts=[9, 271, 124], loss_weights=None
+[2026-08-31 17:07:01] Starting Flower simulation: algorithm=fedbn, clients=3, rounds=50
+[2026-08-31 17:09:46] [FL round 1] comm=134021412B comp=271.42s
+[2026-08-31 17:12:24] [FL round 2] comm=134021412B comp=227.47s
+[2026-08-31 17:14:56] [FL round 3] comm=134021412B comp=221.72s
+[2026-08-31 17:17:25] [FL round 4] comm=134021412B comp=210.90s
+[2026-08-31 17:19:52] [FL round 5] comm=134021412B comp=211.30s
+[2026-08-31 17:22:20] [FL round 6] comm=134021412B comp=220.93s
+[2026-08-31 17:24:51] [FL round 7] comm=134021412B comp=221.43s
+[2026-08-31 17:27:21] [FL round 8] comm=134021412B comp=212.97s
+[2026-08-31 17:29:54] [FL round 9] comm=134021412B comp=223.11s
+[2026-08-31 17:32:29] [FL round 10] comm=134021412B comp=227.79s
+[2026-08-31 17:34:58] [FL round 11] comm=134021412B comp=212.34s
+[2026-08-31 17:37:29] [FL round 12] comm=134021412B comp=216.90s
+[2026-08-31 17:39:53] [FL round 13] comm=134021412B comp=211.69s
+[2026-08-31 17:42:20] [FL round 14] comm=134021412B comp=218.53s
+[2026-08-31 17:44:53] [FL round 15] comm=134021412B comp=227.16s
+[2026-08-31 17:47:27] [FL round 16] comm=134021412B comp=225.61s
+[2026-08-31 17:49:54] [FL round 17] comm=134021412B comp=212.07s
+[2026-08-31 17:52:31] [FL round 18] comm=134021412B comp=222.49s
+[2026-08-31 17:55:00] [FL round 19] comm=134021412B comp=216.84s
+[2026-08-31 17:57:37] [FL round 20] comm=134021412B comp=227.53s
+[2026-08-31 18:00:17] [FL round 21] comm=134021412B comp=232.51s
+[2026-08-31 18:02:46] [FL round 22] comm=134021412B comp=219.99s
+[2026-08-31 18:05:18] [FL round 23] comm=134021412B comp=222.07s
+[2026-08-31 18:07:49] [FL round 24] comm=134021412B comp=220.98s
+[2026-08-31 18:10:20] [FL round 25] comm=134021412B comp=218.18s
+[2026-08-31 18:12:52] [FL round 26] comm=134021412B comp=216.12s
+[2026-08-31 18:15:29] [FL round 27] comm=134021412B comp=228.18s
+[2026-08-31 18:17:59] [FL round 28] comm=134021412B comp=219.13s
+[2026-08-31 18:20:25] [FL round 29] comm=134021412B comp=209.58s
+[2026-08-31 18:22:53] [FL round 30] comm=134021412B comp=214.31s
+[2026-08-31 18:25:26] [FL round 31] comm=134021412B comp=218.48s
+[2026-08-31 18:27:57] [FL round 32] comm=134021412B comp=215.44s
+[2026-08-31 18:30:36] [FL round 33] comm=134021412B comp=231.25s
+[2026-08-31 18:33:06] [FL round 34] comm=134021412B comp=216.37s
+[2026-08-31 18:35:38] [FL round 35] comm=134021412B comp=219.29s
+[2026-08-31 18:38:12] [FL round 36] comm=134021412B comp=223.49s
+[2026-08-31 18:40:43] [FL round 37] comm=134021412B comp=211.08s
+[2026-08-31 18:43:11] [FL round 38] comm=134021412B comp=212.73s
+[2026-08-31 18:45:41] [FL round 39] comm=134021412B comp=219.47s
+[2026-08-31 18:48:12] [FL round 40] comm=134021412B comp=218.15s
+[2026-08-31 18:50:37] [FL round 41] comm=134021412B comp=211.57s
+[2026-08-31 18:53:10] [FL round 42] comm=134021412B comp=221.37s
+[2026-08-31 18:55:39] [FL round 43] comm=134021412B comp=210.83s
+[2026-08-31 18:58:16] [FL round 44] comm=134021412B comp=227.14s
+[2026-08-31 19:00:54] [FL round 45] comm=134021412B comp=225.45s
+[2026-08-31 19:03:22] [FL round 46] comm=134021412B comp=220.59s
+[2026-08-31 19:05:52] [FL round 47] comm=134021412B comp=225.48s
+[2026-08-31 19:08:19] [FL round 48] comm=134021412B comp=216.74s
+[2026-08-31 19:10:47] [FL round 49] comm=134021412B comp=209.82s
+[2026-08-31 19:13:22] [FL round 50] comm=134021412B comp=224.15s
+[2026-08-31 19:13:38] FedBN checkpoint assembled: non-BN params from server aggregation, BN params taken from client 'Spain_Dataset' (representative).
+[2026-08-31 19:13:39] Running FedBN final evaluation with hospital-specific BN models.
+[2026-08-31 19:13:52] [eval/fedbn_per_hospital] hospital=Spain_Dataset acc=0.8019 loss=1.4000 n=106
+[2026-08-31 19:13:56] [eval/fedbn_per_hospital] hospital=Canada_Dataset acc=0.8697 loss=0.7620 n=399
+[2026-08-31 19:14:01] [eval/fedbn_per_hospital] hospital=India_Dataset acc=0.7727 loss=1.1818 n=132
+[2026-08-31 19:14:01] [eval/fedbn_weighted_overall] overall_acc=0.8383 overall_loss=0.9552 total_samples=637
+[2026-08-31 19:14:01] [eval/classification] accuracy=0.8383 macro_precision=0.8197 macro_recall=0.7839 macro_f1=0.7983 weighted_f1=0.8359
+[2026-08-31 19:14:02] Saved final global model checkpoint to checkpoints/fl/lc_s42_fedbn_stdce_p80_seed42_job385026/best.pt
+[2026-08-31 19:14:02] Saved 3 per-hospital BN-complete checkpoints to checkpoints/fl/lc_s42_fedbn_stdce_p80_seed42_job385026/per_hospital
+[2026-08-31 19:14:02] === Run finished: lc_s42_fedbn_stdce_p80_seed42_job385026 (elapsed 7624.9s) ===
+
+Done. run_id = lc_s42_fedbn_stdce_p80_seed42_job385026
+Use this run_id as --source_run for scripts/run_fu.py.
+
+Done: lc_s42_fedbn_stdce_p80_seed42_job385026
+Metrics: logs/fl/lc_s42_fedbn_stdce_p80_seed42_job385026/metrics.json

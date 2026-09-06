@@ -1,0 +1,144 @@
+
+================================================================================
+JOB 386292
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_canada_natural_l025_386292/train.log
+================================================================================
+[2026-09-02 14:44:32] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+[2026-09-02 18:43:35] [eval/classification] accuracy=0.6436 macro_precision=0.6979 macro_recall=0.7396 macro_f1=0.6605 weighted_f1=0.6360
+[2026-09-02 18:43:36] [eval/fedbn_retrain] overall_acc=0.6436 overall_loss=1.3933 macro_f1=0.6605 weighted_f1=0.6360 per_hospital={ Spain_Dataset: 0.9340, Canada_Dataset: 0.5313, India_Dataset: 0.7500 }
+[2026-09-02 18:43:59] [eval/unlearning/remember_classification] accuracy=0.8319 macro_precision=0.8332 macro_recall=0.8299 macro_f1=0.8241 weighted_f1=0.8345
+[2026-09-02 18:43:59] [eval/unlearning/forget_classification] accuracy=0.5313 macro_precision=0.6072 macro_recall=0.7563 macro_f1=0.5605 weighted_f1=0.5500
+[2026-09-02 18:44:38] [eval/unlearning/fedbn_retrain] RA=0.8319 FA=0.5313 ReA=0.8622 MIA_acc=0.6876
+[2026-09-02 18:44:38] [symmetric eval] RA=0.8319 FA=0.5313 ReA=0.8622 MIA_acc=0.6876
+
+================================================================================
+JOB 386293
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l025_386293/train.log
+================================================================================
+[2026-09-02 14:44:32] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.0.conv2.weight']
+[2026-09-02 18:46:22] [eval/classification] accuracy=0.7582 macro_precision=0.7311 macro_recall=0.7277 macro_f1=0.7199 weighted_f1=0.7524
+[2026-09-02 18:46:22] [eval/fedbn_retrain] overall_acc=0.7582 overall_loss=1.2737 macro_f1=0.7199 weighted_f1=0.7524 per_hospital={ Spain_Dataset: 0.7642, Canada_Dataset: 0.8922, India_Dataset: 0.3485 }
+[2026-09-02 18:46:43] [eval/unlearning/remember_classification] accuracy=0.8653 macro_precision=0.8155 macro_recall=0.8508 macro_f1=0.8311 weighted_f1=0.8665
+[2026-09-02 18:46:43] [eval/unlearning/forget_classification] accuracy=0.3485 macro_precision=0.4012 macro_recall=0.3938 macro_f1=0.3210 weighted_f1=0.4065
+[2026-09-02 18:47:32] [eval/unlearning/fedbn_retrain] RA=0.8653 FA=0.3485 ReA=0.9394 MIA_acc=0.5737
+[2026-09-02 18:47:32] [symmetric eval] RA=0.8653 FA=0.3485 ReA=0.9394 MIA_acc=0.5737
+
+================================================================================
+JOB 386294
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_spain_natural_l025_386294/train.log
+================================================================================
+[2026-09-02 14:45:04] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.1.conv1.weight']
+[2026-09-02 19:04:19] [eval/classification] accuracy=0.8273 macro_precision=0.8067 macro_recall=0.7854 macro_f1=0.7950 weighted_f1=0.8259
+[2026-09-02 19:04:19] [eval/fedbn_retrain] overall_acc=0.8273 overall_loss=0.7514 macro_f1=0.7950 weighted_f1=0.8259 per_hospital={ Spain_Dataset: 0.6038, Canada_Dataset: 0.8922, India_Dataset: 0.8106 }
+[2026-09-02 19:04:41] [eval/unlearning/remember_classification] accuracy=0.8719 macro_precision=0.8458 macro_recall=0.8356 macro_f1=0.8399 weighted_f1=0.8720
+[2026-09-02 19:04:41] [eval/unlearning/forget_classification] accuracy=0.6038 macro_precision=0.6253 macro_recall=0.5870 macro_f1=0.5929 weighted_f1=0.5973
+[2026-09-02 19:07:58] [eval/unlearning/fedbn_retrain] RA=0.8719 FA=0.6038 ReA=0.8774 MIA_acc=0.6190
+[2026-09-02 19:07:58] [symmetric eval] RA=0.8719 FA=0.6038 ReA=0.8774 MIA_acc=0.6190
+
+================================================================================
+JOB 386295
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_canada_natural_l05_386295/train.log
+================================================================================
+[2026-09-02 14:45:05] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv1.weight']
+[2026-09-02 18:43:45] [eval/classification] accuracy=0.6436 macro_precision=0.6979 macro_recall=0.7396 macro_f1=0.6605 weighted_f1=0.6360
+[2026-09-02 18:43:45] [eval/fedbn_retrain] overall_acc=0.6436 overall_loss=1.3933 macro_f1=0.6605 weighted_f1=0.6360 per_hospital={ Spain_Dataset: 0.9340, Canada_Dataset: 0.5313, India_Dataset: 0.7500 }
+[2026-09-02 18:44:08] [eval/unlearning/remember_classification] accuracy=0.8319 macro_precision=0.8332 macro_recall=0.8299 macro_f1=0.8241 weighted_f1=0.8345
+[2026-09-02 18:44:08] [eval/unlearning/forget_classification] accuracy=0.5313 macro_precision=0.6072 macro_recall=0.7563 macro_f1=0.5605 weighted_f1=0.5500
+[2026-09-02 18:44:48] [eval/unlearning/fedbn_retrain] RA=0.8319 FA=0.5313 ReA=0.8622 MIA_acc=0.6876
+[2026-09-02 18:44:48] [symmetric eval] RA=0.8319 FA=0.5313 ReA=0.8622 MIA_acc=0.6876
+
+================================================================================
+JOB 386296
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l05_386296/train.log
+================================================================================
+[2026-09-02 14:46:29] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.0.conv2.weight']
+[2026-09-02 18:17:27] [eval/classification] accuracy=0.7582 macro_precision=0.7311 macro_recall=0.7277 macro_f1=0.7199 weighted_f1=0.7524
+[2026-09-02 18:17:27] [eval/fedbn_retrain] overall_acc=0.7582 overall_loss=1.2739 macro_f1=0.7199 weighted_f1=0.7524 per_hospital={ Spain_Dataset: 0.7642, Canada_Dataset: 0.8922, India_Dataset: 0.3485 }
+[2026-09-02 18:17:47] [eval/unlearning/remember_classification] accuracy=0.8653 macro_precision=0.8155 macro_recall=0.8508 macro_f1=0.8311 weighted_f1=0.8665
+[2026-09-02 18:17:47] [eval/unlearning/forget_classification] accuracy=0.3485 macro_precision=0.4012 macro_recall=0.3938 macro_f1=0.3210 weighted_f1=0.4065
+[2026-09-02 18:18:29] [eval/unlearning/fedbn_retrain] RA=0.8653 FA=0.3485 ReA=0.9394 MIA_acc=0.5737
+[2026-09-02 18:18:29] [symmetric eval] RA=0.8653 FA=0.3485 ReA=0.9394 MIA_acc=0.5737
+
+================================================================================
+JOB 386297
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_spain_natural_l05_386297/train.log
+================================================================================
+[2026-09-02 14:46:21] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer1.1.conv1.weight']
+[2026-09-02 18:37:58] [eval/classification] accuracy=0.8273 macro_precision=0.8078 macro_recall=0.7872 macro_f1=0.7966 weighted_f1=0.8260
+[2026-09-02 18:37:58] [eval/fedbn_retrain] overall_acc=0.8273 overall_loss=0.7524 macro_f1=0.7966 weighted_f1=0.8260 per_hospital={ Spain_Dataset: 0.6132, Canada_Dataset: 0.8897, India_Dataset: 0.8106 }
+[2026-09-02 18:38:22] [eval/unlearning/remember_classification] accuracy=0.8701 macro_precision=0.8443 macro_recall=0.8335 macro_f1=0.8382 weighted_f1=0.8701
+[2026-09-02 18:38:22] [eval/unlearning/forget_classification] accuracy=0.6132 macro_precision=0.6394 macro_recall=0.6004 macro_f1=0.6061 weighted_f1=0.6077
+[2026-09-02 18:41:27] [eval/unlearning/fedbn_retrain] RA=0.8701 FA=0.6132 ReA=0.8962 MIA_acc=0.6190
+[2026-09-02 18:41:27] [symmetric eval] RA=0.8701 FA=0.6132 ReA=0.8962 MIA_acc=0.6190
+
+================================================================================
+JOB 386298
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_canada_natural_l10_386298/train.log
+================================================================================
+[2026-09-02 14:44:55] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer1.0.conv1.weight', 'layer1.1.conv1.weight', 'layer2.0.downsample.0.weight']
+[2026-09-02 17:40:57] [eval/classification] accuracy=0.6436 macro_precision=0.6979 macro_recall=0.7396 macro_f1=0.6605 weighted_f1=0.6360
+[2026-09-02 17:40:57] [eval/fedbn_retrain] overall_acc=0.6436 overall_loss=1.3938 macro_f1=0.6605 weighted_f1=0.6360 per_hospital={ Spain_Dataset: 0.9340, Canada_Dataset: 0.5313, India_Dataset: 0.7500 }
+[2026-09-02 17:41:14] [eval/unlearning/remember_classification] accuracy=0.8319 macro_precision=0.8332 macro_recall=0.8299 macro_f1=0.8241 weighted_f1=0.8345
+[2026-09-02 17:41:14] [eval/unlearning/forget_classification] accuracy=0.5313 macro_precision=0.6072 macro_recall=0.7563 macro_f1=0.5605 weighted_f1=0.5500
+[2026-09-02 17:41:41] [eval/unlearning/fedbn_retrain] RA=0.8319 FA=0.5313 ReA=0.8647 MIA_acc=0.6876
+[2026-09-02 17:41:41] [symmetric eval] RA=0.8319 FA=0.5313 ReA=0.8647 MIA_acc=0.6876
+
+================================================================================
+JOB 386299
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_india_natural_l10_386299/train.log
+================================================================================
+[2026-09-02 14:44:55] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.0.conv1.weight', 'layer4.0.downsample.0.weight']
+[2026-09-02 17:53:23] [eval/classification] accuracy=0.7488 macro_precision=0.7152 macro_recall=0.7145 macro_f1=0.7053 weighted_f1=0.7429
+[2026-09-02 17:53:23] [eval/fedbn_retrain] overall_acc=0.7488 overall_loss=1.2612 macro_f1=0.7053 weighted_f1=0.7429 per_hospital={ Spain_Dataset: 0.7547, Canada_Dataset: 0.8897, India_Dataset: 0.3182 }
+[2026-09-02 17:53:41] [eval/unlearning/remember_classification] accuracy=0.8614 macro_precision=0.8064 macro_recall=0.8465 macro_f1=0.8234 weighted_f1=0.8630
+[2026-09-02 17:53:41] [eval/unlearning/forget_classification] accuracy=0.3182 macro_precision=0.3627 macro_recall=0.3651 macro_f1=0.2928 weighted_f1=0.3706
+[2026-09-02 17:54:22] [eval/unlearning/fedbn_retrain] RA=0.8614 FA=0.3182 ReA=0.9470 MIA_acc=0.5799
+[2026-09-02 17:54:22] [symmetric eval] RA=0.8614 FA=0.3182 ReA=0.9470 MIA_acc=0.5799
+
+================================================================================
+JOB 386300
+logs/fu_cli_domain_aware/fu_cli_domain_aware_fedbn_spain_natural_l10_386300/train.log
+================================================================================
+[2026-09-02 14:47:06] Selected 4 critical layers using cli_score_mode=domain_aware: ['conv1.weight', 'layer1.0.conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight']
+[2026-09-02 18:36:44] [eval/classification] accuracy=0.8273 macro_precision=0.8078 macro_recall=0.7872 macro_f1=0.7966 weighted_f1=0.8260
+[2026-09-02 18:36:44] [eval/fedbn_retrain] overall_acc=0.8273 overall_loss=0.7524 macro_f1=0.7966 weighted_f1=0.8260 per_hospital={ Spain_Dataset: 0.6132, Canada_Dataset: 0.8897, India_Dataset: 0.8106 }
+[2026-09-02 18:37:05] [eval/unlearning/remember_classification] accuracy=0.8701 macro_precision=0.8443 macro_recall=0.8335 macro_f1=0.8382 weighted_f1=0.8701
+[2026-09-02 18:37:05] [eval/unlearning/forget_classification] accuracy=0.6132 macro_precision=0.6394 macro_recall=0.6004 macro_f1=0.6061 weighted_f1=0.6077
+[2026-09-02 18:40:01] [eval/unlearning/fedbn_retrain] RA=0.8701 FA=0.6132 ReA=0.8962 MIA_acc=0.6190
+[2026-09-02 18:40:01] [symmetric eval] RA=0.8701 FA=0.6132 ReA=0.8962 MIA_acc=0.6190
+
+================================================================================
+JOB 386304
+logs/fu_cli_normalized/fu_cli_normalized_fedbn_canada_natural_386304/train.log
+================================================================================
+[2026-09-02 14:47:06] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.0.conv2.weight']
+[2026-09-02 18:09:58] [eval/classification] accuracy=0.6374 macro_precision=0.6868 macro_recall=0.7309 macro_f1=0.6559 weighted_f1=0.6299
+[2026-09-02 18:09:58] [eval/fedbn_retrain] overall_acc=0.6374 overall_loss=1.3729 macro_f1=0.6559 weighted_f1=0.6299 per_hospital={ Spain_Dataset: 0.8774, Canada_Dataset: 0.5313, India_Dataset: 0.7652 }
+[2026-09-02 18:10:18] [eval/unlearning/remember_classification] accuracy=0.8151 macro_precision=0.8028 macro_recall=0.8117 macro_f1=0.8003 weighted_f1=0.8172
+[2026-09-02 18:10:18] [eval/unlearning/forget_classification] accuracy=0.5313 macro_precision=0.6073 macro_recall=0.7447 macro_f1=0.5621 weighted_f1=0.5528
+[2026-09-02 18:10:52] [eval/unlearning/fedbn_retrain] RA=0.8151 FA=0.5313 ReA=0.8847 MIA_acc=0.6945
+[2026-09-02 18:10:52] [symmetric eval] RA=0.8151 FA=0.5313 ReA=0.8847 MIA_acc=0.6945
+
+================================================================================
+JOB 386306
+logs/fu_cli_normalized/fu_cli_normalized_fedbn_india_natural_386306/train.log
+================================================================================
+[2026-09-02 17:43:14] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+[2026-09-02 20:52:16] [eval/classification] accuracy=0.7677 macro_precision=0.7460 macro_recall=0.7327 macro_f1=0.7309 weighted_f1=0.7600
+[2026-09-02 20:52:16] [eval/fedbn_retrain] overall_acc=0.7677 overall_loss=1.2480 macro_f1=0.7309 weighted_f1=0.7600 per_hospital={ Spain_Dataset: 0.8208, Canada_Dataset: 0.8922, India_Dataset: 0.3485 }
+[2026-09-02 20:52:34] [eval/unlearning/remember_classification] accuracy=0.8772 macro_precision=0.8440 macro_recall=0.8544 macro_f1=0.8490 weighted_f1=0.8774
+[2026-09-02 20:52:34] [eval/unlearning/forget_classification] accuracy=0.3485 macro_precision=0.4012 macro_recall=0.3938 macro_f1=0.3210 weighted_f1=0.4065
+[2026-09-02 20:53:14] [eval/unlearning/fedbn_retrain] RA=0.8772 FA=0.3485 ReA=0.9545 MIA_acc=0.5862
+[2026-09-02 20:53:14] [symmetric eval] RA=0.8772 FA=0.3485 ReA=0.9545 MIA_acc=0.5862
+
+================================================================================
+JOB 386308
+logs/fu_cli_normalized/fu_cli_normalized_fedbn_spain_natural_386308/train.log
+================================================================================
+[2026-09-02 17:55:51] Selected 4 critical layers using cli_score_mode=mean_abs: ['conv1.weight', 'layer2.0.downsample.0.weight', 'layer1.1.conv1.weight', 'layer1.1.conv2.weight']
+[2026-09-02 21:16:16] [eval/classification] accuracy=0.8289 macro_precision=0.8100 macro_recall=0.7864 macro_f1=0.7971 weighted_f1=0.8272
+[2026-09-02 21:16:16] [eval/fedbn_retrain] overall_acc=0.8289 overall_loss=0.7457 macro_f1=0.7971 weighted_f1=0.8272 per_hospital={ Spain_Dataset: 0.6132, Canada_Dataset: 0.8897, India_Dataset: 0.8182 }
+[2026-09-02 21:16:34] [eval/unlearning/remember_classification] accuracy=0.8719 macro_precision=0.8467 macro_recall=0.8320 macro_f1=0.8385 weighted_f1=0.8715
+[2026-09-02 21:16:34] [eval/unlearning/forget_classification] accuracy=0.6132 macro_precision=0.6394 macro_recall=0.6004 macro_f1=0.6061 weighted_f1=0.6077
+[2026-09-02 21:19:01] [eval/unlearning/fedbn_retrain] RA=0.8719 FA=0.6132 ReA=0.9057 MIA_acc=0.6190
+[2026-09-02 21:19:01] [symmetric eval] RA=0.8719 FA=0.6132 ReA=0.9057 MIA_acc=0.6190

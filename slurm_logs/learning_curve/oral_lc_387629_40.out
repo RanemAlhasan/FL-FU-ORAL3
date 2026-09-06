@@ -1,0 +1,122 @@
+============================================================
+Learning-curve FL run
+Run ID:       reproB_fedbn_stdce_p40_seed123_job387629
+Setting:      fedbn_stdce
+Train data:   p40
+Dataset path: /export/home/ralhasan/fl-fu-oral3/dataset/oral3_learning_curve_seed42/p40
+Train seed:   123
+Config:       configs/learning_curve_fedbn_stdce.yaml
+SLURM job:    387629
+============================================================
+Fri Sep  4 01:01:22 2026       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.113.01             Driver Version: 535.113.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A16                     Off | 00000000:40:00.0 Off |                    0 |
+|  0%   38C    P8              15W /  62W |      4MiB / 15356MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+Applied --set overrides: {'dataset_path': '/export/home/ralhasan/fl-fu-oral3/dataset/oral3_learning_curve_seed42/p40', 'seed': 123}
+[2026-09-04 01:01:29] === Run started: reproB_fedbn_stdce_p40_seed123_job387629 ===
+[2026-09-04 01:01:29] Config loaded from configs/learning_curve_fedbn_stdce.yaml
+[2026-09-04 01:01:29] Run directories: {'log_dir': 'logs/fl/reproB_fedbn_stdce_p40_seed123_job387629', 'tb_dir': 'logs/fl/reproB_fedbn_stdce_p40_seed123_job387629/tb', 'checkpoint_dir': 'checkpoints/fl/reproB_fedbn_stdce_p40_seed123_job387629', 'output_dir': 'outputs/fl/reproB_fedbn_stdce_p40_seed123_job387629'}
+[2026-09-04 01:01:29] Reproducibility enabled: seed=123, cudnn_deterministic=True, cudnn_benchmark=False
+[2026-09-04 01:01:29] Indexing dataset...
+[2026-09-04 01:01:29] Indexed 1014 train samples, 637 test samples.
+[2026-09-04 01:01:29] Built 3 client partition(s) (client_split=hospital_based).
+[2026-09-04 01:01:29]   client_id=Spain_Dataset hospital=Spain_Dataset n_samples=158
+[2026-09-04 01:01:29]   client_id=Canada_Dataset hospital=Canada_Dataset n_samples=654
+[2026-09-04 01:01:29]   client_id=India_Dataset hospital=India_Dataset n_samples=202
+[2026-09-04 01:01:29] Run hyperparameters:
+  algorithm: fedbn
+  model: resnet18
+  num_clients: 3
+  global_epochs: 50
+  local_epochs: 3
+  batch_size: 16
+  learning_rate: 0.001
+  domain_adaptation: True
+  imbalance_method: standard_ce
+[2026-09-04 01:01:30] [class_imbalance] method=standard_ce, global_train_counts=[554, 309, 151], beta=0.999, weight_clip=None
+[2026-09-04 01:01:30] [class_imbalance/client] client_id=Spain_Dataset, hospital=Spain_Dataset, local_counts=[60, 64, 34], loss_weights=None
+[2026-09-04 01:01:30] [class_imbalance/client] client_id=Canada_Dataset, hospital=Canada_Dataset, local_counts=[490, 109, 55], loss_weights=None
+[2026-09-04 01:01:30] [class_imbalance/client] client_id=India_Dataset, hospital=India_Dataset, local_counts=[4, 136, 62], loss_weights=None
+[2026-09-04 01:01:30] Starting Flower simulation: algorithm=fedbn, clients=3, rounds=50
+[2026-09-04 01:02:59] [FL round 1] comm=134021412B comp=128.62s
+[2026-09-04 01:04:38] [FL round 2] comm=134021412B comp=130.42s
+[2026-09-04 01:06:15] [FL round 3] comm=134021412B comp=127.99s
+[2026-09-04 01:07:52] [FL round 4] comm=134021412B comp=128.56s
+[2026-09-04 01:09:29] [FL round 5] comm=134021412B comp=127.59s
+[2026-09-04 01:11:05] [FL round 6] comm=134021412B comp=129.60s
+[2026-09-04 01:12:42] [FL round 7] comm=134021412B comp=128.60s
+[2026-09-04 01:14:19] [FL round 8] comm=134021412B comp=128.21s
+[2026-09-04 01:15:55] [FL round 9] comm=134021412B comp=130.37s
+[2026-09-04 01:17:34] [FL round 10] comm=134021412B comp=130.45s
+[2026-09-04 01:19:12] [FL round 11] comm=134021412B comp=129.15s
+[2026-09-04 01:20:48] [FL round 12] comm=134021412B comp=129.15s
+[2026-09-04 01:22:24] [FL round 13] comm=134021412B comp=128.64s
+[2026-09-04 01:24:01] [FL round 14] comm=134021412B comp=127.92s
+[2026-09-04 01:25:37] [FL round 15] comm=134021412B comp=127.22s
+[2026-09-04 01:27:16] [FL round 16] comm=134021412B comp=131.68s
+[2026-09-04 01:28:55] [FL round 17] comm=134021412B comp=130.87s
+[2026-09-04 01:30:31] [FL round 18] comm=134021412B comp=125.78s
+[2026-09-04 01:32:09] [FL round 19] comm=134021412B comp=128.46s
+[2026-09-04 01:33:47] [FL round 20] comm=134021412B comp=129.21s
+[2026-09-04 01:35:25] [FL round 21] comm=134021412B comp=129.88s
+[2026-09-04 01:37:04] [FL round 22] comm=134021412B comp=129.33s
+[2026-09-04 01:38:40] [FL round 23] comm=134021412B comp=129.73s
+[2026-09-04 01:40:17] [FL round 24] comm=134021412B comp=128.11s
+[2026-09-04 01:41:56] [FL round 25] comm=134021412B comp=129.74s
+[2026-09-04 01:43:33] [FL round 26] comm=134021412B comp=127.85s
+[2026-09-04 01:45:12] [FL round 27] comm=134021412B comp=130.51s
+[2026-09-04 01:46:48] [FL round 28] comm=134021412B comp=129.62s
+[2026-09-04 01:48:26] [FL round 29] comm=134021412B comp=129.01s
+[2026-09-04 01:50:03] [FL round 30] comm=134021412B comp=127.05s
+[2026-09-04 01:51:39] [FL round 31] comm=134021412B comp=127.36s
+[2026-09-04 01:53:16] [FL round 32] comm=134021412B comp=129.11s
+[2026-09-04 01:54:53] [FL round 33] comm=134021412B comp=127.19s
+[2026-09-04 01:56:27] [FL round 34] comm=134021412B comp=125.35s
+[2026-09-04 01:58:05] [FL round 35] comm=134021412B comp=129.84s
+[2026-09-04 01:59:42] [FL round 36] comm=134021412B comp=129.21s
+[2026-09-04 02:01:23] [FL round 37] comm=134021412B comp=130.87s
+[2026-09-04 02:03:02] [FL round 38] comm=134021412B comp=130.50s
+[2026-09-04 02:04:41] [FL round 39] comm=134021412B comp=130.67s
+[2026-09-04 02:06:18] [FL round 40] comm=134021412B comp=129.94s
+[2026-09-04 02:07:56] [FL round 41] comm=134021412B comp=129.40s
+[2026-09-04 02:09:33] [FL round 42] comm=134021412B comp=128.65s
+[2026-09-04 02:11:12] [FL round 43] comm=134021412B comp=129.98s
+[2026-09-04 02:12:49] [FL round 44] comm=134021412B comp=127.91s
+[2026-09-04 02:14:28] [FL round 45] comm=134021412B comp=129.00s
+[2026-09-04 02:16:06] [FL round 46] comm=134021412B comp=128.66s
+[2026-09-04 02:17:43] [FL round 47] comm=134021412B comp=127.44s
+[2026-09-04 02:19:19] [FL round 48] comm=134021412B comp=125.80s
+[2026-09-04 02:20:56] [FL round 49] comm=134021412B comp=127.85s
+[2026-09-04 02:22:33] [FL round 50] comm=134021412B comp=127.86s
+[2026-09-04 02:22:52] FedBN checkpoint assembled: non-BN params from server aggregation, BN params taken from client 'Spain_Dataset' (representative).
+[2026-09-04 02:22:53] Running FedBN final evaluation with hospital-specific BN models.
+[2026-09-04 02:23:07] [eval/fedbn_per_hospital] hospital=Spain_Dataset acc=0.8113 loss=1.2284 n=106
+[2026-09-04 02:23:12] [eval/fedbn_per_hospital] hospital=Canada_Dataset acc=0.7769 loss=1.1891 n=399
+[2026-09-04 02:23:17] [eval/fedbn_per_hospital] hospital=India_Dataset acc=0.6970 loss=1.9141 n=132
+[2026-09-04 02:23:17] [eval/fedbn_weighted_overall] overall_acc=0.7661 overall_loss=1.3459 total_samples=637
+[2026-09-04 02:23:18] [eval/classification] accuracy=0.7661 macro_precision=0.7334 macro_recall=0.7140 macro_f1=0.7226 weighted_f1=0.7642
+[2026-09-04 02:23:18] Saved final global model checkpoint to checkpoints/fl/reproB_fedbn_stdce_p40_seed123_job387629/best.pt
+[2026-09-04 02:23:18] Saved 3 per-hospital BN-complete checkpoints to checkpoints/fl/reproB_fedbn_stdce_p40_seed123_job387629/per_hospital
+[2026-09-04 02:23:18] === Run finished: reproB_fedbn_stdce_p40_seed123_job387629 (elapsed 4909.6s) ===
+
+Done. run_id = reproB_fedbn_stdce_p40_seed123_job387629
+Use this run_id as --source_run for scripts/run_fu.py.
+
+Done: reproB_fedbn_stdce_p40_seed123_job387629
+Metrics: logs/fl/reproB_fedbn_stdce_p40_seed123_job387629/metrics.json

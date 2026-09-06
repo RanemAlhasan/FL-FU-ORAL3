@@ -30,11 +30,13 @@ import argparse
 import csv
 import json
 import os
+import random
 import sys
 from typing import Dict, List, Optional
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import numpy as np
 import torch
 from sklearn.metrics import classification_report, confusion_matrix
 from torch.utils.data import DataLoader
@@ -716,6 +718,23 @@ def main():
     logger.info(f"Config loaded from {args.config}")
     logger.info(f"Run directories: {dirs}")
 
+    # Reproducibility: seed the main process and request deterministic CUDA
+    # kernels where PyTorch supports them. PYTHONHASHSEED/CUBLAS settings are
+    # also inherited by Ray worker processes started later in the run.
+    seed = int(config["seed"])
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+
+    random.seed(seed)
+    np.random.seed(seed % (2**32 - 1))
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.use_deterministic_algorithms(True, warn_only=True)
+
     device = (
         config["device"]
         if torch.cuda.is_available() and config["device"] == "cuda"
@@ -727,7 +746,10 @@ def main():
             f"Requested device '{config['device']}' unavailable; falling back to CPU."
         )
 
-    torch.manual_seed(config["seed"])
+    logger.info(
+        f"Reproducibility enabled: seed={seed}, "
+        "cudnn_deterministic=True, cudnn_benchmark=False"
+    )
 
     # ------------------------------------------------------------------
     # Data

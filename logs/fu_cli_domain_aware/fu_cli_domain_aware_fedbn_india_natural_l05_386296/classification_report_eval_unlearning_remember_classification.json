@@ -1,0 +1,70 @@
+{
+  "tag": "eval/unlearning/remember_classification",
+  "num_samples": 505,
+  "accuracy": 0.8653465346534653,
+  "macro_precision": 0.8155347466710728,
+  "macro_recall": 0.8507911085226171,
+  "macro_f1": 0.831092270903737,
+  "weighted_precision": 0.8696437422946401,
+  "weighted_recall": 0.8653465346534653,
+  "weighted_f1": 0.8665488824331534,
+  "labels": [
+    0,
+    1,
+    2
+  ],
+  "class_names": [
+    "Benign",
+    "Potentially_Malignant",
+    "Malignant"
+  ],
+  "per_class": {
+    "Benign": {
+      "class_id": 0,
+      "precision": 0.9176829268292683,
+      "recall": 0.8852941176470588,
+      "f1": 0.9011976047904191,
+      "support": 340,
+      "tp": 301,
+      "fp": 27,
+      "fn": 39
+    },
+    "Potentially_Malignant": {
+      "class_id": 1,
+      "precision": 0.7920792079207921,
+      "recall": 0.7920792079207921,
+      "f1": 0.7920792079207921,
+      "support": 101,
+      "tp": 80,
+      "fp": 21,
+      "fn": 21
+    },
+    "Malignant": {
+      "class_id": 2,
+      "precision": 0.7368421052631579,
+      "recall": 0.875,
+      "f1": 0.7999999999999999,
+      "support": 64,
+      "tp": 56,
+      "fp": 20,
+      "fn": 8
+    }
+  },
+  "confusion_matrix": [
+    [
+      301,
+      20,
+      19
+    ],
+    [
+      20,
+      80,
+      1
+    ],
+    [
+      7,
+      1,
+      56
+    ]
+  ]
+}

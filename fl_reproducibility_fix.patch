@@ -1,0 +1,260 @@
+--- a/scripts/run_fl.py
++++ b/scripts/run_fl.py
+@@ -30,11 +30,13 @@
+ import csv
+ import json
+ import os
++import random
+ import sys
+ from typing import Dict, List, Optional
+ 
+ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+ 
++import numpy as np
+ import torch
+ from sklearn.metrics import classification_report, confusion_matrix
+ from torch.utils.data import DataLoader
+@@ -716,6 +718,23 @@
+     logger.info(f"Config loaded from {args.config}")
+     logger.info(f"Run directories: {dirs}")
+ 
++    # Reproducibility: seed the main process and request deterministic CUDA
++    # kernels where PyTorch supports them. PYTHONHASHSEED/CUBLAS settings are
++    # also inherited by Ray worker processes started later in the run.
++    seed = int(config["seed"])
++    os.environ["PYTHONHASHSEED"] = str(seed)
++    os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
++
++    random.seed(seed)
++    np.random.seed(seed % (2**32 - 1))
++    torch.manual_seed(seed)
++    if torch.cuda.is_available():
++        torch.cuda.manual_seed_all(seed)
++
++    torch.backends.cudnn.benchmark = False
++    torch.backends.cudnn.deterministic = True
++    torch.use_deterministic_algorithms(True, warn_only=True)
++
+     device = (
+         config["device"]
+         if torch.cuda.is_available() and config["device"] == "cuda"
+@@ -727,7 +746,10 @@
+             f"Requested device '{config['device']}' unavailable; falling back to CPU."
+         )
+ 
+-    torch.manual_seed(config["seed"])
++    logger.info(
++        f"Reproducibility enabled: seed={seed}, "
++        "cudnn_deterministic=True, cudnn_benchmark=False"
++    )
+ 
+     # ------------------------------------------------------------------
+     # Data
+--- a/src/fl/simulation.py
++++ b/src/fl/simulation.py
+@@ -7,8 +7,13 @@
+ eval/... tags) for one algorithm/backbone/config combination.
+ """
+ from __future__ import annotations
++
++import random
+ from typing import Dict, List
+ 
++import numpy as np
++import torch
++
+ from src.data.class_imbalance import (
+     build_class_weights,
+     combine_class_counts,
+@@ -29,6 +34,18 @@
+ from src.models.fedbn import extract_federated_state_dict, merge_local_bn_into_global
+ from src.utils.logger import ExperimentLogger
+ 
++def _seed_worker_process(seed: int) -> None:
++    """Seed one Ray/Flower worker process deterministically."""
++    seed = int(seed)
++    random.seed(seed)
++    np.random.seed(seed % (2**32 - 1))
++    torch.manual_seed(seed)
++    if torch.cuda.is_available():
++        torch.cuda.manual_seed_all(seed)
++    torch.backends.cudnn.benchmark = False
++    torch.backends.cudnn.deterministic = True
++    torch.use_deterministic_algorithms(True, warn_only=True)
++
+ 
+ def run_federated_learning(
+     config: Dict,
+@@ -173,6 +190,12 @@
+         # Flower's own legacy-compatibility shim derives "cid" internally.
+         idx = int(context.node_config[PARTITION_ID_KEY])
+         partition = client_partitions[idx]
++
++        # Give every client a stable seed. The round-specific part is applied
++        # inside OralCancerFlowerClient.fit(), once the server round is known.
++        client_seed = int(config.get("seed", 42)) + idx * 100_000
++        _seed_worker_process(client_seed)
++
+         client_model = build_model(model_name, num_classes, pretrained=pretrained).to(device)
+         train_loader = _build_loader(train_datasets[idx], batch_size, train=True,
+                                       handle_imbalance=use_weighted_sampler)
+@@ -191,6 +214,7 @@
+             # New Addition
+             classification_class_weights=client_class_weights[idx],
+             imbalance_method=imbalance_method,
++            base_seed=client_seed,
+         )
+         return numpy_client.to_client()
+ 
+@@ -217,6 +241,12 @@
+             hospital = m.get("hospital", m.get("client_id", "unknown"))
+             logger.log_scalar(f"eval/per_hospital/{hospital}/acc", m["accuracy"], server_round)
+ 
++    def fit_config_fn(server_round: int) -> Dict[str, int]:
++        # Sending the round lets every client derive a deterministic but
++        # DIFFERENT RNG stream for each FL round. This avoids repeating the
++        # exact same shuffle/augmentation sequence every round.
++        return {"server_round": int(server_round)}
++
+     initial_fed_state = extract_federated_state_dict(reference_model, domain_adaptation)
+     initial_parameters = fl.common.ndarrays_to_parameters(state_dict_to_ndarrays(initial_fed_state))
+     federated_keys = list(initial_fed_state.keys())
+@@ -231,6 +261,7 @@
+         initial_parameters=initial_parameters,
+         on_fit_metrics=on_fit_metrics,
+         on_evaluate_metrics=on_evaluate_metrics,
++        on_fit_config_fn=fit_config_fn,
+     )
+ 
+     logger.info(f"Starting Flower simulation: algorithm={algorithm_name}, "
+--- a/src/fl/client.py
++++ b/src/fl/client.py
+@@ -9,6 +9,7 @@
+ import base64
+ import copy
+ import io
++import random
+ import time
+ from typing import Dict, List, Optional, Tuple
+ 
+@@ -71,6 +72,7 @@
+         # New Addition
+         classification_class_weights: Optional[List[float]] = None,
+         imbalance_method: str = "standard_ce",
++        base_seed: int = 42,
+     ):
+         self.client_id = client_id
+         self.hospital = hospital
+@@ -81,6 +83,7 @@
+         self.algo = algorithm_config
+         self.local_epochs = local_epochs
+         self.learning_rate = learning_rate
++        self.base_seed = int(base_seed)
+         
+         # New Addition
+         self.imbalance_method = imbalance_method
+@@ -153,6 +156,16 @@
+         full_state = self.model.state_dict()
+         return {k: full_state[k].detach().cpu() for k in local_keys}
+ 
++    def _seed_for_round(self, server_round: int) -> int:
++        """Deterministic client RNG stream that changes across FL rounds."""
++        round_seed = self.base_seed + int(server_round)
++        random.seed(round_seed)
++        np.random.seed(round_seed % (2**32 - 1))
++        torch.manual_seed(round_seed)
++        if torch.cuda.is_available():
++            torch.cuda.manual_seed_all(round_seed)
++        return round_seed
++
+     # ------------------------------------------------------------------
+     # Flower NumPyClient interface
+     # ------------------------------------------------------------------
+@@ -165,6 +178,12 @@
+         return state_dict_to_ndarrays(fed_state)
+ 
+     def fit(self, parameters: List[np.ndarray], config) -> Tuple[List[np.ndarray], int, Dict]:
++        # Re-seed at the start of every fit call. Flower/Ray may recreate
++        # clients between rounds, so the seed must not depend on Python object
++        # persistence. The server supplies server_round through fit config.
++        server_round = int((config or {}).get("server_round", 0))
++        round_seed = self._seed_for_round(server_round)
++
+         # 1. Restore this client's own BN state from the previous round.
+         #    This is only active for FedBN/domain_adaptation=True.
+         self._restore_local_bn_from_config(config)
+@@ -211,6 +230,7 @@
+             "train_loss": train_loss,
+             "comp_time_sec": comp_time,
+             "comm_bytes": comm_bytes,
++            "round_seed": round_seed,
+         }
+ 
+         if self._domain_adaptation:
+--- a/src/data/sampler.py
++++ b/src/data/sampler.py
+@@ -35,11 +35,21 @@
+ from __future__ import annotations
+ 
+ from collections import Counter
++import random
+ from typing import List, Sequence
+ 
++import numpy as np
++import torch
+ from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
+ 
+ 
++def _seed_dataloader_worker(worker_id: int) -> None:
++    """Seed Python/NumPy from the deterministic PyTorch worker seed."""
++    worker_seed = torch.initial_seed() % (2**32 - 1)
++    random.seed(worker_seed)
++    np.random.seed(worker_seed)
++
++
+ def class_sample_weights(dataset: Dataset) -> List[float]:
+     """Inverse-class-frequency weight per sample: weight(sample) = total /
+     (num_classes_present * count_of_that_sample's_class). A
+@@ -103,8 +113,8 @@
+     """
+     if train and handle_imbalance and len(dataset) > 0:
+         sampler = build_weighted_sampler(dataset)
+-        return DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers)
+-    return DataLoader(dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers)
++        return DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
++    return DataLoader(dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
+ 
+ 
+ def build_tensor_pair_loader(
+@@ -127,5 +137,5 @@
+     if train and handle_imbalance and len(oral_dataset) > 0:
+         weights = class_sample_weights(oral_dataset)
+         sampler = WeightedRandomSampler(weights, num_samples=len(weights), replacement=True)
+-        return DataLoader(tensor_pair_dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers)
+-    return DataLoader(tensor_pair_dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers)
++        return DataLoader(tensor_pair_dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
++    return DataLoader(tensor_pair_dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
+--- a/src/fl/strategies.py
++++ b/src/fl/strategies.py
+@@ -83,6 +83,12 @@
+         self.last_aggregated_parameters: Optional[Parameters] = None
+ 
+     def aggregate_fit(self, server_round, results, failures):
++        # Ray clients can finish in different orders on different runs.
++        # FedAvg is mathematically order-independent, but floating-point
++        # summation is not bitwise order-independent. Sort by stable client ID
++        # before aggregation so completion timing cannot change the result.
++        results = sorted(results, key=lambda item: item[0].cid)
++
+         if self.on_fit_metrics is not None:
+             per_client_metrics = [res.metrics for _, res in results]
+             self.on_fit_metrics(server_round, per_client_metrics)
+@@ -95,6 +101,8 @@
+         return aggregated
+ 
+     def aggregate_evaluate(self, server_round, results, failures):
++        results = sorted(results, key=lambda item: item[0].cid)
++
+         if self.on_evaluate_metrics is not None:
+             per_client_metrics = [res.metrics for _, res in results]
+             self.on_evaluate_metrics(server_round, per_client_metrics)

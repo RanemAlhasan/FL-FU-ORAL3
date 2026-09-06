@@ -1,0 +1,10 @@
+# Learning-curve configuration: final FedBN setting
+# Inherits the repository's normal 50-round / 3-local-epoch FedBN config.
+defaults: fl_fedbn.yaml
+
+# Best class-imbalance setting already selected for FedBN.
+imbalance_method: standard_ce
+handle_class_imbalance: false
+
+# Fixed training seed for the first learning-curve screening run.
+seed: 42

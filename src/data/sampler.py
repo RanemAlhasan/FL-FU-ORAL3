@@ -35,9 +35,19 @@ only ever addresses the first:
 from __future__ import annotations
 
 from collections import Counter
+import random
 from typing import List, Sequence
 
+import numpy as np
+import torch
 from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
+
+
+def _seed_dataloader_worker(worker_id: int) -> None:
+    """Seed Python/NumPy from the deterministic PyTorch worker seed."""
+    worker_seed = torch.initial_seed() % (2**32 - 1)
+    random.seed(worker_seed)
+    np.random.seed(worker_seed)
 
 
 def class_sample_weights(dataset: Dataset) -> List[float]:
@@ -103,8 +113,8 @@ def build_loader(
     """
     if train and handle_imbalance and len(dataset) > 0:
         sampler = build_weighted_sampler(dataset)
-        return DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers)
-    return DataLoader(dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers)
+        return DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
 
 
 def build_tensor_pair_loader(
@@ -127,5 +137,5 @@ def build_tensor_pair_loader(
     if train and handle_imbalance and len(oral_dataset) > 0:
         weights = class_sample_weights(oral_dataset)
         sampler = WeightedRandomSampler(weights, num_samples=len(weights), replacement=True)
-        return DataLoader(tensor_pair_dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers)
-    return DataLoader(tensor_pair_dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers)
+        return DataLoader(tensor_pair_dataset, batch_size=batch_size, sampler=sampler, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)
+    return DataLoader(tensor_pair_dataset, batch_size=batch_size, shuffle=train, num_workers=num_workers, worker_init_fn=_seed_dataloader_worker)

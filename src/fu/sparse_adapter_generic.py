@@ -24,10 +24,36 @@ For each critical layer l (selected by critical_layers_generic.py):
 from __future__ import annotations
 
 import copy
+import hashlib
 from typing import Dict, List, Optional
 
 import torch
 import torch.nn as nn
+
+# New Additions
+
+def _stable_layer_seed(base_seed: int, parameter_name: str) -> int:
+    """
+    Derive a deterministic RNG seed from the experiment seed and
+    parameter name.
+
+    This makes a layer's sparse mask independent of:
+      - its rank in critical_layers,
+      - the ordering of critical_layers,
+      - which other layers are selected.
+
+    Shared layers therefore receive identical masks across CLI-score
+    ablations when the base seed is the same.
+    """
+    payload = f"{int(base_seed)}::{parameter_name}".encode("utf-8")
+    digest = hashlib.sha256(payload).digest()
+
+    # Keep the seed safely inside torch.Generator.manual_seed's range.
+    return int.from_bytes(
+        digest[:8],
+        byteorder="big",
+        signed=False,
+    ) % (2**63 - 1)
 
 
 class SparseAdapterSet:
@@ -48,26 +74,58 @@ class SparseAdapterSet:
         self._original_values: Dict[str, torch.Tensor] = {}
 
     @classmethod
-    def build(cls, model: nn.Module, critical_layers: List[str], sparsity: float,
-              seed: Optional[int] = None) -> "SparseAdapterSet":
-        adapter_set = cls(critical_layers, sparsity)
-        if seed is not None:
-            generator = torch.Generator().manual_seed(seed)
-        else:
-            generator = None
+    def build(
+        cls,
+        model: nn.Module,
+        critical_layers: List[str],
+        sparsity: float,
+        seed: Optional[int] = None,
+    ) -> "SparseAdapterSet":
+        """
+        Build one sparse adapter per selected critical layer.
 
+        When a seed is provided, every parameter receives its own
+        deterministic RNG stream derived from:
+
+            base experiment seed + parameter name
+
+        Therefore the mask assigned to a parameter does NOT depend on
+        that parameter's position in critical_layers.
+        """
+        adapter_set = cls(critical_layers, sparsity)
         state_dict = model.state_dict()
+
         for name in critical_layers:
             if name not in state_dict:
                 continue
+
             shape = state_dict[name].shape
-            if generator is not None:
-                rand = torch.rand(shape, generator=generator)
+
+            if seed is not None:
+                layer_seed = _stable_layer_seed(
+                    base_seed=seed,
+                    parameter_name=name,
+                )
+
+                generator = torch.Generator()
+                generator.manual_seed(layer_seed)
+
+                rand = torch.rand(
+                    shape,
+                    generator=generator,
+                )
             else:
                 rand = torch.rand(shape)
+
             mask = (rand < sparsity).float()
+
             adapter_set.masks[name] = mask
-            adapter_set.deltas[name] = nn.Parameter(torch.zeros(shape), requires_grad=True)
+
+            adapter_set.deltas[name] = nn.Parameter(
+                torch.zeros(shape),
+                requires_grad=True,
+            )
+
         return adapter_set
 
     def to(self, device) -> "SparseAdapterSet":

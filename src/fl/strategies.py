@@ -83,6 +83,17 @@ class MetricsTrackingFedAvg(fl.server.strategy.FedAvg):
         self.last_aggregated_parameters: Optional[Parameters] = None
 
     def aggregate_fit(self, server_round, results, failures):
+        # Ray clients can finish in different orders on different runs.
+        # FedAvg is mathematically order-independent, but floating-point
+        # summation is not bitwise order-independent. Sort by stable client ID
+        # before aggregation so completion timing cannot change the result.
+        results = sorted(
+            results,
+            key=lambda item: str(
+                item[1].metrics.get("client_id", item[0].cid)
+            ),
+        )
+
         if self.on_fit_metrics is not None:
             per_client_metrics = [res.metrics for _, res in results]
             self.on_fit_metrics(server_round, per_client_metrics)
@@ -95,6 +106,8 @@ class MetricsTrackingFedAvg(fl.server.strategy.FedAvg):
         return aggregated
 
     def aggregate_evaluate(self, server_round, results, failures):
+        results = sorted(results, key=lambda item: item[0].cid)
+
         if self.on_evaluate_metrics is not None:
             per_client_metrics = [res.metrics for _, res in results]
             self.on_evaluate_metrics(server_round, per_client_metrics)

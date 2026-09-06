@@ -1,0 +1,10 @@
+# Learning-curve configuration: final FedAvg setting
+# Inherits the repository's normal 50-round / 3-local-epoch FedAvg config.
+defaults: fl_fedavg.yaml
+
+# Best class-imbalance setting already selected for FedAvg.
+imbalance_method: weighted_sampler
+handle_class_imbalance: true
+
+# Fixed training seed for the first learning-curve screening run.
+seed: 42

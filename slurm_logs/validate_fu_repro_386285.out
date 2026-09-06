@@ -1,0 +1,22 @@
+============================================================
+FU REPRODUCIBILITY VALIDATION
+============================================================
+Python: /export/home/ralhasan/anaconda3/envs/fl_fu/bin/python3
+PyTorch: 2.6.0+cu124
+CUDA available: True
+
+[1/4] Python syntax
+PASS: Python syntax
+
+[2/4] Imports
+PASS: imports and reproducibility function
+
+[3/4] RNG reproducibility
+PASS: RNG reset reproduces identical tensors
+
+[4/4] Sparse-mask invariance
+PASS: sparse masks are rank- and set-independent
+
+============================================================
+ALL VALIDATION TESTS PASSED
+============================================================

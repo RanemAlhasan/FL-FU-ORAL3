@@ -7,7 +7,12 @@ trained global model checkpoint plus FL-phase metrics (fl/... and
 eval/... tags) for one algorithm/backbone/config combination.
 """
 from __future__ import annotations
+
+import random
 from typing import Dict, List
+
+import numpy as np
+import torch
 
 from src.data.class_imbalance import (
     build_class_weights,
@@ -28,6 +33,18 @@ from src.fl.strategies import build_strategy
 from src.models.backbone import build_model
 from src.models.fedbn import extract_federated_state_dict, merge_local_bn_into_global
 from src.utils.logger import ExperimentLogger
+
+def _seed_worker_process(seed: int) -> None:
+    """Seed one Ray/Flower worker process deterministically."""
+    seed = int(seed)
+    random.seed(seed)
+    np.random.seed(seed % (2**32 - 1))
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
+    torch.use_deterministic_algorithms(True, warn_only=True)
 
 
 def run_federated_learning(
@@ -173,6 +190,12 @@ def run_federated_learning(
         # Flower's own legacy-compatibility shim derives "cid" internally.
         idx = int(context.node_config[PARTITION_ID_KEY])
         partition = client_partitions[idx]
+
+        # Give every client a stable seed. The round-specific part is applied
+        # inside OralCancerFlowerClient.fit(), once the server round is known.
+        client_seed = int(config.get("seed", 42)) + idx * 100_000
+        _seed_worker_process(client_seed)
+
         client_model = build_model(model_name, num_classes, pretrained=pretrained).to(device)
         train_loader = _build_loader(train_datasets[idx], batch_size, train=True,
                                       handle_imbalance=use_weighted_sampler)
@@ -191,6 +214,7 @@ def run_federated_learning(
             # New Addition
             classification_class_weights=client_class_weights[idx],
             imbalance_method=imbalance_method,
+            base_seed=client_seed,
         )
         return numpy_client.to_client()
 
@@ -217,6 +241,12 @@ def run_federated_learning(
             hospital = m.get("hospital", m.get("client_id", "unknown"))
             logger.log_scalar(f"eval/per_hospital/{hospital}/acc", m["accuracy"], server_round)
 
+    def fit_config_fn(server_round: int) -> Dict[str, int]:
+        # Sending the round lets every client derive a deterministic but
+        # DIFFERENT RNG stream for each FL round. This avoids repeating the
+        # exact same shuffle/augmentation sequence every round.
+        return {"server_round": int(server_round)}
+
     initial_fed_state = extract_federated_state_dict(reference_model, domain_adaptation)
     initial_parameters = fl.common.ndarrays_to_parameters(state_dict_to_ndarrays(initial_fed_state))
     federated_keys = list(initial_fed_state.keys())
@@ -231,6 +261,7 @@ def run_federated_learning(
         initial_parameters=initial_parameters,
         on_fit_metrics=on_fit_metrics,
         on_evaluate_metrics=on_evaluate_metrics,
+        on_fit_config_fn=fit_config_fn,
     )
 
     logger.info(f"Starting Flower simulation: algorithm={algorithm_name}, "

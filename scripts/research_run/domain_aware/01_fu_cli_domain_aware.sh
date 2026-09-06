@@ -186,18 +186,6 @@ if [ ! -f "${DOMAIN_SCORES_PATH}" ]; then
     exit 1
 fi
 
-
-# =============================================================================
-# Syntax validation
-# =============================================================================
-
-"${PYTHON}" -m py_compile \
-    src/fu/domain_sensitivity.py \
-    src/fu/critical_layers_generic.py \
-    src/fu/fused_cli_training.py \
-    scripts/run_fu_cli_domain.py
-
-
 # =============================================================================
 # Job information
 # =============================================================================
